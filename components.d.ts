@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     ElTag: typeof import('element-plus/es')['ElTag']
     FsCodeCard: typeof import('./src/components/FsCodeCard/FsCodeCard.vue')['default']
     FsImage: typeof import('./src/components/FsImage/FsImage.vue')['default']
+    FsSideCard: typeof import('./src/components/FsSideCard/FsSideCard.vue')['default']
     FsSwitch: typeof import('./src/components/FsSwitch/FsSwitch.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

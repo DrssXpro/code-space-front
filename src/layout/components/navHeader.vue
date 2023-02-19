@@ -95,14 +95,14 @@ const menus = [
     .icon {
       font-size: 25px;
       margin-right: 10px;
+      font-weight: 600;
     }
     span {
-      font-size: 25px;
+      font-size: 20px;
       font-weight: 600;
     }
   }
   .nav-menu_center {
-    font-size: 18px;
     flex: 1;
     margin-left: 50px;
     height: 100%;
@@ -111,7 +111,6 @@ const menus = [
       display: flex;
       align-items: center;
       gap: 20px;
-
       .underLine {
         position: absolute;
         content: "";
@@ -119,7 +118,7 @@ const menus = [
         bottom: 0;
         width: 100%;
         height: 2px;
-        background-color: var(--font-active-color);
+        background-color: var(--font-main-color);
       }
       .menu-item {
         cursor: pointer;
@@ -131,7 +130,7 @@ const menus = [
 
         &:hover {
           font-weight: 700;
-          color: var(--font-active-color);
+          color: var(--font-main-color);
         }
         &:hover::after {
           display: block;
@@ -143,7 +142,7 @@ const menus = [
       }
       .menu-item__active {
         font-weight: 700;
-        color: var(--font-active-color);
+        color: var(--font-main-color);
 
         &::after {
           display: block;

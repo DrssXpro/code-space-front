@@ -1,6 +1,6 @@
 <template>
   <div class="code-tab-container">
-    <div class="tab-title">相关标签</div>
+    <div class="tab-title">语言分类</div>
     <div class="code-tab-list">
       <div
         :class="['code-tab-item', currentIndex === index ? 'tab-item__active' : '']"
@@ -24,9 +24,6 @@ const handleChooseTab = (index: number) => {
 
 const codes = [
   {
-    text: "全部",
-  },
-  {
     text: "C",
   },
   {
@@ -41,24 +38,6 @@ const codes = [
   {
     text: "Python",
   },
-  {
-    text: "标签1",
-  },
-  {
-    text: "标签2",
-  },
-  {
-    text: "测试",
-  },
-  {
-    text: "Pyt",
-  },
-  {
-    text: "Pyt测试hon",
-  },
-  {
-    text: "Pyt测试hon",
-  },
 ];
 </script>
 
@@ -66,6 +45,7 @@ const codes = [
 .code-tab-container {
   padding: 20px;
   background-color: var(--main-color);
+  border-radius: 10px;
   .tab-title {
     font-size: 20px;
     margin-bottom: 20px;
@@ -75,13 +55,13 @@ const codes = [
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    font-size: 14px;
 
     .code-tab-item {
       padding: 5px 8px;
       border-radius: 5px;
       transition: all 0.3s;
       cursor: pointer;
-      font-size: 18px;
       border: 1px solid transparent;
       &:hover {
         border-color: var(--choose-color);

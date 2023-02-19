@@ -14,8 +14,7 @@
 .nav-content-container {
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 70px;
-  border: 1px solid #000;
+  padding-top: 70px;
   color: var(--font-color);
 }
 </style>

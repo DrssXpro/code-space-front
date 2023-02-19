@@ -4,13 +4,26 @@
       <code-tab />
       <code-list />
     </div>
-    <div class="square-container__right"></div>
+    <div class="square-container__right">
+      <div class="card-item">
+        <personal-card />
+      </div>
+      <div class="card-item">
+        <ranking-card />
+      </div>
+      <div class="card-item">
+        <recommand-card />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import codeTab from "./components/codeTab.vue";
 import codeList from "./components/codeList.vue";
+import personalCard from "./components/personalCard.vue";
+import rankingCard from "./components/rankingCard.vue";
+import recommandCard from "./components/recommandCard.vue";
 </script>
 
 <style scoped lang="less">
@@ -23,8 +36,9 @@ import codeList from "./components/codeList.vue";
   }
   &__right {
     width: 300px;
-
-    border: 1px solid red;
+    .card-item {
+      margin-bottom: 20px;
+    }
   }
 }
 </style>
