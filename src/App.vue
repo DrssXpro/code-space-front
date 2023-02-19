@@ -4,6 +4,16 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import useTheme from "./hooks/useTheme";
 
-<style scoped lang="less"></style>
+const { init } = useTheme();
+init();
+</script>
+
+<style scoped lang="less">
+.main-container {
+  background-color: var(--bg-color);
+  min-height: 100vh;
+}
+</style>
