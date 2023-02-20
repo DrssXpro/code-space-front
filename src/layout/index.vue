@@ -5,12 +5,15 @@
   <main class="nav-content">
     <nav-content />
   </main>
-  <footer class="nav-footer"></footer>
+  <footer class="nav-footer">
+    <nav-footer />
+  </footer>
 </template>
 
 <script setup lang="ts">
 import navHeader from "./components/navHeader.vue";
 import navContent from "./components/navContent.vue";
+import navFooter from "./components/navFooter.vue";
 </script>
 
 <style scoped lang="less">

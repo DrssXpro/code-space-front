@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, computed } from "vue";
 import FsSwitch from "@/components/FsSwitch/FsSwitch.vue";
 import { useRoute } from "vue-router";
 import useTheme from "@/hooks/useTheme";
@@ -39,16 +39,10 @@ import { LIGHT_THEME, DARK_THEME } from "@/theme/theme";
 import { __debounce } from "@/utils/tools";
 const $route = useRoute(),
   { setTheme } = useTheme();
-const activeIndex = ref(0);
+
 const themeFlag = ref(false);
 
-watch(
-  () => $route.fullPath,
-  (newValue) => {
-    activeIndex.value = menus.findIndex((item) => item.path == newValue);
-    console.log(activeIndex.value);
-  }
-);
+const activeIndex = computed(() => menus.findIndex((item) => item.path == $route.fullPath));
 
 const handleChangeTheme = __debounce(() => {
   themeFlag.value ? setTheme(LIGHT_THEME) : setTheme(DARK_THEME);
