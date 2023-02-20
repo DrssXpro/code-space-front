@@ -6,7 +6,7 @@
     <nav-content />
   </main>
   <footer class="nav-footer">
-    <nav-footer />
+    <!-- <nav-footer /> -->
   </footer>
 </template>
 

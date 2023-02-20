@@ -54,12 +54,12 @@ const menus = [
     text: "广场",
   },
   {
-    path: "/space",
-    text: "圈子",
-  },
-  {
     path: "/search",
     text: "搜索",
+  },
+  {
+    path: "/space",
+    text: "空间",
   },
   {
     path: "/personal",

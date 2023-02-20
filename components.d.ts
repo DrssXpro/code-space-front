@@ -24,6 +24,7 @@ declare module '@vue/runtime-core' {
     FsImage: typeof import('./src/components/FsImage/FsImage.vue')['default']
     FsSearchBox: typeof import('./src/components/FsSearchBox/FsSearchBox.vue')['default']
     FsSideCard: typeof import('./src/components/FsSideCard/FsSideCard.vue')['default']
+    FsSpaceCard: typeof import('./src/components/FsSpaceCard/FsSpaceCard.vue')['default']
     FsSwitch: typeof import('./src/components/FsSwitch/FsSwitch.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
