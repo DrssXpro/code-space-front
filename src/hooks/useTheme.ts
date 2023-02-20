@@ -1,7 +1,10 @@
 import { DARK_THEME, type IThemeItem } from "@/theme/theme";
 import myCache from "@/utils/cache";
+import { ref } from "vue";
 export default function useTheme() {
+  const currentTheme = ref<IThemeItem[]>();
   const setTheme = (ThemeArr: IThemeItem[]) => {
+    currentTheme.value = ThemeArr;
     ThemeArr.forEach((item) => {
       document.documentElement.style.setProperty(item.name, item.color);
     });
@@ -13,6 +16,8 @@ export default function useTheme() {
 
   const init = () => {
     const theme = myCache.getItem<IThemeItem[]>("theme");
+    currentTheme.value = theme as IThemeItem[];
+    console.log("check:", currentTheme.value);
     if (theme) {
       setTheme(theme);
     } else {
@@ -24,5 +29,6 @@ export default function useTheme() {
     init,
     setTheme,
     saveTheme,
+    currentTheme,
   };
 }

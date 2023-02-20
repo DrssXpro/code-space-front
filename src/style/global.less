@@ -1,4 +1,6 @@
-
+:root {
+  --el-color-primary: var(--choose-color) !important;
+}
 body {
   margin: 0;
   padding: 0;
@@ -25,9 +27,40 @@ img {
 button {
   outline: none;
   border: none;
-  background-color: var(--choose-color);
-  color: var(--font-active-color);
+
   cursor: pointer;
+}
+
+// 重置 select样式
+.el-input__inner {
+  color: var(--font-main-color) !important;
+}
+.el-input__wrapper {
+  background-color: var(--main-color) !important;
+  box-shadow: 0 0 0 1px var(--font-color) !important;
+}
+.el-popper {
+  background-color: var(--main-color) !important;
+}
+
+.el-select .el-input.is-focus .el-input__wrapper {
+  box-shadow: none !important;
+}
+.el-select-dropdown__item:hover {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+}
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  background-color: var(--bg-color) !important;
+}
+
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover {
+  background-color: var(--bg-color);
+}
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
+  background-color: var(--bg-color);
+  color: var(--font-color);
 }
 
 // 设置滚动条样式

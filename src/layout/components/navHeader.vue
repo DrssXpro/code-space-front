@@ -75,6 +75,10 @@ const menus = [
     path: "/admin",
     text: "后台",
   },
+  {
+    path: "/system",
+    text: "系统设置",
+  },
 ];
 </script>
 
@@ -87,6 +91,7 @@ const menus = [
   box-shadow: 0 1px 4px 0 rgb(0 21 41 / 12%);
   background-color: var(--nav-color);
   color: var(--font-color);
+  transition: background-color 0.3s;
   .nav-menu_left {
     display: flex;
     height: 100%;
@@ -161,6 +166,8 @@ const menus = [
       width: 65px;
       height: 32px;
       border-radius: 5px;
+      background-color: var(--choose-color);
+      color: var(--font-active-color);
       &:hover {
         opacity: 0.8;
       }

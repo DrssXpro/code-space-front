@@ -109,9 +109,27 @@
       align-items: center;
       gap: 10px;
       color: var(--font-main-color);
+      li {
+        position: relative;
+      }
+      .line-gap {
+        position: absolute;
+        content: "";
+        width: 1px;
+        height: 70%;
+        right: -2px;
+        top: 5px;
+        background-color: var(--font-color);
+      }
+      & > li:nth-child(2)::after {
+        .line-gap();
+      }
+      & > li:nth-child(3)::after {
+        .line-gap();
+      }
     }
     .operator-btn {
-      padding: 8px 15px;
+      padding: 4px 12px;
       display: flex;
       align-items: center;
       cursor: pointer;
