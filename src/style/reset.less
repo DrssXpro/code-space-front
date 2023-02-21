@@ -1,0 +1,92 @@
+// 重置 select样式
+.el-input__inner {
+  color: var(--font-main-color) !important;
+}
+.el-input__wrapper {
+  background-color: var(--main-color) !important;
+  box-shadow: 0 0 0 1px var(--font-color) !important;
+}
+.el-popper {
+  background-color: var(--main-color) !important;
+}
+
+.el-select .el-input.is-focus .el-input__wrapper {
+  box-shadow: none !important;
+}
+
+.el-select-dropdown__item {
+  color: var(--font-color) !important;
+}
+.el-select-dropdown__item:hover {
+  background-color: var(--bg-color);
+  color: var(--font-active-color);
+}
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  background-color: var(--bg-color) !important;
+}
+
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover {
+  background-color: var(--bg-color);
+}
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+}
+
+.el-select__tags .el-tag--info {
+  background-color: var(--bg-color) !important;
+}
+
+// 重置 radio颜色样式
+.el-radio-button__inner {
+  background-color: var(--nav-color) !important;
+  color: var(--font-color) !important;
+  border-color: var(--font-color) !important;
+}
+.el-radio-button__original-radio:checked + .el-radio-button__inner {
+  background-color: var(--choose-color) !important;
+  color: var(--font-active-color) !important;
+}
+
+// 重置check样式
+.el-checkbox {
+  color: var(--font-color) !important;
+}
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: var(--font-main-color) !important;
+}
+.el-pager li {
+  background: var(--bg-color) !important;
+  color: var(--font-color) !important;
+}
+
+.el-pagination.is-background .btn-next.is-active,
+.el-pagination.is-background .btn-prev.is-active,
+.el-pagination.is-background .el-pager li.is-active {
+  background: var(--choose-color) !important;
+  color: var(--font-active-color) !important;
+}
+
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+  background: var(--bg-color) !important;
+  color: var(--font-color) !important;
+}
+
+.el-table tr {
+  background-color: var(--main-color) !important;
+  color: var(--table-font-color) !important;
+}
+.el-table th.el-table__cell {
+  background-color: var(--main-color) !important;
+}
+.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+  background-color: var(--bg-color) !important;
+}
+
+.el-table td.el-table__cell,
+.el-table th.el-table__cell.is-leaf {
+  border-bottom: 1px solid var(--table-border-color) !important;
+}

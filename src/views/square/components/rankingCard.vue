@@ -34,7 +34,7 @@ import FsSideCard from "@/components/FsSideCard/FsSideCard.vue";
   }
 }
 li {
-  padding: 10px 0;
+  padding: 10px;
 }
 .user-content {
   display: flex;

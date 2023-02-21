@@ -42,7 +42,7 @@ const $route = useRoute(),
 
 const themeFlag = ref(false);
 
-const activeIndex = computed(() => menus.findIndex((item) => item.path == $route.fullPath));
+const activeIndex = computed(() => menus.findIndex((item) => $route.fullPath.includes(item.path)));
 
 const handleChangeTheme = __debounce(() => {
   themeFlag.value ? setTheme(LIGHT_THEME) : setTheme(DARK_THEME);
@@ -62,12 +62,8 @@ const menus = [
     text: "空间",
   },
   {
-    path: "/personal",
-    text: "个人",
-  },
-  {
     path: "/admin",
-    text: "后台",
+    text: "个人",
   },
   {
     path: "/system",

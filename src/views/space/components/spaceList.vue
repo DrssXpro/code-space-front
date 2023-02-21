@@ -19,8 +19,8 @@ import FsSpaceCard from "@/components/FsSpaceCard/FsSpaceCard.vue";
   flex-wrap: wrap;
   gap: 20px;
   .space-item {
-    width: 250px;
-    height: 250px;
+    width: 270px;
+    height: 270px;
     background-color: var(--main-color);
     border-radius: 10px;
     overflow: hidden;
@@ -29,7 +29,7 @@ import FsSpaceCard from "@/components/FsSpaceCard/FsSpaceCard.vue";
     width: 100%;
     margin-bottom: 20px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
   }
 }
 </style>

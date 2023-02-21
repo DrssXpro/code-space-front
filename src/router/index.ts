@@ -25,14 +25,22 @@ const router = createRouter({
           component: () => import("@/views/search/index.vue"),
         },
         {
-          path: "personal",
-          name: "personal",
-          component: () => import("@/views/personal/index.vue"),
-        },
-        {
           path: "admin",
           name: "admin",
+          redirect: "/admin/user",
           component: () => import("@/views/admin/index.vue"),
+          children: [
+            {
+              path: "user",
+              name: "user",
+              component: () => import("@/views/admin/pages/user/index.vue"),
+            },
+            {
+              path: "code",
+              name: "code",
+              component: () => import("@/views/admin/pages/code/index.vue"),
+            },
+          ],
         },
         {
           path: "system",

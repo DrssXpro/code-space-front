@@ -24,6 +24,8 @@ const searchContent = ref("");
 <style scoped lang="less">
 .search-container {
   height: 100%;
+  width: 1200px;
+  margin: 0 auto;
   .search-box {
     margin-top: 10px;
   }

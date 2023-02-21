@@ -18,7 +18,11 @@ const searchContent = ref("");
 </script>
 
 <style scoped lang="less">
-.content-gap {
-  margin-top: 20px;
+.space-container {
+  width: 1200px;
+  margin: 0 auto;
+  .content-gap {
+    margin-top: 20px;
+  }
 }
 </style>

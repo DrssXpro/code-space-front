@@ -6,13 +6,10 @@
     </div>
     <div class="square-container__right">
       <div class="card-item">
-        <personal-card />
+        <code-card />
       </div>
       <div class="card-item">
         <ranking-card />
-      </div>
-      <div class="card-item">
-        <recommand-card />
       </div>
     </div>
   </div>
@@ -21,13 +18,14 @@
 <script setup lang="ts">
 import codeTab from "./components/codeTab.vue";
 import codeList from "./components/codeList.vue";
-import personalCard from "./components/personalCard.vue";
 import rankingCard from "./components/rankingCard.vue";
-import recommandCard from "./components/recommandCard.vue";
+import codeCard from "./components/codeCard.vue";
 </script>
 
 <style scoped lang="less">
 .square-container {
+  width: 1200px;
+  margin: 0 auto;
   padding: 20px;
   display: flex;
   gap: 20px;

@@ -24,14 +24,17 @@ const handleGetMore = () => {};
   .code-more {
     width: 100%;
     .more-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 120px;
       padding: 5px 8px;
       margin: 20px auto;
       background-color: var(--choose-color);
       cursor: pointer;
-      border-radius: 5px;
+      color: var(--font-active-color);
       &:hover {
-        opacity: 0.9;
+        opacity: 0.8;
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="personal-container">个人</div>
+  <div class="user-info-container">用户信息</div>
 </template>
 
 <script setup lang="ts"></script>

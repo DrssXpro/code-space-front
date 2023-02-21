@@ -11,7 +11,9 @@ type ThemeName =
   | "--font-color"
   | "--font-main-color"
   | "--font-active-color"
-  | "--choose-color";
+  | "--choose-color"
+  | "--table-font-color"
+  | "--table-border-color";
 
 const DARK_THEME: IThemeItem[] = [
   {
@@ -49,6 +51,17 @@ const DARK_THEME: IThemeItem[] = [
     color: "#68C6BD",
     desc: "选中颜色",
   },
+
+  {
+    name: "--table-font-color",
+    color: "#fff",
+    desc: "表格字体颜色",
+  },
+  {
+    name: "--table-border-color",
+    color: "#0E3636",
+    desc: "表格边框颜色",
+  },
 ];
 
 const LIGHT_THEME: IThemeItem[] = [
@@ -69,12 +82,12 @@ const LIGHT_THEME: IThemeItem[] = [
   },
   {
     name: "--font-color",
-    color: "#bebebe",
+    color: "#aaa",
     desc: "字体颜色",
   },
   {
     name: "--font-main-color",
-    color: "#ffb4be",
+    color: "#000",
     desc: "主字体颜色",
   },
   {
@@ -84,8 +97,19 @@ const LIGHT_THEME: IThemeItem[] = [
   },
   {
     name: "--choose-color",
-    color: "#FF8C8C",
+    color: "#000",
+
     desc: "选中颜色",
+  },
+  {
+    name: "--table-font-color",
+    color: "#000",
+    desc: "表格字体颜色",
+  },
+  {
+    name: "--table-border-color",
+    color: "#eee",
+    desc: "表格边框颜色",
   },
 ];
 
@@ -97,10 +121,10 @@ const THEMES = [
     themeColor: ["#1e1d2b", "#2f3042", "#222433"],
   },
   {
-    name: "粉色系",
+    name: "黑白系",
     key: "light",
     value: LIGHT_THEME,
-    themeColor: ["#EFEFF4", "#fff", "#ffb4be"],
+    themeColor: ["#EFEFF4", "#fff", "#000"],
   },
 ];
 

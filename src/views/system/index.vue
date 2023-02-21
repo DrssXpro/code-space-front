@@ -35,7 +35,8 @@ const saveThemeToLocal = () => {};
 
 <style scoped lang="less">
 .system-container {
-  width: 100%;
+  width: 1200px;
+  margin: 0 auto;
   margin-top: 20px;
   padding: 20px;
   border-radius: 10px;

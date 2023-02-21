@@ -74,6 +74,7 @@ const options = [
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
+    color: var(--font-main-color);
     .title-content {
       font-size: 20px;
     }

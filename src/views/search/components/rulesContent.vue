@@ -75,6 +75,7 @@ const codes = [
     align-items: center;
     .rules-title {
       margin-right: 50px;
+      color: var(--font-main-color);
       span {
         margin-left: 10px;
       }

@@ -28,12 +28,11 @@ const props = defineProps<{
     justify-content: space-between;
     border-bottom: 1px solid var(--font-color);
     padding: 20px;
+    color: var(--font-main-color);
+    font-weight: 700;
     .title-content {
       font-size: 18px;
     }
-  }
-  &__content {
-    padding: 10px 20px;
   }
 }
 </style>

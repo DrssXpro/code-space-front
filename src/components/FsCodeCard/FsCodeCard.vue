@@ -74,13 +74,12 @@
       font-size: 18px;
       margin: 10px 0;
       color: var(--font-main-color);
+      font-weight: 700;
     }
 
     .content-preview {
       margin: 10px 0;
-      &:hover {
-        color: var(--font-main-color);
-      }
+      color: var(--font-main-color);
     }
     .content-info {
       display: flex;
