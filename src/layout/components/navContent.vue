@@ -13,6 +13,5 @@
 <style scoped lang="less">
 .nav-content-container {
   padding-top: 70px;
-  color: var(--font-color);
 }
 </style>

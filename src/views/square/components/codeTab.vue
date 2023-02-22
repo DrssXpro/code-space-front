@@ -32,10 +32,7 @@ const handleChooseTab = (index: number) => {
 
 const codes = [
   {
-    text: "C",
-  },
-  {
-    text: "C++",
+    text: "cpp",
   },
   {
     text: "Java",
@@ -45,6 +42,19 @@ const codes = [
   },
   {
     text: "Python",
+  },
+  {
+    text: "PHP",
+  },
+
+  {
+    text: "CSS",
+  },
+  {
+    text: "SQL",
+  },
+  {
+    text: "Vue",
   },
 ];
 
@@ -67,7 +77,7 @@ const options = [
 <style scoped lang="less">
 .code-tab-container {
   padding: 20px;
-  background-color: var(--main-color);
+  background-color: var(--el-bg-color-overlay);
   border-radius: 10px;
   .tab-title {
     display: flex;
@@ -76,7 +86,7 @@ const options = [
     margin-bottom: 20px;
     color: var(--font-main-color);
     .title-content {
-      font-size: 20px;
+      font-size: 22px;
     }
     .title-choose {
       width: 100px;
@@ -87,7 +97,6 @@ const options = [
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    font-size: 14px;
 
     .code-tab-item {
       padding: 5px 8px;
@@ -95,13 +104,9 @@ const options = [
       transition: all 0.3s;
       cursor: pointer;
       border: 1px solid transparent;
-      &:hover {
-        border-color: var(--choose-color);
-      }
     }
     .tab-item__active {
-      background-color: var(--choose-color);
-      color: var(--font-active-color);
+      background-color: var(--el-bg-color-page);
     }
   }
 }

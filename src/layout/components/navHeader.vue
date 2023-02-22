@@ -33,19 +33,21 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import FsSwitch from "@/components/FsSwitch/FsSwitch.vue";
+import { useDark, useToggle } from "@vueuse/core";
 import { useRoute } from "vue-router";
 import useTheme from "@/hooks/useTheme";
-import { LIGHT_THEME, DARK_THEME } from "@/theme/theme";
 import { __debounce } from "@/utils/tools";
 const $route = useRoute(),
   { setTheme } = useTheme();
 
 const themeFlag = ref(false);
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 
 const activeIndex = computed(() => menus.findIndex((item) => $route.fullPath.includes(item.path)));
 
 const handleChangeTheme = __debounce(() => {
-  themeFlag.value ? setTheme(LIGHT_THEME) : setTheme(DARK_THEME);
+  toggleDark();
 }, 500);
 
 const menus = [
@@ -79,21 +81,20 @@ const menus = [
   height: 100%;
   padding: 0 30px;
   box-shadow: 0 1px 4px 0 rgb(0 21 41 / 12%);
-  background-color: var(--nav-color);
-  color: var(--font-color);
+  background-color: var(--el-bg-color-overlay);
+
   transition: background-color 0.3s;
   .nav-menu_left {
     display: flex;
     height: 100%;
     align-items: center;
-    color: var(--font-main-color);
     .icon {
       font-size: 25px;
       margin-right: 10px;
       font-weight: 600;
     }
     span {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 600;
     }
   }
@@ -113,7 +114,7 @@ const menus = [
         bottom: 0;
         width: 100%;
         height: 2px;
-        background-color: var(--font-main-color);
+        background-color: var(--el-text-color-primary);
       }
       .menu-item {
         cursor: pointer;
@@ -122,10 +123,10 @@ const menus = [
         display: flex;
         align-items: center;
         justify-content: center;
-
+        color: var(--el-text-color-secondary);
         &:hover {
           font-weight: 700;
-          color: var(--font-main-color);
+          color: var(--el-text-color-primary);
         }
         &:hover::after {
           display: block;

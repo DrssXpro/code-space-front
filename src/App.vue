@@ -8,12 +8,12 @@
 import useTheme from "./hooks/useTheme";
 
 const { init } = useTheme();
-init();
+// init();
 </script>
 
 <style scoped lang="less">
 .main-container {
-  background-color: var(--bg-color);
+  background-color: var(--el-bg-color-page);
   min-height: 100vh;
   transition: background-color 0.3s;
 }

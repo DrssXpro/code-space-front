@@ -1,5 +1,10 @@
+@font-face {
+  font-family: myFont;
+  src: url(../assets/font/myFont.ttf);
+}
 :root {
-  --el-color-primary: var(--choose-color) !important;
+  font-family: myFont;
+  // --el-color-primary: var(--choose-color) !important;
 }
 body {
   margin: 0;
@@ -31,6 +36,10 @@ button {
   cursor: pointer;
 }
 
+.el-card__body {
+  padding: 0 !important;
+}
+
 // 设置滚动条样式
 ::-webkit-scrollbar {
   width: 5px;
@@ -38,7 +47,7 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--choose-color);
+  background-color: var(--el-bg-color-overlay);
   border-radius: 15px;
 }
 

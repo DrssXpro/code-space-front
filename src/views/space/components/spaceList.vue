@@ -21,7 +21,7 @@ import FsSpaceCard from "@/components/FsSpaceCard/FsSpaceCard.vue";
   .space-item {
     width: 270px;
     height: 270px;
-    background-color: var(--main-color);
+    background-color: var(--el-bg-color-overlay);
     border-radius: 10px;
     overflow: hidden;
   }

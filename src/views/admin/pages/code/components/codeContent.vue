@@ -71,7 +71,7 @@ const tableData = [
 .code-content {
   width: 100%;
   min-height: calc(100vh - 230px);
-  background-color: var(--main-color);
+  background-color: var(--el-bg-color-overlay);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   padding: 20px;

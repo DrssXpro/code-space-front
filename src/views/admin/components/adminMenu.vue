@@ -70,7 +70,7 @@ const handleClose = () => {};
   height: calc(100vh - 110px);
   left: 0;
   top: 20px;
-  background-color: var(--nav-color);
+  background-color: var(--el-bg-color-overlay);
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   padding: 10px;
@@ -82,17 +82,6 @@ const handleClose = () => {};
   .el-menu {
     border: 0 !important;
   }
-  :deep(.el-sub-menu__title:hover) {
-    color: var(--font-main-color) !important;
-    background-color: var(--bg-color) !important;
-  }
-  :deep(.el-menu-item:hover) {
-    color: var(--font-main-color) !important;
-    background-color: var(--bg-color) !important;
-  }
-  .el-menu-item.is-active {
-    color: var(--font-main-color) !important;
-    font-weight: 700;
-  }
+
 }
 </style>

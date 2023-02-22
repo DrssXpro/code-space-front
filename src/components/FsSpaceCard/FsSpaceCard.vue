@@ -38,7 +38,7 @@
   align-items: center;
 
   &_title {
-    // font-size: 14px;
+    font-size: 20px;
     text-align: center;
     font-weight: 700;
     margin-bottom: 20px;
@@ -50,6 +50,7 @@
       border-radius: 50%;
       margin-bottom: 5px;
     }
+    font-size: 18px;
   }
 
   &_info {
@@ -59,7 +60,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 12px;
+    font-size: 14px;
     span {
       margin-left: 5px;
     }

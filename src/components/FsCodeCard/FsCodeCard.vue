@@ -1,46 +1,52 @@
 <template>
   <div class="fs-code-card">
-    <div class="fs-code-card_header">
-      <!-- <fs-image src=""></fs-image> -->
-      <img src="@/assets/image/avatar.jpg" alt="" />
-      <div class="person-info">
-        <span>_Async__</span>
+    <el-card shadow="never">
+      <div class="fs-code-content">
+        <div class="fs-code-card_header">
+          <!-- <fs-image src=""></fs-image> -->
+          <img src="@/assets/image/avatar.jpg" alt="" />
+          <div class="person-info">
+            <span>_Async__</span>
+          </div>
+        </div>
+        <div class="fs-code-card_content">
+          <div class="content-title line-one">这里是一段代码</div>
+          <div class="content-preview line-one">
+            int main (){int a = 10; int b = 100; printf('%d', a + b); return 0;}
+          </div>
+          <div class="content-info">
+            <img src="@/assets/image/JS.jpg" class="lan-img" alt="" />
+            <div>JavaScript</div>
+            <div><i class="fa fa-eye"></i> 220 浏览</div>
+            <div>306.00 bytes</div>
+          </div>
+        </div>
+        <div class="fs-code-card_footer">
+          <ul>
+            <li><span>2023-02-16 10:41</span></li>
+            <li>
+              <div class="operator-btn">
+                <i class="fa fa-thumbs-o-up"></i>
+                <span style="margin-left: 10px">0</span>
+              </div>
+            </li>
+            <li>
+              <div class="operator-btn">
+                <i class="fa fa-star-o"></i>
+                <span style="margin-left: 10px">0</span>
+              </div>
+            </li>
+            <li>
+              <div class="operator-btn">
+                <i class="fa fa-commenting-o"></i>
+                <span style="margin-left: 10px">0</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="fs-code-card_tag">私密</div>
       </div>
-    </div>
-    <div class="fs-code-card_content">
-      <div class="content-title line-one">这里是一段代码</div>
-      <div class="content-preview line-one">int main (){int a = 10; int b = 100; printf('%d', a + b); return 0;}</div>
-      <div class="content-info">
-        <img src="@/assets/image/JS.jpg" class="lan-img" alt="" />
-        <div>JavaScript</div>
-        <div><i class="fa fa-eye"></i> 220 浏览</div>
-        <div>306.00 bytes</div>
-      </div>
-    </div>
-    <div class="fs-code-card_footer">
-      <ul>
-        <li><span>2023-02-16 10:41</span></li>
-        <li>
-          <div class="operator-btn">
-            <i class="fa fa-thumbs-o-up"></i>
-            <span style="margin-left: 10px">0</span>
-          </div>
-        </li>
-        <li>
-          <div class="operator-btn">
-            <i class="fa fa-star-o"></i>
-            <span style="margin-left: 10px">0</span>
-          </div>
-        </li>
-        <li>
-          <div class="operator-btn">
-            <i class="fa fa-commenting-o"></i>
-            <span style="margin-left: 10px">0</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="fs-code-card_tag">私密</div>
+    </el-card>
   </div>
 </template>
 
@@ -49,11 +55,13 @@
 <style scoped lang="less">
 .fs-code-card {
   position: relative;
-  padding: 20px;
-  background-color: var(--main-color);
   transition: all 0.3s;
-  border-radius: 10px;
+  border-radius: 5px;
   overflow: hidden;
+  .fs-code-content {
+    position: relative;
+    padding: 20px;
+  }
   &_header {
     display: flex;
     align-items: center;
@@ -71,19 +79,20 @@
     width: 700px;
     cursor: pointer;
     .content-title {
-      font-size: 18px;
+      font-size: 20px;
       margin: 10px 0;
-      color: var(--font-main-color);
+      // color: var(--font-main-color);
       font-weight: 700;
     }
 
     .content-preview {
       margin: 10px 0;
-      color: var(--font-main-color);
+      font-size: 18px;
+      // color: var(--font-main-color);
     }
     .content-info {
       display: flex;
-      font-size: 12px;
+      font-size: 14px;
       gap: 10px;
       .lan-img {
         width: 18px;
@@ -101,15 +110,15 @@
     }
   }
   &_footer {
-    font-size: 14px;
     margin-top: 10px;
+    font-size: 14px;
     ul {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: var(--font-main-color);
       li {
         position: relative;
+        color: var(--el-text-color-secondary);
       }
       .line-gap {
         position: absolute;
@@ -118,7 +127,7 @@
         height: 70%;
         right: -2px;
         top: 5px;
-        background-color: var(--font-color);
+        // background-color: var(--font-color);
       }
       & > li:nth-child(2)::after {
         .line-gap();
@@ -134,9 +143,9 @@
       cursor: pointer;
       border-radius: 5px;
       transition: all 0.3s;
-      color: var(--font-color);
+
       &:hover {
-        color: var(--font-main-color);
+        color: var(--el-text-color-primary);
       }
     }
   }
@@ -150,8 +159,8 @@
     align-items: center;
     justify-content: center;
     transform: rotate(40deg);
-    color: var(--font-active-color);
-    background-color: var(--choose-color);
+    background-color: #dd6161;
+    color: #fff;
   }
 
   .line-one {

@@ -54,7 +54,7 @@ const codes = [
 .code-rules {
   width: 100%;
 
-  background-color: var(--main-color);
+  background-color: var(--el-bg-color-overlay);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   padding: 20px;

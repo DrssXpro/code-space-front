@@ -40,7 +40,7 @@ const saveThemeToLocal = () => {};
   margin-top: 20px;
   padding: 20px;
   border-radius: 10px;
-  background-color: var(--main-color);
+  background-color: var(--el-bg-color-overlay);
   .theme-title {
     color: var(--choose-color);
     font-size: 25px;

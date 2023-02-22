@@ -65,7 +65,7 @@ const codes = [
 .rules-content-container {
   width: 100%;
   border-radius: 10px;
-  background-color: var(--main-color);
+  background-color: var(--el-bg-color-overlay);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -75,7 +75,6 @@ const codes = [
     align-items: center;
     .rules-title {
       margin-right: 50px;
-      color: var(--font-main-color);
       span {
         margin-left: 10px;
       }

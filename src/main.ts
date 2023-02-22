@@ -3,7 +3,7 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
 import "@/style/global.less";
-import "@/style/reset.less";
+import "element-plus/theme-chalk/dark/css-vars.css";
 import "font-awesome/css/font-awesome.css";
 import ClickOutSide from "./directives/outSide";
 const app = createApp(App);

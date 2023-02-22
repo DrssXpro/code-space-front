@@ -4,8 +4,7 @@
       <share-form />
     </div>
     <div class="share-operator">
-      <el-button type="success">重置</el-button>
-      <el-button color="var(--choose-color)">发布代码</el-button>
+      <el-button color="var(--choose-color)" style="width: 120px">发布代码</el-button>
     </div>
   </div>
 </template>
@@ -21,7 +20,7 @@ import shareForm from "./components/shareForm.vue";
   margin-top: 20px;
   padding: 20px;
   border-radius: 20px;
-  background-color: var(--main-color);
+  background-color: var(--el-bg-color-overlay);
   .share-operator {
     display: flex;
     align-items: center;

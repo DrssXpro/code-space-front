@@ -104,15 +104,13 @@ const activeSearch = (status: boolean) => {
     width: 100%;
     height: 100%;
     outline: none;
-    background-color: var(--main-color);
+    background-color: var(--el-bg-color-overlay);
     border-radius: 10px;
-    color: var(--font-color);
     border: none;
     font-size: 16px;
     text-indent: 1em;
 
     &::placeholder {
-      color: var(--font-color);
       font-size: 14px;
     }
     &:focus-within {
@@ -127,7 +125,6 @@ const activeSearch = (status: boolean) => {
     font-size: 20px;
     height: max-content;
     right: 15px;
-    color: var(--font-color);
     cursor: pointer;
     transition: opacity 0.3s;
     &:hover {
@@ -141,7 +138,7 @@ const activeSearch = (status: boolean) => {
     left: 0;
     max-height: 0;
     overflow: hidden;
-    background-color: var(--nav-color);
+    background-color: var(--el-bg-color-page);
     border-radius: 12px;
     transition: all 0.3s;
     .history-container {
@@ -155,8 +152,6 @@ const activeSearch = (status: boolean) => {
           padding: 10px;
           transition: all 0.3s;
           border-radius: 5px;
-          color: var(--font-color);
-          background-color: var(--bg-color);
           cursor: pointer;
           .delete-icon {
             position: absolute;
@@ -171,7 +166,6 @@ const activeSearch = (status: boolean) => {
           }
 
           &:hover {
-            color: var(--font-unactive-color);
           }
         }
       }

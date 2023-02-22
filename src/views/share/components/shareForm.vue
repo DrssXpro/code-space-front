@@ -10,10 +10,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="是否加密">
-        <el-switch
-          v-model="state.isCode"
-          style="--el-switch-on-color: var(--choose-color); --el-switch-off-color: var(--bg-color)"
-        ></el-switch>
+        <el-switch v-model="state.isCode"></el-switch>
       </el-form-item>
       <el-form-item label="访问密码" v-show="state.isCode">
         <el-input v-model="state.code" type="password"></el-input>
@@ -32,9 +29,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
+import { useDark } from "@vueuse/core";
 import FsCodeMirror from "@/components/FsCodeMirror/FsCodeMirror.vue";
 const codeMirrorRef = ref<InstanceType<typeof FsCodeMirror>>();
+
+const isDark = useDark();
 const state = reactive({
   title: "",
   isCode: false,
@@ -54,6 +54,17 @@ const handleUpdateCode = (code: string) => {
 const handleLanChange = () => {
   codeMirrorRef.value?.configCodeMirror(codes[state.lan].text, true);
 };
+
+watch(
+  () => isDark.value,
+  (newValue) => {
+    if (newValue) {
+      codeMirrorRef.value?.configCodeMirror(codes[state.lan].text, true);
+    } else {
+      codeMirrorRef.value?.configCodeMirror(codes[state.lan].text, false);
+    }
+  }
+);
 
 const codes = [
   {

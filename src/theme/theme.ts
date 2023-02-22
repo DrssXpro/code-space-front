@@ -7,7 +7,7 @@ interface IThemeItem {
 type ThemeName =
   | "--bg-color"
   | "--nav-color"
-  | "--main-color"
+  | "--el-bg-color-overlay"
   | "--font-color"
   | "--font-main-color"
   | "--font-active-color"
@@ -27,7 +27,7 @@ const DARK_THEME: IThemeItem[] = [
     desc: "导航颜色",
   },
   {
-    name: "--main-color",
+    name: "--el-bg-color-overlay",
     color: "#222433",
     desc: "盒子背景色",
   },
@@ -76,7 +76,7 @@ const LIGHT_THEME: IThemeItem[] = [
     desc: "导航颜色",
   },
   {
-    name: "--main-color",
+    name: "--el-bg-color-overlay",
     color: "#fff",
     desc: "盒子背景色",
   },
