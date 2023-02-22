@@ -14,8 +14,10 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-button type="danger" class="btn"><i class="fa fa-search"></i><span>查询</span></el-button>
-        <el-button type="info" class="btn"><i class="fa fa-refresh"></i><span>重置</span></el-button>
+        <el-col :span="5">
+          <el-button type="danger" class="btn"><i class="fa fa-search"></i><span>查询</span></el-button>
+          <el-button type="info" class="btn"><i class="fa fa-refresh"></i><span>重置</span></el-button>
+        </el-col>
       </el-row>
     </el-form>
   </div>
@@ -57,9 +59,7 @@ const codes = [
   border-bottom-left-radius: 20px;
   padding: 20px;
   .btn {
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
+    margin-right: 10px;
     span {
       margin-left: 5px;
     }

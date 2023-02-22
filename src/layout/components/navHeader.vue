@@ -20,7 +20,7 @@
       <fs-switch v-model="themeFlag" @change-status="handleChangeTheme">
         <i :class="[themeFlag ? 'fa fa-sun-o' : 'fa fa-moon-o']"></i>
       </fs-switch>
-      <button class="share-btn">分享</button>
+      <button class="share-btn"><a href="/share" target="_blank">分享</a></button>
       <div class="nav-menu_right__operator">
         <span>登录</span>
         <span>/</span>
@@ -157,7 +157,10 @@ const menus = [
       height: 32px;
       border-radius: 5px;
       background-color: var(--choose-color);
-      color: var(--font-active-color);
+
+      a {
+        color: var(--font-active-color);
+      }
       &:hover {
         opacity: 0.8;
       }

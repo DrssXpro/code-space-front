@@ -70,7 +70,7 @@ const tableData = [
 <style scoped lang="less">
 .code-content {
   width: 100%;
-
+  min-height: calc(100vh - 230px);
   background-color: var(--main-color);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;

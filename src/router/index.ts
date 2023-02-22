@@ -25,6 +25,11 @@ const router = createRouter({
           component: () => import("@/views/search/index.vue"),
         },
         {
+          path: "/share",
+          name: "share",
+          component: () => import("@/views/share/index.vue"),
+        },
+        {
           path: "admin",
           name: "admin",
           redirect: "/admin/user",
