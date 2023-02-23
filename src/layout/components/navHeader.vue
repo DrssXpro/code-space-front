@@ -20,8 +20,8 @@
       <fs-switch v-model="themeFlag" @change-status="handleChangeTheme">
         <i :class="[themeFlag ? 'fa fa-sun-o' : 'fa fa-moon-o']"></i>
       </fs-switch>
-      <button class="share-btn"><a href="/share" target="_blank">分享</a></button>
-      <div class="nav-menu_right__operator">
+      <el-button type="danger"><a href="/share" target="_blank">分享</a></el-button>
+      <div class="nav-menu_right__operator" @click="$router.push('/login')">
         <span>登录</span>
         <span>/</span>
         <span>注册</span>
@@ -35,10 +35,9 @@ import { ref, computed } from "vue";
 import FsSwitch from "@/components/FsSwitch/FsSwitch.vue";
 import { useDark, useToggle } from "@vueuse/core";
 import { useRoute } from "vue-router";
-import useTheme from "@/hooks/useTheme";
+
 import { __debounce } from "@/utils/tools";
-const $route = useRoute(),
-  { setTheme } = useTheme();
+const $route = useRoute();
 
 const themeFlag = ref(false);
 const isDark = useDark();
@@ -66,10 +65,6 @@ const menus = [
   {
     path: "/admin",
     text: "个人",
-  },
-  {
-    path: "/system",
-    text: "系统设置",
   },
 ];
 </script>
@@ -153,19 +148,6 @@ const menus = [
     justify-content: space-between;
     height: 100%;
     align-items: center;
-    .share-btn {
-      width: 65px;
-      height: 32px;
-      border-radius: 5px;
-      background-color: var(--choose-color);
-
-      a {
-        color: var(--font-active-color);
-      }
-      &:hover {
-        opacity: 0.8;
-      }
-    }
     span {
       cursor: pointer;
       margin: 0 2px;

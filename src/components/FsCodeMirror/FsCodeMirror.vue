@@ -3,7 +3,7 @@
     <codemirror
       v-model="codeContent"
       placeholder="请输入代码片段"
-      :style="{ height: '400px', width: '100%', borderRadius: '10px' }"
+      :style="{ height: '400px', width: '100%', borderRadius: '10px', border: 'var(--el-border)' }"
       :autofocus="true"
       :indent-with-tab="true"
       :tab-size="2"
@@ -62,5 +62,12 @@ defineExpose({
 .fs-code-mirror {
   width: 100%;
   height: 100%;
+  // border: var(--el-border);
+  :deep(.ͼo) {
+    background-color: var(--el-bg-color-overlay) !important;
+  }
+  // :deep(.ͼo .cm-gutters) {
+  //   background-color: var(--el-bg-color-overlay);
+  // }
 }
 </style>

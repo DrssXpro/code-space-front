@@ -1,12 +1,12 @@
 <template>
-  <div class="user-info-container">用户信息</div>
+  <div class="collection-container">我的收藏</div>
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped lang="less">
 @import "../public.less";
-.user-info-container {
+.collection-container {
   width: 100%;
   height: 400px;
   .public-container();

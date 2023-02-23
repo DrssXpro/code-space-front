@@ -4,7 +4,7 @@
       <share-form />
     </div>
     <div class="share-operator">
-      <el-button color="var(--choose-color)" style="width: 120px">发布代码</el-button>
+      <el-button type="info" style="width: 120px">发布代码</el-button>
     </div>
   </div>
 </template>

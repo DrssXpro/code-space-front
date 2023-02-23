@@ -30,6 +30,11 @@ const router = createRouter({
           component: () => import("@/views/share/index.vue"),
         },
         {
+          path: "/login",
+          name: "login",
+          component: () => import("@/views/login/index.vue"),
+        },
+        {
           path: "admin",
           name: "admin",
           redirect: "/admin/user",
@@ -45,12 +50,17 @@ const router = createRouter({
               name: "code",
               component: () => import("@/views/admin/pages/code/index.vue"),
             },
+            {
+              path: "collection",
+              name: "collection",
+              component: () => import("@/views/admin/pages/collection/index.vue"),
+            },
+            {
+              path: "comment",
+              name: "comment",
+              component: () => import("@/views/admin/pages/comment/index.vue"),
+            },
           ],
-        },
-        {
-          path: "system",
-          name: "system",
-          component: () => import("@/views/system/index.vue"),
         },
       ],
     },

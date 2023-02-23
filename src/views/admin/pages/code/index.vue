@@ -4,13 +4,13 @@
       <code-rules />
     </div>
     <div class="container-item">
-      <code-content />
+      <code-table />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import codeContent from "./components/codeContent.vue";
+import codeTable from "./components/codeTable.vue";
 import codeRules from "./components/codeRules.vue";
 </script>
 

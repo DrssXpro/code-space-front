@@ -1,5 +1,5 @@
 <template>
-  <div class="code-content">
+  <div class="code-table">
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="date" label="编号" width="100" align="center" />
       <el-table-column prop="date" label="标题" width="150" align="center" />
@@ -68,13 +68,11 @@ const tableData = [
 </script>
 
 <style scoped lang="less">
-.code-content {
+@import "../../public.less";
+.code-table {
   width: 100%;
   min-height: calc(100vh - 230px);
-  background-color: var(--el-bg-color-overlay);
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  padding: 20px;
+  .public-container();
   .data-page {
     width: 100%;
     margin-top: 20px;

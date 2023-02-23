@@ -51,13 +51,10 @@ const codes = [
 </script>
 
 <style scoped lang="less">
+@import "../../public.less";
 .code-rules {
   width: 100%;
-
-  background-color: var(--el-bg-color-overlay);
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  padding: 20px;
+  .public-container();
   .btn {
     margin-right: 10px;
     span {

@@ -2,11 +2,10 @@
   <div class="admin-menu-container">
     <el-menu
       :default-active="defaultRouter"
-      background-color="none"
-      text-color="var(--font-color)"
-      active-text-color="var(--font-main-color)"
       unique-opened
       router
+      text-color="var(--el-text-color-secondary)"
+      active-text-color="var(--el-text-color-primary)"
       @open="handleOpen"
       @close="handleClose"
     >
@@ -22,7 +21,7 @@
         <i class="fa fa-commenting-o icon"></i>
         <span>我的评论</span>
       </el-menu-item>
-      <el-menu-item index="/admin/colletion">
+      <el-menu-item index="/admin/collection">
         <i class="fa fa-star-o icon"></i>
         <span>我的收藏</span>
       </el-menu-item>
@@ -83,5 +82,17 @@ const handleClose = () => {};
     border: 0 !important;
   }
 
+  .is-active {
+    background-color: var(--el-bg-color-page) !important;
+  }
+  .el-menu-item:hover {
+    color: var(--el-text-color-primary);
+  }
+  :deep(.el-sub-menu__title):hover {
+    color: var(--el-text-color-primary) !important;
+  }
+  .el-sub-menu__title:hover {
+    background-color: none !important;
+  }
 }
 </style>

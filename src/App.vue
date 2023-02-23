@@ -4,12 +4,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import useTheme from "./hooks/useTheme";
-
-const { init } = useTheme();
-// init();
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="less">
 .main-container {

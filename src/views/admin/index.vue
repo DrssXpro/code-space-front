@@ -6,8 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import adminMenu from "./components/adminMenu.vue";
-import adminContent from "./components/adminContent.vue";
+import adminMenu from "./layout/adminMenu.vue";
+import adminContent from "./layout/adminContent.vue";
 </script>
 
 <style scoped lang="less">
