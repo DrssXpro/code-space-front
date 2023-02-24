@@ -3,11 +3,18 @@
     <codemirror
       v-model="codeContent"
       placeholder="请输入代码片段"
-      :style="{ height: '400px', width: '100%', borderRadius: '10px', border: 'var(--el-border)' }"
+      :style="{
+        minHeight: `${props.height}`,
+        width: '100%',
+        borderRadius: '10px',
+        border: 'var(--el-border)',
+        fontSize: '16px',
+      }"
       :autofocus="true"
       :indent-with-tab="true"
       :tab-size="2"
       :extensions="extensions"
+      :disabled="props.disabled"
       @ready="handleReady"
       @change="handleCodeChange"
     />
@@ -18,18 +25,32 @@
 import { shallowRef, ref, watch } from "vue";
 import { Codemirror } from "vue-codemirror";
 import { language, theme } from "./config";
+import { useDark } from "@vueuse/core";
 const view = shallowRef();
 const codeContent = ref("");
 const props = defineProps<{
   code: string;
+  disabled: boolean;
+  height: string;
 }>();
 
-const extensions = ref<any[]>([]);
+const isDark = useDark();
 
-const configCodeMirror = (lan: string, isDark: boolean) => {
+const darkTheme = theme.oneDark;
+const extensions = shallowRef<any[]>([darkTheme]);
+
+watch(
+  () => isDark.value,
+  (newValue) => {
+    extensions.value = extensions.value.filter((item) => item !== darkTheme);
+    newValue && extensions.value.push(darkTheme);
+  }
+);
+
+const configCodeMirror = (lan: string) => {
   extensions.value = [];
   extensions.value.push(language[lan]);
-  isDark && extensions.value.push(theme.oneDark);
+  isDark && extensions.value.push(darkTheme);
 };
 
 watch(

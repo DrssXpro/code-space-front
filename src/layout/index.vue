@@ -22,7 +22,7 @@ import navFooter from "./components/navFooter.vue";
   top: 0;
   width: 100%;
   height: 70px;
-  z-index: 999;
+  z-index: 9999;
 }
 .nav-content {
   width: 100%;

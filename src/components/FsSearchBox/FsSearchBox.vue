@@ -88,7 +88,7 @@ const activeSearch = (status: boolean) => {
   align-items: center;
   justify-content: flex-start;
   transition: all 0.6s;
-  z-index: 10000;
+  z-index: 1000;
 
   .search-input {
     position: relative;

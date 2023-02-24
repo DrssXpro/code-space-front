@@ -8,16 +8,16 @@
       <h2 class="title">注册</h2>
       <el-form class="card-form" label-position="left">
         <el-form-item label="用户名：" label-width="90px">
-          <el-input v-model="state.username"></el-input>
+          <el-input v-model="state.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="邮箱：" label-width="90px">
-          <el-input v-model="state.username"></el-input>
+          <el-input v-model="state.username" placeholder="请输入邮箱"></el-input>
         </el-form-item>
         <el-form-item label="密码：" label-width="90px">
-          <el-input v-model="state.username"></el-input>
+          <el-input v-model="state.username" placeholder="请输入密码" type="password"></el-input>
         </el-form-item>
         <el-form-item label="重复密码：" label-width="90px">
-          <el-input v-model="state.username"></el-input>
+          <el-input v-model="state.username" placeholder="请再输入一次密码" type="password"></el-input>
         </el-form-item>
       </el-form>
       <div class="tip">已有账号？<span class="tip-link" @click="emit('changeCard')">跳转登录</span></div>

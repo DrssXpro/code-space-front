@@ -11,6 +11,7 @@ specifiers:
   '@codemirror/lang-sql': ^6.4.0
   '@codemirror/lang-vue': ^0.1.1
   '@codemirror/theme-one-dark': ^6.1.1
+  '@types/marked': ^4.0.8
   '@types/node': ^18.11.12
   '@vitejs/plugin-vue': ^4.0.0
   '@vue/tsconfig': ^0.1.3
@@ -20,6 +21,7 @@ specifiers:
   element-plus: ^2.2.30
   font-awesome: ^4.7.0
   less: ^4.1.3
+  md-editor-v3: ^2.8.1
   npm-run-all: ^4.1.5
   pinia: ^2.0.28
   pinia-plugin-persistedstate: ^3.1.0
@@ -48,6 +50,7 @@ dependencies:
   codemirror: registry.npmmirror.com/codemirror/6.0.1
   element-plus: registry.npmmirror.com/element-plus/2.2.30_vue@3.2.47
   font-awesome: registry.npmmirror.com/font-awesome/4.7.0
+  md-editor-v3: registry.npmmirror.com/md-editor-v3/2.8.1
   pinia: registry.npmmirror.com/pinia/2.0.30_5yi2kxxaqg74pgvs6b75qdtvru
   pinia-plugin-persistedstate: registry.npmmirror.com/pinia-plugin-persistedstate/3.1.0_pinia@2.0.30
   vue: registry.npmmirror.com/vue/3.2.47
@@ -55,6 +58,7 @@ dependencies:
   vue-router: registry.npmmirror.com/vue-router/4.1.6_vue@3.2.47
 
 devDependencies:
+  '@types/marked': registry.npmmirror.com/@types/marked/4.0.8
   '@types/node': registry.npmmirror.com/@types/node/18.13.0
   '@vitejs/plugin-vue': registry.npmmirror.com/@vitejs/plugin-vue/4.0.0_vite@4.1.1+vue@3.2.47
   '@vue/tsconfig': registry.npmmirror.com/@vue/tsconfig/0.1.3_@types+node@18.13.0
@@ -1043,6 +1047,12 @@ packages:
     name: '@types/lodash'
     version: 4.14.191
     dev: false
+
+  registry.npmmirror.com/@types/marked/4.0.8:
+    resolution: {integrity: sha512-HVNzMT5QlWCOdeuBsgXP8EZzKUf0+AXzN+sLmjvaB3ZlLqO+e4u0uXrdw9ub69wBKFs+c6/pA4r9sy6cCDvImw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/marked/-/marked-4.0.8.tgz}
+    name: '@types/marked'
+    version: 4.0.8
+    dev: true
 
   registry.npmmirror.com/@types/node/18.13.0:
     resolution: {integrity: sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-18.13.0.tgz}
@@ -2549,6 +2559,13 @@ packages:
       semver: registry.npmmirror.com/semver/5.7.1
     dev: true
     optional: true
+
+  registry.npmmirror.com/md-editor-v3/2.8.1:
+    resolution: {integrity: sha512-xAPcwIHmL+jR5SNztBXSYN2/9L92dOTVs81QjzJAz9Og1o8HDEQnWcFbwG4aqNLCINPgUBgX370ajF6zc4bHEA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/md-editor-v3/-/md-editor-v3-2.8.1.tgz}
+    name: md-editor-v3
+    version: 2.8.1
+    engines: {node: '>=12.0.0'}
+    dev: false
 
   registry.npmmirror.com/memoize-one/6.0.0:
     resolution: {integrity: sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/memoize-one/-/memoize-one-6.0.0.tgz}

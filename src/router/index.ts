@@ -35,6 +35,11 @@ const router = createRouter({
           component: () => import("@/views/login/index.vue"),
         },
         {
+          path: "/code/:id",
+          name: "code",
+          component: () => import("@/views/code/index.vue"),
+        },
+        {
           path: "admin",
           name: "admin",
           redirect: "/admin/user",
@@ -42,22 +47,22 @@ const router = createRouter({
           children: [
             {
               path: "user",
-              name: "user",
+              name: "adminUser",
               component: () => import("@/views/admin/pages/user/index.vue"),
             },
             {
               path: "code",
-              name: "code",
+              name: "adminCode",
               component: () => import("@/views/admin/pages/code/index.vue"),
             },
             {
               path: "collection",
-              name: "collection",
+              name: "adminCollection",
               component: () => import("@/views/admin/pages/collection/index.vue"),
             },
             {
               path: "comment",
-              name: "comment",
+              name: "adminComment",
               component: () => import("@/views/admin/pages/comment/index.vue"),
             },
           ],

@@ -1,29 +1,25 @@
 <template>
-  <div class="square-container">
-    <div class="square-container__left">
-      <code-tab />
-      <code-list />
+  <div class="code-detail-container">
+    <div class="code-detail-container__left">
+      <code-detail />
+      <comment-detail />
     </div>
-    <div class="square-container__right">
+    <div class="code-detail-container__right">
       <div class="card-item">
         <new-code-card />
-      </div>
-      <div class="card-item">
-        <ranking-card />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import codeTab from "./components/codeTab.vue";
-import codeList from "./components/codeList.vue";
-import rankingCard from "./components/rankingCard.vue";
+import codeDetail from "./components/codeDetail.vue";
+import commentDetail from "./components/commentDetail.vue";
 import newCodeCard from "./components/newCodeCard.vue";
 </script>
 
 <style scoped lang="less">
-.square-container {
+.code-detail-container {
   width: 1200px;
   margin: 0 auto;
   padding: 20px;

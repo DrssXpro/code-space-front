@@ -22,19 +22,23 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="代码片段">
-        <fs-code-mirror ref="codeMirrorRef" :code="state.content" @update:code="handleUpdateCode" />
+        <fs-code-mirror
+          ref="codeMirrorRef"
+          :code="state.content"
+          :disabled="false"
+          @update:code="handleUpdateCode"
+          height="400px"
+        />
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from "vue";
-import { useDark } from "@vueuse/core";
+import { ref, reactive, onMounted } from "vue";
 import FsCodeMirror from "@/components/FsCodeMirror/FsCodeMirror.vue";
 const codeMirrorRef = ref<InstanceType<typeof FsCodeMirror>>();
 
-const isDark = useDark();
 const state = reactive({
   title: "",
   isCode: false,
@@ -44,7 +48,7 @@ const state = reactive({
   code: "",
 });
 onMounted(() => {
-  codeMirrorRef.value?.configCodeMirror(codes[state.lan].text, true);
+  codeMirrorRef.value?.configCodeMirror(codes[state.lan].text);
 });
 
 const handleUpdateCode = (code: string) => {
@@ -52,19 +56,8 @@ const handleUpdateCode = (code: string) => {
 };
 
 const handleLanChange = () => {
-  codeMirrorRef.value?.configCodeMirror(codes[state.lan].text, true);
+  codeMirrorRef.value?.configCodeMirror(codes[state.lan].text);
 };
-
-watch(
-  () => isDark.value,
-  (newValue) => {
-    if (newValue) {
-      codeMirrorRef.value?.configCodeMirror(codes[state.lan].text, true);
-    } else {
-      codeMirrorRef.value?.configCodeMirror(codes[state.lan].text, false);
-    }
-  }
-);
 
 const codes = [
   {

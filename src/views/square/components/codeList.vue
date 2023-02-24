@@ -1,8 +1,8 @@
 <template>
   <div class="code-list">
-    <div class="code-item" v-for="i in 10">
+    <a class="code-item" href="code/123" target="_blank" v-for="i in 10">
       <fs-code-card />
-    </div>
+    </a>
     <div class="code-more">
       <div class="more-btn" @click="handleGetMore">点击查看更多</div>
     </div>
@@ -19,6 +19,7 @@ const handleGetMore = () => {};
 .code-list {
   margin-top: 20px;
   .code-item {
+    display: block;
     margin-bottom: 20px;
   }
   .code-more {

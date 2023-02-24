@@ -24,5 +24,6 @@ const handleChangeCardState = () => {
   margin: 40px auto;
   position: relative;
   perspective: 1500px;
+  
 }
 </style>
