@@ -1,6 +1,6 @@
 <template>
   <div class="code-list">
-    <a class="code-item" href="code/123" target="_blank" v-for="i in 10">
+    <a class="code-item" href="/code/123" target="_blank" v-for="i in 10">
       <fs-code-card />
     </a>
     <div class="code-more">
@@ -17,7 +17,6 @@ const handleGetMore = () => {};
 
 <style scoped lang="less">
 .code-list {
-  margin-top: 20px;
   .code-item {
     display: block;
     margin-bottom: 20px;

@@ -8,6 +8,9 @@
       <div class="card-item">
         <new-code-card />
       </div>
+      <div class="card-item">
+        <author-code-card />
+      </div>
     </div>
   </div>
 </template>
@@ -16,6 +19,7 @@
 import codeDetail from "./components/codeDetail.vue";
 import commentDetail from "./components/commentDetail.vue";
 import newCodeCard from "./components/newCodeCard.vue";
+import authorCodeCard from "./components/authorCodeCard.vue";
 </script>
 
 <style scoped lang="less">

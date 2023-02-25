@@ -1,28 +1,18 @@
 <template>
   <div class="space-container">
-    <div class="space-search content-gap">
-      <fs-search-box v-model="searchContent" place-holder="请输入关键字" />
-    </div>
-    <div class="space-list content-gap">
-      <space-list />
-    </div>
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from "vue";
-import FsSearchBox from "@/components/FsSearchBox/FsSearchBox.vue";
-import spaceList from "./components/spaceList.vue";
-
-const searchContent = ref("");
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="less">
 .space-container {
-  width: 1200px;
+  width: 1300px;
   margin: 0 auto;
-  .content-gap {
-    margin-top: 20px;
-  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="space-list-container">
+  <div class="space-content-container">
     <div class="space-item" v-for="i in 12">
       <fs-space-card />
     </div>
@@ -14,9 +14,11 @@ import FsSpaceCard from "@/components/FsSpaceCard/FsSpaceCard.vue";
 </script>
 
 <style scoped lang="less">
-.space-list-container {
+.space-content-container {
   display: flex;
   flex-wrap: wrap;
+  // justify-content: space-between;
+
   gap: 20px;
   .space-item {
     width: 270px;

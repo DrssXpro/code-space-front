@@ -109,6 +109,7 @@ const activeSearch = (status: boolean) => {
     border: none;
     font-size: 16px;
     text-indent: 1em;
+    font-family: myFont;
 
     &::placeholder {
       font-size: 14px;

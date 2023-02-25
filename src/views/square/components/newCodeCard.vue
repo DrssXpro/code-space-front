@@ -1,6 +1,6 @@
 <template>
   <el-card shadow="never">
-    <template #header>最新代码</template>
+    <template #header>最新分享</template>
     <div class="code-item" v-for="i in 5">
       <i class="fa fa-code"></i>
       <div class="code-info">

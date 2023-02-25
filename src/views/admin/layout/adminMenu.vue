@@ -73,7 +73,7 @@ const handleClose = () => {};
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   padding: 10px;
-  overflow-y: scroll;
+  overflow-y: auto;
   .icon {
     font-size: 18px;
     margin-right: 10px;

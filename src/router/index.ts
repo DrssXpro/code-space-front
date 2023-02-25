@@ -17,7 +17,20 @@ const router = createRouter({
         {
           path: "space",
           name: "space",
+          redirect: "/space/list",
           component: () => import("@/views/space/index.vue"),
+          children: [
+            {
+              path: "list",
+              name: "spaceList",
+              component: () => import("@/views/space/pages/spaceList/index.vue"),
+            },
+            {
+              path: "detail/:id",
+              name: "spaceDetail",
+              component: () => import("@/views/space/pages/spaceDetail/index.vue"),
+            },
+          ],
         },
         {
           path: "search",

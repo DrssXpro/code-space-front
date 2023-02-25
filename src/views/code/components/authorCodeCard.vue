@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never">
-    <template #header>最新分享</template>
-    <div class="code-item" v-for="i in 5">
+    <template #header>作者分享</template>
+    <div class="code-item" v-for="i in 3">
       <i class="fa fa-code"></i>
       <div class="code-info">
         <div class="code-name">二分排序</div>

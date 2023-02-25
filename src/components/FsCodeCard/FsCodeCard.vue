@@ -76,7 +76,7 @@
     }
   }
   &_content {
-    width: 700px;
+    width: 600px;
     cursor: pointer;
     .content-title {
       font-size: 20px;

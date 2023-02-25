@@ -33,6 +33,7 @@ declare module '@vue/runtime-core' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    FsBackTop: typeof import('./src/components/FsBackTop/FsBackTop.vue')['default']
     FsCodeCard: typeof import('./src/components/FsCodeCard/FsCodeCard.vue')['default']
     FsCodeMirror: typeof import('./src/components/FsCodeMirror/FsCodeMirror.vue')['default']
     FsCommentCard: typeof import('./src/components/FsCommentCard/FsCommentCard.vue')['default']

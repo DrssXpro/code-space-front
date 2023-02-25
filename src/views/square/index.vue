@@ -29,6 +29,7 @@ import newCodeCard from "./components/newCodeCard.vue";
   padding: 20px;
   display: flex;
   gap: 20px;
+
   &__left {
     flex: 1;
   }
