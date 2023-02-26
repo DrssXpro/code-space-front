@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef, ref, watch } from "vue";
+import { shallowRef, ref, watch, onMounted } from "vue";
 import { Codemirror } from "vue-codemirror";
 import { language, theme } from "./config";
 import { useDark } from "@vueuse/core";
@@ -38,6 +38,11 @@ const isDark = useDark();
 
 const darkTheme = theme.oneDark;
 const extensions = shallowRef<any[]>([darkTheme]);
+
+onMounted(() => {
+  configCodeMirror("cpp");
+  console.log("check", extensions.value);
+});
 
 watch(
   () => isDark.value,

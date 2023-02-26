@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import FsCodeMirror from "@/components/FsCodeMirror/FsCodeMirror.vue";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive } from "vue";
 const codeMirrorRef = ref<InstanceType<typeof FsCodeMirror>>();
 
 const state = reactive({
@@ -85,10 +85,6 @@ const state = reactive({
     quick_sort(q, l, j), quick_sort(q, j + 1, r);
 }
 `,
-});
-
-onMounted(() => {
-  codeMirrorRef.value?.configCodeMirror("cpp");
 });
 </script>
 
