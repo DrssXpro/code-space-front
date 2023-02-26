@@ -5,11 +5,13 @@
       <code-list />
     </div>
     <div class="square-container__right">
-      <div class="card-item">
-        <new-code-card />
-      </div>
-      <div class="card-item">
-        <ranking-card />
+      <div class="sticky">
+        <div class="card-item">
+          <new-code-card />
+        </div>
+        <div class="card-item">
+          <ranking-card />
+        </div>
       </div>
     </div>
   </div>
@@ -35,6 +37,10 @@ import newCodeCard from "./components/newCodeCard.vue";
   }
   &__right {
     width: 300px;
+    .sticky {
+      position: sticky;
+      top: 20px;
+    }
     .card-item {
       margin-bottom: 20px;
     }

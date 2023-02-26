@@ -1,6 +1,6 @@
 <template>
   <div class="space-content-container">
-    <div class="space-item" v-for="i in 12">
+    <div class="space-item" v-for="i in 12" @click="$router.push('/space/detail/123')">
       <fs-space-card />
     </div>
     <div class="space-pagination">

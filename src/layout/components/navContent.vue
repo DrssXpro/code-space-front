@@ -10,9 +10,4 @@
 
 <script setup lang="ts"></script>
 
-<style scoped lang="less">
-.nav-content-container {
-  padding-top: 70px;
- 
-}
-</style>
+<style scoped lang="less"></style>

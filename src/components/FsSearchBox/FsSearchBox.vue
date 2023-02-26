@@ -79,11 +79,10 @@ const activeSearch = (status: boolean) => {
 <style scoped lang="less">
 .my-search {
   width: 50%;
-  height: 50px;
+  height: 40px;
   position: relative;
   top: 0;
   left: 0;
-  padding-top: 10px;
   display: flex;
   align-items: center;
   justify-content: flex-start;

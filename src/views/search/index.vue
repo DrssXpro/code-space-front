@@ -1,12 +1,12 @@
 <template>
   <div class="search-container">
-    <div class="search-box">
+    <div class="gap-item">
       <fs-search-box place-holder="请输入关键字" v-model="searchContent" />
     </div>
-    <div class="search-rules">
+    <div class="gap-item">
       <rules-content />
     </div>
-    <div class="search-list">
+    <div class="gap-item">
       <search-list />
     </div>
   </div>
@@ -26,13 +26,7 @@ const searchContent = ref("");
   height: 100%;
   width: 1200px;
   margin: 0 auto;
-  .search-box {
-    margin-top: 10px;
-  }
-  .search-rules {
-    margin-top: 20px;
-  }
-  .search-list {
+  .gap-item {
     margin-top: 20px;
   }
 }

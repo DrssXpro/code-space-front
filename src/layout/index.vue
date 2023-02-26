@@ -9,6 +9,7 @@
     <footer class="nav-footer">
       <!-- <nav-footer /> -->
     </footer>
+    <fs-back-top />
   </div>
 </template>
 
@@ -16,12 +17,16 @@
 import navHeader from "./components/navHeader.vue";
 import navContent from "./components/navContent.vue";
 import navFooter from "./components/navFooter.vue";
+import FsBackTop from "@/components/FsBackTop/FsBackTop.vue";
 </script>
 
 <style scoped lang="less">
 .app-container {
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
   .nav-header {
-    position: fixed;
+    position: relative;
     top: 0;
     width: 100%;
     height: 70px;

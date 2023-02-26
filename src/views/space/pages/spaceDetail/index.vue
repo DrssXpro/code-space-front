@@ -1,25 +1,34 @@
 <template>
   <div class="space-detail-container">
     <div class="space-detail-container__left">
-      <introduce-card />
+      <div class="sticky">
+        <div class="gap-item">
+          <introduce-card />
+        </div>
+        <div class="gap-item">
+          <file-card />
+        </div>
+      </div>
     </div>
     <div class="space-detail-container__center">
-      <div class="card-item">
+      <div class="gap-item">
         <fs-search-box v-model="state.searchContent" place-holder="空间搜索" />
       </div>
-      <div class="card-item">
+      <div class="gap-item">
         <rules-tab />
       </div>
-      <div class="card-item">
+      <div class="gap-item">
         <code-list />
       </div>
     </div>
     <div class="space-detail-container__right">
-      <div class="card-item">
-        <work-card />
-      </div>
-      <div class="card-item">
-        <great-card />
+      <div class="sticky">
+        <div class="gap-item">
+          <work-card />
+        </div>
+        <div class="gap-item">
+          <great-card />
+        </div>
       </div>
     </div>
   </div>
@@ -31,7 +40,9 @@ import codeList from "./components/codeList.vue";
 import workCard from "./components/workCard.vue";
 import greatCard from "./components/greatCard.vue";
 import introduceCard from "./components/introduceCard.vue";
+import fileCard from "./components/fileCard.vue";
 import FsSearchBox from "@/components/FsSearchBox/FsSearchBox.vue";
+
 import { reactive } from "vue";
 
 const state = reactive({
@@ -46,6 +57,10 @@ const state = reactive({
   padding: 20px;
   display: flex;
   gap: 20px;
+  .sticky {
+    position: sticky;
+    top: 20px;
+  }
   &__left {
     width: 250px;
   }
@@ -55,7 +70,7 @@ const state = reactive({
   &__right {
     width: 250px;
   }
-  .card-item {
+  .gap-item {
     margin-bottom: 20px;
   }
 }

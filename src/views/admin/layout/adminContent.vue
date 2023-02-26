@@ -19,7 +19,7 @@
   top: 20px;
   width: calc(100% - 220px);
   height: calc(100vh - 110px);
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   .slide-fade-leave-to {
     opacity: 0;
