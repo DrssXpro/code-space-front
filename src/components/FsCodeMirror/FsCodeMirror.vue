@@ -41,7 +41,6 @@ const extensions = shallowRef<any[]>([darkTheme]);
 
 onMounted(() => {
   configCodeMirror("cpp");
-  console.log("check", extensions.value);
 });
 
 watch(

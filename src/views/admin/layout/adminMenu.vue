@@ -4,12 +4,13 @@
       :default-active="defaultRouter"
       unique-opened
       router
+      background-color="var(--el-bg-color-overlay)"
       text-color="var(--el-text-color-secondary)"
       active-text-color="var(--el-text-color-primary)"
       @open="handleOpen"
       @close="handleClose"
     >
-      <el-menu-item index="/admin/user">
+      <el-menu-item index="/admin/personal">
         <i class="fa fa-user-circle icon"></i>
         <span>个人中心</span>
       </el-menu-item>
@@ -26,7 +27,7 @@
         <el-menu-item index="/admin/content/user"> 用户管理</el-menu-item>
         <el-menu-item index="/admin/content/code">代码审核</el-menu-item>
         <el-menu-item index="/admin/content/comment">评论管理</el-menu-item>
-        <el-menu-item index="/admin/content/comment">空间管理</el-menu-item>
+        <el-menu-item index="/admin/content/space">空间管理</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="6">
         <template #title>
@@ -69,6 +70,7 @@ const handleClose = () => {};
   border-bottom-right-radius: 20px;
   padding: 10px;
   overflow-y: auto;
+
   .icon {
     font-size: 18px;
     margin-right: 10px;
@@ -76,17 +78,15 @@ const handleClose = () => {};
   .el-menu {
     border: 0 !important;
   }
-
   .is-active {
-    background-color: var(--el-bg-color-page) !important;
+    background-color: var(--el-bg-color-page);
   }
   .el-menu-item:hover {
     color: var(--el-text-color-primary);
+    background-color: var(--el-bg-color-page);
   }
   :deep(.el-sub-menu__title):hover {
     color: var(--el-text-color-primary) !important;
-  }
-  .el-sub-menu__title:hover {
     background-color: none !important;
   }
 }

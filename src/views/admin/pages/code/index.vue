@@ -1,9 +1,9 @@
 <template>
   <div class="code-container">
-    <div class="container-item">
+    <div class="gap-item">
       <code-rules />
     </div>
-    <div class="container-item">
+    <div class="gap-item">
       <code-table @edit-code="handleEditCode" @check-code="handleCheckCode" />
     </div>
     <code-drawer ref="drawerRef" :title="isEditCode ? '代码编辑' : '代码详情'" :is-edit="isEditCode" />
@@ -30,10 +30,9 @@ const handleCheckCode = () => {
 </script>
 
 <style scoped lang="less">
+@import "../public.less";
 .code-container {
   width: 100%;
-  .container-item {
-    margin-bottom: 20px;
-  }
+
 }
 </style>
