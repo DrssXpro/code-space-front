@@ -1,14 +1,19 @@
 <template>
-  <div class="user-info-container">用户信息</div>
+  <div class="user-container">
+    <user-info />
+    <user-content />
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import userInfo from "./components/userInfo.vue";
+import userContent from "./components/userContent.vue";
+</script>
 
 <style scoped lang="less">
-@import "../public.less";
-.user-info-container {
+.user-container {
   width: 100%;
-  height: 400px;
-  .public-container();
+  display: flex;
+  gap: 20px;
 }
 </style>

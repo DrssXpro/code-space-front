@@ -101,11 +101,11 @@
 
       :nth-child(2) {
         padding-right: 10px;
-        border-right: 1px solid var(--font-color);
+        border-right: 1px solid var(--el-border-color-light);
       }
       :nth-child(3) {
         padding-right: 10px;
-        border-right: 1px solid var(--font-color);
+        border-right: 1px solid var(--el-border-color-light);
       }
     }
   }

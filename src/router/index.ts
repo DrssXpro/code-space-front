@@ -68,16 +68,6 @@ const router = createRouter({
               name: "adminCode",
               component: () => import("@/views/admin/pages/code/index.vue"),
             },
-            {
-              path: "collection",
-              name: "adminCollection",
-              component: () => import("@/views/admin/pages/collection/index.vue"),
-            },
-            {
-              path: "comment",
-              name: "adminComment",
-              component: () => import("@/views/admin/pages/comment/index.vue"),
-            },
           ],
         },
       ],

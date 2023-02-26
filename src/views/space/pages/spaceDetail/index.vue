@@ -62,13 +62,13 @@ const state = reactive({
     top: 20px;
   }
   &__left {
-    width: 250px;
+    width: 300px;
   }
   &__center {
     flex: 1;
   }
   &__right {
-    width: 250px;
+    width: 300px;
   }
   .gap-item {
     margin-bottom: 20px;

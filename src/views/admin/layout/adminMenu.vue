@@ -11,38 +11,33 @@
     >
       <el-menu-item index="/admin/user">
         <i class="fa fa-user-circle icon"></i>
-        <span>个人信息</span>
+        <span>个人中心</span>
       </el-menu-item>
       <el-menu-item index="/admin/code">
         <i class="fa fa-code icon"></i>
         <span>我的代码</span>
       </el-menu-item>
-      <el-menu-item index="/admin/comment">
-        <i class="fa fa-commenting-o icon"></i>
-        <span>我的评论</span>
-      </el-menu-item>
-      <el-menu-item index="/admin/collection">
-        <i class="fa fa-star-o icon"></i>
-        <span>我的收藏</span>
-      </el-menu-item>
+
       <el-sub-menu index="/admin/content">
         <template #title>
           <i class="fa fa-edit icon"></i>
           <span>内容管理</span>
         </template>
         <el-menu-item index="/admin/content/user"> 用户管理</el-menu-item>
-        <el-menu-item index="/admin/content/code">代码管理</el-menu-item>
+        <el-menu-item index="/admin/content/code">代码审核</el-menu-item>
         <el-menu-item index="/admin/content/comment">评论管理</el-menu-item>
+        <el-menu-item index="/admin/content/comment">空间管理</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="6">
         <template #title>
           <i class="fa fa-building-o icon"></i>
           <span>空间管理</span>
         </template>
-        <el-menu-item index="/admin/space/space">空间管理</el-menu-item>
+        <el-menu-item index="/admin/space/code">人员管理</el-menu-item>
         <el-menu-item index="/admin/space/code">代码管理</el-menu-item>
         <el-menu-item index="/admin/space/file">文件管理</el-menu-item>
         <el-menu-item index="/admin/space/comment">评论管理</el-menu-item>
+        <el-menu-item index="/admin/space/comment">权限分配</el-menu-item>
       </el-sub-menu>
     </el-menu>
   </div>
