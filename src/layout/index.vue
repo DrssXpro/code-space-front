@@ -30,7 +30,7 @@ import FsBackTop from "@/components/FsBackTop/FsBackTop.vue";
     top: 0;
     width: 100%;
     height: 70px;
-    z-index: 9999;
+    z-index: 1000;
   }
   .nav-content {
     width: 100%;

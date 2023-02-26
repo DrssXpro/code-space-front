@@ -10,9 +10,13 @@
     </div>
     <div class="user-info_count">
       <div class="count-title">所属空间</div>
-      <div class="space-info" @click="$router.push('/space/detail/123')">
-        <img src="@/assets/image/avatar.jpg" alt="" />
-        <span>我的空间 - <span style="font-size: 14px">_Async__</span></span>
+      <div class="space-info">
+        <div class="space-info-content" @click="$router.push('/space/detail/123')">
+          <img src="@/assets/image/avatar.jpg" alt="" />
+          <span>我的空间 - <span style="font-size: 14px">_Async__</span></span>
+          <div class="space-operator"></div>
+        </div>
+        <el-button type="danger" plain>退出</el-button>
       </div>
     </div>
     <div class="user-info_count">
@@ -21,14 +25,26 @@
       <div class="info-count">收藏数：101</div>
       <div class="info-count">分享代码：100</div>
     </div>
+    <div class="user-edit">
+      <el-button type="primary" text @click="showEditDialog">编辑</el-button>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const emit = defineEmits<{
+  (e: "showEditDialog"): void;
+}>();
+
+const showEditDialog = () => {
+  emit("showEditDialog");
+};
+</script>
 
 <style scoped lang="less">
 .user-info {
   &-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,6 +53,11 @@
     padding: 20px;
     background-color: var(--el-bg-color-overlay);
     border-radius: 20px;
+    .user-edit {
+      position: absolute;
+      right: 10px;
+      top: 20px;
+    }
   }
   &_avatar {
     width: 70px;
@@ -77,7 +98,11 @@
     .space-info {
       display: flex;
       align-items: center;
-      cursor: pointer;
+      justify-content: space-between;
+      .space-info-content {
+        display: flex;
+        align-items: center;
+      }
     }
     .info-count {
       margin-bottom: 10px;
