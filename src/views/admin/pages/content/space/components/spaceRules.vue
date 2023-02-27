@@ -1,5 +1,5 @@
 <template>
-  <div class="user-rules-container">
+  <div class="space-rules-container">
     <el-form class="form-container" ref="formRef" :model="state">
       <el-form-item label="用户名" prop="userName">
         <el-input v-model="state.userName" placeholder="请输入用户名"></el-input>
@@ -14,7 +14,6 @@
         <el-button type="info" class="btn" @click="resetForm(formRef)"
           ><i class="fa fa-refresh"></i><span>重置</span></el-button
         >
-        <el-button type="primary" class="btn" @click="emit('addUser')"><span>添加用户</span></el-button>
       </div>
     </el-form>
   </div>
@@ -24,10 +23,6 @@
 import { reactive, ref } from "vue";
 import type { FormInstance } from "element-plus";
 const formRef = ref<FormInstance>();
-
-const emit = defineEmits<{
-  (e: "addUser"): void;
-}>();
 
 const state = reactive({
   userName: "",
@@ -59,20 +54,9 @@ const codes = [
 
 <style scoped lang="less">
 @import "../../../public.less";
-.user-rules-container {
+.space-rules-container {
   width: 100%;
   .public-container();
   .form-container();
-  .btn-group {
-    display: flex;
-    align-items: center;
-    .btn {
-      display: flex;
-      align-items: center;
-      i {
-        margin-right: 5px;
-      }
-    }
-  }
 }
 </style>

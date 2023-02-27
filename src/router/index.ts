@@ -73,6 +73,26 @@ const router = createRouter({
               name: "adminContentUser",
               component: () => import("@/views/admin/pages/content/user/index.vue"),
             },
+            {
+              path: "content/code",
+              name: "adminContentCode",
+              component: () => import("@/views/admin/pages/content/code/index.vue"),
+            },
+            {
+              path: "content/comment",
+              name: "adminContentComment",
+              component: () => import("@/views/admin/pages/content/comment/index.vue"),
+            },
+            {
+              path: "content/space",
+              name: "adminContentSpace",
+              component: () => import("@/views/admin/pages/content/space/index.vue"),
+            },
+            {
+              path: "content/role",
+              name: "adminContentRole",
+              component: () => import("@/views/admin/pages/content/role/index.vue"),
+            },
           ],
         },
       ],

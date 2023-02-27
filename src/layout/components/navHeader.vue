@@ -39,11 +39,11 @@ import { useRoute } from "vue-router";
 import { __debounce } from "@/utils/tools";
 const $route = useRoute();
 
-const themeFlag = ref(false);
 const isDark = useDark();
+const themeFlag = ref(!isDark.value);
 const toggleDark = useToggle(isDark);
 
-const activeIndex = computed(() => menus.findIndex((item) => $route.fullPath.includes(item.path)));
+const activeIndex = computed(() => menus.findIndex((item) => $route.fullPath.split("/")[1] === item.path.slice(1)));
 
 const handleChangeTheme = __debounce(() => {
   toggleDark();

@@ -1,5 +1,5 @@
 <template>
-  <div class="user-table">
+  <div class="space-table">
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="date" label="编号" width="100" align="center" />
       <el-table-column prop="date" label="用户名" width="150" align="center" />
@@ -81,7 +81,7 @@ const handleEditCode = () => {
 
 <style scoped lang="less">
 @import "../../../public.less";
-.user-table {
+.space-table {
   width: 100%;
   min-height: calc(100vh - 230px);
   .public-container();

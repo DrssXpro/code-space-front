@@ -6,13 +6,14 @@
       </el-form-item>
 
       <el-form-item label="选择编程语言">
-        <el-select v-model="state.lan" placeholder="选择排序规则">
+        <el-select v-model="state.lan" placeholder="选择排序规则" style="width: 150px">
           <el-option v-for="(item, index) in codes" :key="index" :label="item.text" :value="index" />
         </el-select>
       </el-form-item>
-
-      <el-form-item label="空间代码">
-        <el-checkbox v-model="state.isSpace" label="筛选" />
+      <el-form-item label="代码状态">
+        <el-select v-model="state.lan" placeholder="筛选代码状态" style="width: 100px">
+          <el-option v-for="(item, index) in codes" :key="index" :label="item.text" :value="index" />
+        </el-select>
       </el-form-item>
       <div class="btn-group">
         <el-button type="danger" class="btn"><i class="fa fa-search"></i><span>查询</span></el-button>
@@ -51,7 +52,7 @@ const codes = [
 </script>
 
 <style scoped lang="less">
-@import "../../public.less";
+@import "../../../public.less";
 .code-rules {
   width: 100%;
   .public-container();

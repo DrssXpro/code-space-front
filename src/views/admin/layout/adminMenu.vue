@@ -7,8 +7,6 @@
       background-color="var(--el-bg-color-overlay)"
       text-color="var(--el-text-color-secondary)"
       active-text-color="var(--el-text-color-primary)"
-      @open="handleOpen"
-      @close="handleClose"
     >
       <el-menu-item index="/admin/personal">
         <i class="fa fa-user-circle icon"></i>
@@ -28,34 +26,29 @@
         <el-menu-item index="/admin/content/code">代码审核</el-menu-item>
         <el-menu-item index="/admin/content/comment">评论管理</el-menu-item>
         <el-menu-item index="/admin/content/space">空间管理</el-menu-item>
+        <el-menu-item index="/admin/content/role">角色管理</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="6">
         <template #title>
           <i class="fa fa-building-o icon"></i>
           <span>空间管理</span>
         </template>
-        <el-menu-item index="/admin/space/code">人员管理</el-menu-item>
+        <el-menu-item index="/admin/space/people">人员管理</el-menu-item>
         <el-menu-item index="/admin/space/code">代码管理</el-menu-item>
+        <el-menu-item index="/admin/space/task">任务管理</el-menu-item>
         <el-menu-item index="/admin/space/file">文件管理</el-menu-item>
         <el-menu-item index="/admin/space/comment">评论管理</el-menu-item>
-        <el-menu-item index="/admin/space/comment">权限分配</el-menu-item>
+        <el-menu-item index="/admin/space/role">权限分配</el-menu-item>
       </el-sub-menu>
     </el-menu>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
-const defaultRouter = ref("");
+const defaultRouter = computed(() => $route.fullPath);
 const $route = useRoute();
-
-onMounted(() => {
-  defaultRouter.value = $route.fullPath;
-});
-const handleOpen = () => {};
-
-const handleClose = () => {};
 </script>
 
 <style scoped lang="less">

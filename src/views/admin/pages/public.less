@@ -8,3 +8,28 @@
 .gap-item {
   margin-bottom: 20px;
 }
+
+.form-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  .el-form-item {
+    margin-bottom: 0;
+  }
+  :deep(.el-form-item__label) {
+    color: var(--font-main-color);
+  }
+}
+
+.btn-group {
+  display: flex;
+  align-items: center;
+  .btn {
+    display: flex;
+    align-items: center;
+    i {
+      margin-right: 5px;
+    }
+  }
+}
