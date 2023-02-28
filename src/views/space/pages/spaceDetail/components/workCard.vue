@@ -1,6 +1,6 @@
 <template>
   <el-card shadow="never">
-    <template #header> 作业通知 </template>
+    <template #header> 任务通知 </template>
     <div class="work-content">最新的作业： 1. xxxx 2. 完成xxx代码 3.必须完成ssss</div>
   </el-card>
 </template>

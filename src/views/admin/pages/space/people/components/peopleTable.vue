@@ -1,17 +1,17 @@
 <template>
-  <div class="code-table">
+  <div class="people-table">
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="date" label="编号" width="100" align="center" />
-      <el-table-column prop="date" label="标题" width="150" align="center" />
-      <el-table-column prop="date" label="语言" align="center" />
-      <el-table-column prop="date" label="内容" align="center" />
-      <el-table-column prop="date" label="链接" align="center" />
-      <el-table-column prop="date" label="状态" align="center" width="80" />
+      <el-table-column prop="date" label="用户名" width="150" align="center" />
+      <el-table-column prop="date" label="头像" align="center" />
+      <el-table-column prop="date" label="邮箱" align="center" />
+      <el-table-column prop="date" label="身份" align="center" />
+      <el-table-column prop="date" label="所属空间" align="center" />
       <el-table-column prop="date" label="创建时间" align="center" />
       <el-table-column label="操作" align="center">
         <template #default="scope">
-          <el-button link type="success" @click="handleEditCode">编辑</el-button>
-          <el-button type="primary" link>删除</el-button>
+          <el-button link type="success" @click="handleEditPeople">编辑</el-button>
+          <el-button link type="danger" @click="handleKickPeople">踢出</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -23,7 +23,8 @@
 
 <script setup lang="ts">
 const emit = defineEmits<{
-  (e: "editCode"): void;
+  (e: "editPeople"): void;
+  (e: "kickPeople"): void;
 }>();
 const tableData = [
   {
@@ -68,14 +69,18 @@ const tableData = [
   },
 ];
 
-const handleEditCode = () => {
-  emit("editCode");
+const handleKickPeople = () => {
+  emit("kickPeople");
+};
+
+const handleEditPeople = () => {
+  emit("editPeople");
 };
 </script>
 
 <style scoped lang="less">
 @import "../../../public.less";
-.code-table {
+.people-table {
   width: 100%;
   min-height: calc(100vh - 230px);
   .public-container();

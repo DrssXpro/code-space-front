@@ -2,11 +2,21 @@
   <div class="rules-tab-container">
     <div class="rules-item">
       <div class="rules-title">
+        <i class="fa fa-search"></i>
+        <span>搜素</span>
+      </div>
+      <div class="rules-content">
+        <el-input v-model="searchContent" placeholder="请输入搜索内容"></el-input>
+        <el-button type="primary" text>搜索</el-button>
+      </div>
+    </div>
+    <div class="rules-item">
+      <div class="rules-title">
         <i class="fa fa-tags"></i>
         <span>语言</span>
       </div>
       <div class="rules-content">
-        <el-select v-model="select" multiple placeholder="选择语言分类" style="width: 250px">
+        <el-select v-model="select" multiple placeholder="选择语言分类" style="width: 260px">
           <el-option v-for="(item, index) in codes" :key="index" :label="item.text" :value="index" />
         </el-select>
       </div>
@@ -14,10 +24,10 @@
     <div class="rules-item">
       <div class="rules-title">
         <i class="fa fa-send"></i>
-        <span>作业</span>
+        <span>任务</span>
       </div>
       <div class="rules-content">
-        <el-select v-model="select" placeholder="选择已有作业" clearable style="width: 250px">
+        <el-select v-model="select" placeholder="选择已有任务" clearable style="width: 260px">
           <el-option v-for="(item, index) in codes" :key="index" :label="item.text" :value="index" />
         </el-select>
       </div>
@@ -52,6 +62,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+const searchContent = ref("");
 const radio = ref("");
 const select = ref(0);
 
@@ -91,6 +102,11 @@ const codes = [
       span {
         margin-left: 10px;
       }
+    }
+    .rules-content {
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
   }
 }

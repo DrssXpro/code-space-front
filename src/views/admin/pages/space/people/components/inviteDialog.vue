@@ -1,21 +1,14 @@
 <template>
-  <el-dialog v-model="showDialog" title="添加用户" width="25%" append-to-body>
+  <el-dialog v-model="showDialog" title="邀请人员" width="25%" append-to-body>
     <div class="form-container">
       <el-form>
         <el-form-item label="用户名" labelWidth="100px">
           <el-input v-model="state.userName" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" labelWidth="100px">
-          <el-input v-model="state.email" placeholder="请输邮箱"></el-input>
+          <el-input v-model="state.userName" placeholder="请输入邮箱"></el-input>
         </el-form-item>
-        <el-form-item label="密码" labelWidth="100px">
-          <el-input v-model="state.password" placeholder="请输入密码"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" labelWidth="100px">
-          <el-select v-model="state.role" placeholder="请选择角色" style="width: 100%">
-            <el-option v-for="(item, index) in codes" :key="index" :label="item.text" :value="index" />
-          </el-select>
-        </el-form-item>
+        <span class="tip">任选一个填写即可</span>
       </el-form>
     </div>
     <template #footer>
@@ -67,4 +60,10 @@ defineExpose({
 });
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.tip {
+  margin-left: 100px;
+  color: var(--el-text-color-secondary);
+  font-size: 14px;
+}
+</style>

@@ -12,9 +12,6 @@
     </div>
     <div class="space-detail-container__center">
       <div class="gap-item">
-        <fs-search-box v-model="state.searchContent" place-holder="空间搜索" />
-      </div>
-      <div class="gap-item">
         <rules-tab />
       </div>
       <div class="gap-item">

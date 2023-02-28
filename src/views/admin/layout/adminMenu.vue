@@ -33,6 +33,7 @@
           <i class="fa fa-building-o icon"></i>
           <span>空间管理</span>
         </template>
+        <el-menu-item index="/admin/space/overview">空间总览</el-menu-item>
         <el-menu-item index="/admin/space/people">人员管理</el-menu-item>
         <el-menu-item index="/admin/space/code">代码管理</el-menu-item>
         <el-menu-item index="/admin/space/task">任务管理</el-menu-item>

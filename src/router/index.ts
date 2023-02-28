@@ -93,6 +93,16 @@ const router = createRouter({
               name: "adminContentRole",
               component: () => import("@/views/admin/pages/content/role/index.vue"),
             },
+            {
+              path: "space/code",
+              name: "adminSpaceCode",
+              component: () => import("@/views/admin/pages/space/code/index.vue"),
+            },
+            {
+              path: "space/people",
+              name: "adminSpacePeole",
+              component: () => import("@/views/admin/pages/space/people/index.vue"),
+            },
           ],
         },
       ],
