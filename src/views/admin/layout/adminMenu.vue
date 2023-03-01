@@ -23,10 +23,11 @@
           <span>内容管理</span>
         </template>
         <el-menu-item index="/admin/content/user"> 用户管理</el-menu-item>
-        <el-menu-item index="/admin/content/code">代码审核</el-menu-item>
+        <el-menu-item index="/admin/content/code">代码管理</el-menu-item>
         <el-menu-item index="/admin/content/comment">评论管理</el-menu-item>
         <el-menu-item index="/admin/content/space">空间管理</el-menu-item>
         <el-menu-item index="/admin/content/role">角色管理</el-menu-item>
+        <el-menu-item index="/admin/content/menu">菜单管理</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="6">
         <template #title>

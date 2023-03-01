@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
+    ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
@@ -23,6 +24,7 @@ declare module '@vue/runtime-core' {
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElOptions: typeof import('element-plus/es')['ElOptions']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
@@ -44,14 +46,19 @@ declare module '@vue/runtime-core' {
     FsCodeMirror: typeof import('./src/components/FsCodeMirror/FsCodeMirror.vue')['default']
     FsCollectionCode: typeof import('./src/components/FsCollectionCode/FsCollectionCode.vue')['default']
     FsCommentCard: typeof import('./src/components/FsCommentCard/FsCommentCard.vue')['default']
+    FsForm: typeof import('./src/components/FsForm/FsForm.vue')['default']
     FsImage: typeof import('./src/components/FsImage/FsImage.vue')['default']
     FsMyComment: typeof import('./src/components/FsMyComment/FsMyComment.vue')['default']
     FsSearchBox: typeof import('./src/components/FsSearchBox/FsSearchBox.vue')['default']
     FsSideCard: typeof import('./src/components/FsSideCard/FsSideCard.vue')['default']
     FsSpaceCard: typeof import('./src/components/FsSpaceCard/FsSpaceCard.vue')['default']
     FsSwitch: typeof import('./src/components/FsSwitch/FsSwitch.vue')['default']
+    FsTable: typeof import('./src/components/FsTable/FsTable.vue')['default']
     FsTextEditor: typeof import('./src/components/FsTextEditor/FsTextEditor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
