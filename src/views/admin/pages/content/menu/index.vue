@@ -1,7 +1,7 @@
 <template>
   <div class="content-menu-container">
     <div class="content-menu-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="formData">
+      <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
         <template #operator>
           <el-button type="danger" class="btn" @click="searchDataList"
             ><i class="fa fa-search"></i><span>查询</span></el-button
@@ -25,7 +25,7 @@
         <template #header>
           <div class="header-config">
             <span>菜单列表</span>
-            <el-button type="primary">添加菜单</el-button>
+            <el-button type="primary" @click="showAddModal">添加菜单</el-button>
           </div>
         </template>
         <template #createdAt="{ row }">
@@ -33,21 +33,38 @@
         </template>
         <template #operator="{ row }">
           <el-button type="success" link>编辑</el-button>
-          <el-button type="success" link>编辑</el-button>
           <el-button type="danger" link>删除</el-button>
         </template>
       </fs-table>
+
+      <fs-modal
+        v-model="modalData"
+        ref="fsModalRef"
+        title="添加菜单"
+        :modal-config="modalConfig"
+        :mobal-rules="modalValid"
+      >
+        <template #footer>
+          <el-button @click="closeModal">取消</el-button>
+          <el-button type="primary" @click="handleAdd">添加</el-button>
+        </template>
+      </fs-modal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
+import FsModal from "@/components/FsModal/FsModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { ref } from "vue";
+import { modalConfig, modalValid } from "./config/modal.config";
+import { ElMessage } from "element-plus";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
+const fsModalRef = ref<InstanceType<typeof FsModal>>();
+const formConfigReactive = ref(formConfig);
 const loading = ref(false);
 
 const formData = ref({
@@ -55,10 +72,40 @@ const formData = ref({
   lan: "1",
 });
 
+const modalData = ref({
+  title: "1",
+  lan: "2",
+});
+
 const page = ref({
   current: 1,
   pageSize: 10,
 });
+
+const getRemoteSelect = (searchValue: string) => {
+  const more = [
+    {
+      value: "4",
+      text: "1",
+    },
+    {
+      value: "5",
+      text: "2",
+    },
+    {
+      value: "6",
+      text: "3",
+    },
+  ];
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log("cb:", searchValue);
+      resolve(more);
+    }, 2000);
+  });
+};
+
+formConfigReactive.value.find((item) => item.field === "test")!.remoteSelectFunction = getRemoteSelect;
 
 const searchDataList = () => {
   console.log("check:", formData.value);
@@ -68,10 +115,35 @@ const handlePageChange = (current: number) => {
   console.log(current);
 };
 
+const showAddModal = () => {
+  fsModalRef.value?.controllModal(true);
+};
+
+const closeModal = () => {
+  fsModalRef.value?.controllModal(false);
+};
+
 const resetForm = () => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
 };
 
+const handleAdd = async () => {
+  if (fsModalRef.value && fsModalRef.value.formRef) {
+    await fsModalRef.value.formRef.validate((valid, fields) => {
+      if (valid) {
+        ElMessage.success("验证通过");
+      } else {
+        ElMessage.error("验证失败");
+      }
+    });
+  }
+};
+fsModalRef.value && fsModalRef.value.formRef?.resetFields();
+
+const resetModal = () => {
+  console.log(fsModalRef.value && fsModalRef.value.treeRef[0].getCheckedKeys(false));
+  // fsModalRef.value && fsModalRef.value.formRef?.resetFields();
+};
 const tableData = [
   {
     test1: "2016-05-03",

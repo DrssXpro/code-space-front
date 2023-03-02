@@ -5,7 +5,7 @@ export interface IFormConfigItem {
   label: string;
   labelWidth?: string;
   options?: ISelectItem[];
-  remoteSelectFunction?: () => Promise<any>;
+  remoteSelectFunction?: (searchValue: string) => Promise<any>;
 }
 
 export interface ISelectItem {

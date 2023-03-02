@@ -2,14 +2,18 @@
   <div class="fs-form-container">
     <el-form class="form-container" ref="formRef" :model="formData">
       <el-form-item
-        v-for="(item, index) in props.formConfig"
+        v-for="(item, index) in formConfigReactive"
         :label="item.label"
         :labelWidth="`${item.labelWidth ? item.labelWidth + 'px' : 'auto'}`"
         :prop="`${item.field}`"
         :key="index"
       >
-        <template v-if="item.type === 'input'">
-          <el-input v-model="formData[`${item.field}`]" :placeholder="item.placeholder"></el-input>
+        <template v-if="item.type === 'input' || item.type === 'password'">
+          <el-input
+            v-model="formData[`${item.field}`]"
+            :placeholder="item.placeholder"
+            :show-password="item.type === 'password'"
+          ></el-input>
         </template>
         <template v-if="item.type === 'select'">
           <el-select :placeholder="item.placeholder" v-model="formData[`${item.field}`]">
@@ -24,12 +28,12 @@
         <template v-if="item.type === 'remoteSelect'">
           <el-select
             v-model="formData[`${item.field}`]"
-            multiple
             filterable
             remote
             reserve-keyword
+            remote-show-suffix
             :placeholder="item.placeholder"
-            :remote-method="remoteMethod"
+            :remote-method="(searchValue:string) => remoteMethod(searchValue,item.field)"
             :loading="remoteLoading"
           >
             <el-option
@@ -63,12 +67,23 @@ const emit = defineEmits<{
 
 const formRef = ref<FormInstance>();
 const formData = ref({ ...props.modelValue });
+const formConfigReactive = ref(props.formConfig);
 const remoteLoading = ref(false);
 
-const remoteMethod = (searchValue: string) => {
-  console.log("check:", searchValue);
-  
-  
+const remoteMethod = async (searchValue: string, field: string) => {
+  if (searchValue.length) {
+    remoteLoading.value = true;
+    const current = formConfigReactive.value.find((item: any) => item.field === field) as IFormConfigItem;
+    current.remoteSelectFunction &&
+      current
+        .remoteSelectFunction(searchValue)
+        .then((res) => {
+          current.options = res;
+        })
+        .finally(() => {
+          remoteLoading.value = false;
+        });
+  }
 };
 
 watch(

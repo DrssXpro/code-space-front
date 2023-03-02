@@ -27,13 +27,6 @@ const formConfig: IFormConfigItem[] = [
       },
     ],
   },
-  {
-    label: "空间查询",
-    placeholder: "请选择编程语言",
-    field: "test",
-    type: "remoteSelect",
-    options: [],
-  },
 ];
 
 export default formConfig;
