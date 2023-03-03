@@ -26,10 +26,16 @@
         <el-menu-item index="/admin/content/code">代码管理</el-menu-item>
         <el-menu-item index="/admin/content/comment">评论管理</el-menu-item>
         <el-menu-item index="/admin/content/space">空间管理</el-menu-item>
-        <el-menu-item index="/admin/content/role">角色管理</el-menu-item>
-        <el-menu-item index="/admin/content/menu">菜单管理</el-menu-item>
       </el-sub-menu>
-      <el-sub-menu index="6">
+      <el-sub-menu index="/admin/power">
+        <template #title>
+          <i class="fa fa-power-off icon"></i>
+          <span>权限管理</span>
+        </template>
+        <el-menu-item index="/admin/power/role">角色管理</el-menu-item>
+        <el-menu-item index="/admin/power/menu">菜单管理</el-menu-item>
+      </el-sub-menu>
+      <el-sub-menu index="/admin/space">
         <template #title>
           <i class="fa fa-building-o icon"></i>
           <span>空间管理</span>
@@ -38,9 +44,8 @@
         <el-menu-item index="/admin/space/people">人员管理</el-menu-item>
         <el-menu-item index="/admin/space/code">代码管理</el-menu-item>
         <el-menu-item index="/admin/space/task">任务管理</el-menu-item>
-        <el-menu-item index="/admin/space/file">文件管理</el-menu-item>
         <el-menu-item index="/admin/space/comment">评论管理</el-menu-item>
-        <el-menu-item index="/admin/space/role">权限分配</el-menu-item>
+        <el-menu-item index="/admin/space/role">角色分配</el-menu-item>
       </el-sub-menu>
     </el-menu>
   </div>
