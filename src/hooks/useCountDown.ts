@@ -4,7 +4,7 @@ import { ref } from "vue";
 export default function useCountDown(time: number) {
   const isStart = ref(false);
   const timeCount = ref(time);
-  let timer: null | number = null;
+  let timer: any = null;
 
   const startTimer = () => {
     isStart.value = true;

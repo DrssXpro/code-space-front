@@ -28,6 +28,12 @@
             }}</el-button>
           </div>
         </el-form-item>
+        <el-form-item label="验证码：" label-width="70px">
+          <el-radio-group v-model="state.role">
+            <el-radio :label="1">普通用户</el-radio>
+            <el-radio :label="2">管理员</el-radio>
+          </el-radio-group>
+        </el-form-item>
       </el-form>
 
       <div class="tip">没有账号？<span class="tip-link" @click="emit('changeCard')">点击注册</span></div>
@@ -55,6 +61,7 @@ const isForget = ref(false);
 const state = reactive({
   username: "",
   password: "",
+  role: 1,
 });
 
 const handleCodeTime = () => {

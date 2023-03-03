@@ -44,7 +44,6 @@
         <el-menu-item index="/admin/space/people">人员管理</el-menu-item>
         <el-menu-item index="/admin/space/code">代码管理</el-menu-item>
         <el-menu-item index="/admin/space/task">任务管理</el-menu-item>
-        <el-menu-item index="/admin/space/comment">评论管理</el-menu-item>
         <el-menu-item index="/admin/space/role">角色分配</el-menu-item>
       </el-sub-menu>
     </el-menu>
