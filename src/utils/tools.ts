@@ -1,3 +1,5 @@
+import type { IMenuItem } from "@/types/menuType";
+
 // 观察dom是否进入视口，懒加载
 export function domObserver(el: HTMLElement, cb: () => void) {
   const observer = new IntersectionObserver((entries) => {
@@ -28,7 +30,7 @@ export function imageIsLoading(src: string): Promise<string> {
  * @param immediate 是否立即执行
  */
 export function __debounce(fn: Function, delay: number, immediate = false) {
-  let timer: number | null = null;
+  let timer: NodeJS.Timeout | null = null;
   let isImmediate = false;
   return function (this: unknown, ...args: any[]) {
     if (immediate && !isImmediate) {
@@ -43,4 +45,31 @@ export function __debounce(fn: Function, delay: number, immediate = false) {
       isImmediate = false;
     }, delay);
   };
+}
+
+// 菜单树形结构化
+interface ITreeItem {
+  id: number;
+  parentId: null | number;
+  [key: string]: any;
+}
+export function handleMenuToTree(menuList: ITreeItem[]) {
+  const treeList: ITreeItem[] = [],
+    treeMap: any = {};
+  menuList.forEach((item) => {
+    if (!item.children) {
+      item.children = [];
+    }
+    treeMap[item.id] = item;
+  });
+
+  menuList.forEach((item) => {
+    if (item.parentId && treeMap[item.parentId]) {
+      treeMap[item.parentId].children.push(item);
+    } else {
+      treeList.push(item);
+    }
+  });
+
+  return treeList;
 }

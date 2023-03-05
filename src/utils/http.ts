@@ -59,11 +59,11 @@ class FsRequest {
   }
 
   request<T>(config: AxiosRequestConfig): Promise<T> {
-    this.loading = ElLoading.service({
-      lock: true,
-      text: "Loading",
-      background: "rgba(0, 0, 0, 0.7)",
-    });
+    // this.loading = ElLoading.service({
+    //   lock: true,
+    //   text: "Loading",
+    //   background: "rgba(0, 0, 0, 0.7)",
+    // });
     return new Promise<T>((resolve, reject) => {
       this.instance
         .request<any, T>(config)
@@ -76,7 +76,7 @@ class FsRequest {
           }
         )
         .finally(() => {
-          this.loading.close();
+          // this.loading.close();
         });
     });
   }
@@ -95,4 +95,4 @@ class FsRequest {
   }
 }
 
-module.exports = FsRequest;
+export default FsRequest;

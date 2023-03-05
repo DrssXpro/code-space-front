@@ -14,73 +14,81 @@
     </div>
     <div class="content-menu-table gap-item">
       <fs-table
-        :list-data="tableData"
-        :list-count="50"
-        :loading="loading"
-        :page-size="page.pageSize"
-        @page-change="handlePageChange"
+        :list-data="tableState.tableList"
+        :loading="tableState.loading"
+        :show-footer="false"
         :table-config="tableConfig"
         :show-index-column="false"
       >
         <template #header>
           <div class="header-config">
             <span>菜单列表</span>
-            <el-button type="primary" @click="showAddModal">添加菜单</el-button>
+            <el-button type="primary" @click="controllModal(true)">添加菜单</el-button>
           </div>
         </template>
+        <template #menuIcon="{ row }">
+          <i :class="row.menuIcon"></i>
+        </template>
+        <template #status="{ row }">
+          <el-tag :type="row.status ? '' : 'danger'">{{ row.status ? "正常" : "停用" }}</el-tag>
+        </template>
         <template #createdAt="{ row }">
-          <el-tag type="danger">{{ row.createdAt }}</el-tag>
+          {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="success" link>编辑</el-button>
+          <el-button type="success" link @click="controllModal(true, row)">编辑</el-button>
           <el-button type="danger" link>删除</el-button>
         </template>
       </fs-table>
-
-      <fs-modal
-        v-model="modalData"
-        ref="fsModalRef"
-        title="添加菜单"
-        :modal-config="modalConfig"
-        :mobal-rules="modalValid"
-      >
-        <template #footer>
-          <el-button @click="closeModal">取消</el-button>
-          <el-button type="primary" @click="handleAdd">添加</el-button>
-        </template>
-      </fs-modal>
+      <menu-modal ref="menuModalRef" :is-edit="isEdit"></menu-modal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
-import FsModal from "@/components/FsModal/FsModal.vue";
+import menuModal from "./components/menuModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { modalConfig, modalValid } from "./config/modal.config";
-import { ElMessage } from "element-plus";
-const fsFormRef = ref<InstanceType<typeof FsForm>>();
-const fsModalRef = ref<InstanceType<typeof FsModal>>();
-const formConfigReactive = ref(formConfig);
-const loading = ref(false);
+import { getMenuList } from "@/service/api/menuRequest";
+import type { IMenuItem } from "@/types/menuType";
+import { handleMenuToTree } from "@/utils/tools";
+import { formatTime } from "@/utils/formatTime";
 
+const fsFormRef = ref<InstanceType<typeof FsForm>>();
+const menuModalRef = ref<InstanceType<typeof menuModal>>();
+const formConfigReactive = ref(formConfig);
 const formData = ref({
   title: "12312321",
   lan: "1",
 });
 
-const modalData = ref({
-  title: "1",
-  lan: "2",
-});
+const isEdit = ref(false);
 
-const page = ref({
+const tableState = reactive({
+  tableList: [] as IMenuItem[],
   current: 1,
   pageSize: 10,
+  total: 0,
+  loading: false,
 });
+
+onMounted(() => {
+  getMenuListData();
+});
+
+// 获取菜单数据
+const getMenuListData = () => {
+  tableState.loading = true;
+  getMenuList().then((res) => {
+    tableState.tableList = JSON.parse(JSON.stringify(handleMenuToTree(res.data.rows)));
+    console.log("check:", tableState.tableList);
+    tableState.total = res.data.count;
+    tableState.loading = false;
+  });
+};
 
 const getRemoteSelect = (searchValue: string) => {
   const more = [
@@ -111,97 +119,14 @@ const searchDataList = () => {
   console.log("check:", formData.value);
 };
 
-const handlePageChange = (current: number) => {
-  console.log(current);
-};
-
-const showAddModal = () => {
-  fsModalRef.value?.controllModal(true);
-};
-
-const closeModal = () => {
-  fsModalRef.value?.controllModal(false);
+const controllModal = (isShow: boolean, row?: any) => {
+  isEdit.value = row ? true : false;
+  menuModalRef.value?.controllModal(isShow);
 };
 
 const resetForm = () => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
 };
-
-const handleAdd = async () => {
-  if (fsModalRef.value && fsModalRef.value.formRef) {
-    await fsModalRef.value.formRef.validate((valid, fields) => {
-      if (valid) {
-        ElMessage.success("验证通过");
-      } else {
-        ElMessage.error("验证失败");
-      }
-    });
-  }
-};
-fsModalRef.value && fsModalRef.value.formRef?.resetFields();
-
-const resetModal = () => {
-  console.log(fsModalRef.value && fsModalRef.value.treeRef[0].getCheckedKeys(false));
-  // fsModalRef.value && fsModalRef.value.formRef?.resetFields();
-};
-const tableData = [
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-];
 </script>
 
 <style scoped lang="less">

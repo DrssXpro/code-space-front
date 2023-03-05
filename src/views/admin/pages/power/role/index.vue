@@ -14,10 +14,10 @@
     </div>
     <div class="content-role-table gap-item">
       <fs-table
-        :list-data="tableData"
-        :list-count="50"
-        :loading="loading"
-        :page-size="page.pageSize"
+        :list-data="tableState.tableList"
+        :list-count="tableState.total"
+        :loading="tableState.loading"
+        :page-size="tableState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
         :show-index-column="false"
@@ -25,63 +25,130 @@
         <template #header>
           <div class="header-config">
             <span>角色列表</span>
-            <el-button type="primary" @click="showAddModal">添加角色</el-button>
+            <el-button type="primary" @click="showModal(true)">创建角色</el-button>
           </div>
         </template>
+        <template #status="{ row }">
+          <el-switch
+            v-model="row.status"
+            :active-value="1"
+            :inactive-value="0"
+            :before-change="() => beforeStatusChange(row)"
+          ></el-switch>
+        </template>
         <template #createdAt="{ row }">
-          <el-tag type="danger">{{ row.createdAt }}</el-tag>
+          {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }}
+        </template>
+        <template #updatedAt="{ row }">
+          {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="success" link>编辑</el-button>
-          <el-button type="danger" link>删除</el-button>
+          <el-button type="success" link @click="showModal(true, row)">编辑</el-button>
+          <el-button type="danger" link @click="handleDeleteRole(row)">删除</el-button>
         </template>
       </fs-table>
-
-      <fs-modal
-        v-model="modalData"
-        ref="fsModalRef"
-        title="添加角色"
-        :modal-config="modalConfig"
-        :mobal-rules="modalValid"
-      >
-        <template #footer>
-          <el-button @click="closeModal">取消</el-button>
-          <el-button type="primary" @click="handleAdd">添加</el-button>
-        </template>
-      </fs-modal>
     </div>
+
+    <role-modal
+      ref="roleModalRef"
+      @refreash-table="getRoleListData(tableState.pageSize, tableState.current - 1)"
+      :current-power="currentPower"
+      :is-edit="isEdit"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
-import FsModal from "@/components/FsModal/FsModal.vue";
+import roleModal from "./components/roleModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { modalConfig, modalValid } from "./config/modal.config";
-import { ElMessage } from "element-plus";
+import { deleteRole, getRoleList, getRoleMenu, updateRoleStatus } from "@/service/api/roleRequest";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { formatTime } from "@/utils/formatTime";
+import type { IRoleItem } from "@/types/roleType";
+
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
-const fsModalRef = ref<InstanceType<typeof FsModal>>();
+const roleModalRef = ref<InstanceType<typeof roleModal>>();
 const formConfigReactive = ref(formConfig);
-const loading = ref(false);
 
 const formData = ref({
   title: "1",
   lan: "1",
 });
 
-const modalData = ref({
-  title: "1",
-  lan: "2",
-});
-
-const page = ref({
+const tableState = reactive({
+  tableList: [] as IRoleItem[],
   current: 1,
   pageSize: 10,
+  total: 0,
+  loading: false,
 });
 
+const isEdit = ref(false);
+const currentPower = ref<number[]>([]);
+
+onMounted(() => {
+  getRoleListData(tableState.pageSize, tableState.current - 1);
+});
+
+// 获取角色列表
+const getRoleListData = (limit: number, offset: number) => {
+  getRoleList({ limit, offset }).then((res) => {
+    tableState.total = res.data.count;
+    tableState.tableList = res.data.rows;
+  });
+};
+
+// change方法第一次进入会触发switch改变，改用before-change
+const beforeStatusChange = (row: any) => {
+  const text = row.status === 0 ? "启用" : "停用";
+  return new Promise<boolean>((resolve) => {
+    ElMessageBox.confirm(`确定要${text}${row.name}角色吗？`, {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+      .then(async () => {
+        ElMessage.success(`${text}成功`);
+        await updateRoleStatus(row.id, row.status === 0 ? 1 : 0);
+        getRoleListData(tableState.pageSize, tableState.current - 1);
+        resolve(true);
+      })
+      .catch(() => {
+        resolve(false);
+      });
+  });
+};
+
+// 删除角色逻辑
+const handleDeleteRole = (row: any) => {
+  ElMessageBox.confirm(`确定要删除id为 ${row.id} 的这个角色吗？`, {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(async () => {
+    const res = await deleteRole(row.id);
+    getRoleListData(tableState.pageSize, tableState.current - 1);
+    res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+  });
+};
+
+const showModal = async (show: boolean, row?: any) => {
+  isEdit.value = row ? true : false;
+  if (isEdit.value) {
+    const res = await getRoleMenu(row.id);
+    console.log(res.data);
+    currentPower.value = res.data.map((item) => item.id);
+    row.menuList = [];
+    roleModalRef.value?.controllModal(show, row);
+  } else {
+    currentPower.value = [];
+    roleModalRef.value?.controllModal(show);
+  }
+};
 const searchDataList = () => {
   console.log("check:", formData.value);
 };
@@ -90,93 +157,9 @@ const handlePageChange = (current: number) => {
   console.log(current);
 };
 
-const showAddModal = () => {
-  fsModalRef.value?.controllModal(true);
-};
-
-const closeModal = () => {
-  fsModalRef.value?.controllModal(false);
-};
-
 const resetForm = () => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
 };
-
-const handleAdd = async () => {
-  if (fsModalRef.value && fsModalRef.value.formRef) {
-    await fsModalRef.value.formRef.validate((valid, fields) => {
-      if (valid) {
-        ElMessage.success("验证通过");
-      } else {
-        ElMessage.error("验证失败");
-      }
-    });
-  }
-};
-fsModalRef.value && fsModalRef.value.formRef?.resetFields();
-
-const resetModal = () => {
-  console.log(fsModalRef.value && fsModalRef.value.treeRef[0].getCheckedKeys(false));
-  // fsModalRef.value && fsModalRef.value.formRef?.resetFields();
-};
-const tableData = [
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-];
 </script>
 
 <style scoped lang="less">

@@ -3,7 +3,7 @@
     <div class="fs-table-header">
       <slot name="header" />
     </div>
-    <el-table style="width: 100%" :data="props.listData">
+    <el-table style="width: 100%" :data="props.listData" row-key="id" border>
       <el-table-column
         v-if="props.showIndexColumn"
         type="index"
@@ -45,9 +45,9 @@ const emit = defineEmits<{
 
 interface PropsType {
   listData: any[];
-  listCount: number;
   tableConfig: ITableConifg[];
-  pageSize: number;
+  listCount?: number;
+  pageSize?: number;
   showIndexColumn?: boolean; // 展示index列
   showFooter?: boolean;
   loading: boolean;

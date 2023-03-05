@@ -5,6 +5,7 @@ import router from "./router";
 import "@/style/global.less";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "element-plus/es/components/message/style/css";
+import "element-plus/es/components/message-box/style/css";
 import "font-awesome/css/font-awesome.css";
 import { vLoading } from "element-plus/es/components/loading/src/directive";
 import ClickOutSide from "./directives/outSide";
