@@ -37,10 +37,10 @@
         </template>
         <template #operator="{ row }">
           <el-button type="success" link @click="controllModal(true, row)">编辑</el-button>
-          <el-button type="danger" link>删除</el-button>
+          <el-button type="danger" link @click="handleDeleteMenu(row)">删除</el-button>
         </template>
       </fs-table>
-      <menu-modal ref="menuModalRef" :is-edit="isEdit"></menu-modal>
+      <menu-modal ref="menuModalRef" :is-edit="isEdit" @refresh-table="getMenuListData"></menu-modal>
     </div>
   </div>
 </template>
@@ -52,10 +52,11 @@ import FsTable from "@/components/FsTable/FsTable.vue";
 import menuModal from "./components/menuModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { getMenuList } from "@/service/api/menuRequest";
+import { deleteMenu, getMenuList } from "@/service/api/menuRequest";
 import type { IMenuItem } from "@/types/menuType";
 import { handleMenuToTree } from "@/utils/tools";
 import { formatTime } from "@/utils/formatTime";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const menuModalRef = ref<InstanceType<typeof menuModal>>();
@@ -90,6 +91,19 @@ const getMenuListData = () => {
   });
 };
 
+// 删除指定的菜单
+const handleDeleteMenu = (row: any) => {
+  ElMessageBox.confirm(`确定要删除id为 ${row.id} 的这个菜单或权限吗？`, {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(async () => {
+    const res = await deleteMenu(row.id);
+    getMenuListData();
+    res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+  });
+};
+
 const getRemoteSelect = (searchValue: string) => {
   const more = [
     {
@@ -121,7 +135,7 @@ const searchDataList = () => {
 
 const controllModal = (isShow: boolean, row?: any) => {
   isEdit.value = row ? true : false;
-  menuModalRef.value?.controllModal(isShow);
+  menuModalRef.value?.controllModal(isShow, row);
 };
 
 const resetForm = () => {

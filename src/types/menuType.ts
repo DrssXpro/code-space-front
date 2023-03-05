@@ -25,5 +25,5 @@ export interface IMenuAddPayload {
   status: 0 | 1;
   parentId: number;
   perms: string;
-  orderNum: string;
+  orderNum: number;
 }

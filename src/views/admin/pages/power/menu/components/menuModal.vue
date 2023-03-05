@@ -24,7 +24,7 @@
       <el-form-item label="选择上级菜单" label-width="100" v-show="formState.menuType !== 'M'">
         <el-tree-select
           v-model="formState.parentId"
-          :data="formState.menuList"
+          :data="menus"
           check-strictly
           :render-after-expand="false"
           placeholder="请选择上级菜单"
@@ -32,7 +32,7 @@
       </el-form-item>
       <el-form-item label="权限类型" label-width="100">
         <el-select v-model="formState.menuType" placeholder="请选择菜单类型">
-          <el-option v-for="(item, index) in menuType" :value="item.value" :label="item.text"></el-option>
+          <el-option v-for="(item, index) in menuType" :value="item.value" :label="item.text" :key="index"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="显示排序" label-width="100">
@@ -53,28 +53,43 @@
 </template>
 
 <script setup lang="ts">
-import { getMenuList } from "@/service/api/menuRequest";
-import type { IMenuItem } from "@/types/menuType";
+import { addMenu, getMenuList, updateMenu } from "@/service/api/menuRequest";
+import type { IMenuAddPayload, IMenuItem } from "@/types/menuType";
 import { handleMenuToTree } from "@/utils/tools";
+import { ElMessage } from "element-plus";
 import { onMounted, reactive, ref } from "vue";
-const isShow = ref(false);
-
+interface IMenuDataBack extends IMenuAddPayload {
+  id: number;
+}
 const props = defineProps<{
   isEdit: boolean;
   width?: string;
 }>();
 
-const formState = reactive({
+const emit = defineEmits<{
+  (e: "refreshTable"): void;
+}>();
+
+// 模态框状态
+const isShow = ref(false);
+
+// 所有菜单列表:选择上级菜单使用
+const menus = ref<any[]>();
+
+// 当前菜单id：编辑使用
+const currentId = ref<number>();
+
+// 表单参数
+const formState: IMenuAddPayload = reactive({
   name: "",
   menuIcon: "",
   routePath: "",
   comPath: "",
   menuType: "M",
   status: 1,
-  parentId: "",
+  parentId: 0,
   perms: "",
-  orderNum: 0,
-  menuList: [] as any[],
+  orderNum: 1,
 });
 onMounted(() => {
   getMenuList().then((res) => {
@@ -86,12 +101,30 @@ onMounted(() => {
         id: item.id,
       }))
     );
-    console.log("check:", data);
-    formState.menuList = data;
+    menus.value = data;
   });
 });
 
-const handleSubmit = () => {};
+const handleSubmit = async () => {
+  if (!props.isEdit) {
+    try {
+      const res = await addMenu({ ...formState });
+      res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+      isShow.value = res.code === 1000 ? false : true;
+    } catch (err) {
+      ElMessage.warning("添加失败");
+    }
+  } else {
+    try {
+      const res = await updateMenu(currentId.value!, { ...formState });
+      res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+      isShow.value = res.code === 1000 ? false : true;
+    } catch (err) {
+      ElMessage.warning("修改失败");
+    }
+  }
+  emit("refreshTable");
+};
 
 const menuType = [
   {
@@ -108,8 +141,18 @@ const menuType = [
   },
 ];
 
-const controllModal = (show: boolean) => {
+const controllModal = (show: boolean, formData?: IMenuDataBack) => {
   isShow.value = show;
+  formState.name = formData ? formData.name : "";
+  formState.menuIcon = formData ? formData.menuIcon : "";
+  formState.routePath = formData ? formData.routePath : "";
+  formState.comPath = formData ? formData.comPath : "";
+  formState.menuType = formData ? formData.menuType : "M";
+  formState.status = formData ? formData.status : 1;
+  formState.perms = formData ? formData.perms : "";
+  formState.parentId = formData ? formData.parentId : 0;
+  formState.orderNum = formData ? formData.orderNum : 1;
+  currentId.value = formData ? formData.id : 0;
 };
 
 defineExpose({

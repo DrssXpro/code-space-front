@@ -96,32 +96,26 @@ onMounted(() => {
 });
 
 // 提交表单
-const handleSubmit = () => {
+const handleSubmit = async () => {
   formState.menuList = treeRef.value!.getCheckedKeys(false) as number[];
   if (!props.isEdit) {
-    addRole({ ...formState })
-      .then((res) => {
-        res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
-        isShow.value = false;
-        emit("refreashTable");
-      })
-      .catch((err) => {
-        console.log("check:", err);
-        ElMessage.warning("添加失败");
-      });
+    try {
+      const res = await addRole({ ...formState });
+      res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+      isShow.value = res.code === 1000 ? false : true;
+    } catch (err) {
+      ElMessage.warning("添加失败");
+    }
   } else {
-    currentId.value &&
-      updateRole(currentId.value, { ...formState })
-        .then((res) => {
-          res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
-          isShow.value = false;
-          emit("refreashTable");
-        })
-        .catch((err) => {
-          console.log("check:", err);
-          ElMessage.warning("修改失败");
-        });
+    try {
+      const res = await updateRole(currentId.value!, { ...formState });
+      res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+      isShow.value = res.code === 1000 ? false : true;
+    } catch (err) {
+      ElMessage.warning("修改失败");
+    }
   }
+  emit("refreashTable");
 };
 
 // 控制模态框展示与数据回显
