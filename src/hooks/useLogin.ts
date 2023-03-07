@@ -5,7 +5,7 @@ import useUserStore from "@/stores/userStore";
 import { userLogin } from "@/service/api/userRequest";
 import { useRouter } from "vue-router";
 import { getRoleMenu } from "@/service/api/roleRequest";
-import { handleMenuToTree } from "@/utils/tools";
+import { handleMenuMapRoutes, handleMenuToTree } from "@/utils/tools";
 import type { IMenuItem } from "@/types/menuType";
 
 const { loginValidator } = validator;
@@ -39,17 +39,24 @@ export default function useLogin(formRef: Ref<FormInstance | undefined>) {
       if (valid) {
         try {
           const res = await userLogin({ username: loginState.username, password: loginState.password });
-          res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
-          res.code === 1000 && $router.push("/admin/personal");
 
           if (res.code === 1000) {
             // 获取该角色的菜单列表
             const res2 = await getRoleMenu(res.data.roleId);
             // 个人信息、树形菜单存储至store 缓存
-            const { userInfo, menus, saveUserInfo } = toRefs(useUserStore());
+            const { userInfo, menus, mapRoutes, saveUserInfo, addDynamicRoutes } = toRefs(useUserStore());
+
             userInfo.value = res.data;
+            // 存储menus菜单
             menus.value = res2.code === 1000 ? (handleMenuToTree(res2.data) as IMenuItem[]) : [];
+            // 动态添加路由
+            addDynamicRoutes.value();
+
+            // 保存信息至缓存
             saveUserInfo.value();
+            res2.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+            // 注意需要先缓存再跳转
+            res2.code === 1000 && $router.push(mapRoutes.value![0].path);
           }
         } catch (err) {
           ElMessage.warning("登录失败");

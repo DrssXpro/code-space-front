@@ -1,14 +1,17 @@
 <template>
   <div class="admin-menu-container">
+    <div class="menu-title">{{ userInfo?.roleChar }}</div>
     <el-menu
       :default-active="defaultRouter"
-      unique-opened
       router
       background-color="var(--el-bg-color-overlay)"
       text-color="var(--el-text-color-secondary)"
       active-text-color="var(--el-text-color-primary)"
     >
-      <el-menu-item index="/admin/personal">
+      <template v-for="item in menus" :key="item.id">
+        <fs-deep-menu :menu-item="item" />
+      </template>
+      <!-- <el-menu-item index="/admin/personal">
         <i class="fa fa-user-circle icon"></i>
         <span>个人中心</span>
       </el-menu-item>
@@ -45,14 +48,19 @@
         <el-menu-item index="/admin/space/code">代码管理</el-menu-item>
         <el-menu-item index="/admin/space/task">任务管理</el-menu-item>
         <el-menu-item index="/admin/space/role">角色分配</el-menu-item>
-      </el-sub-menu>
+      </el-sub-menu> -->
     </el-menu>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, toRefs } from "vue";
 import { useRoute } from "vue-router";
+import useUserStore from "@/stores/userStore";
+import FsDeepMenu from "@/components/FsDeepMenu/FsDeepMenu.vue";
+
+const { menus, userInfo } = toRefs(useUserStore());
+
 const defaultRouter = computed(() => $route.fullPath);
 const $route = useRoute();
 </script>
@@ -69,10 +77,11 @@ const $route = useRoute();
   border-bottom-right-radius: 20px;
   padding: 10px;
   overflow-y: auto;
-
-  .icon {
-    font-size: 18px;
-    margin-right: 10px;
+  .menu-title {
+    text-align: center;
+    margin: 10px 0 20px 0;
+    font-size: 25px;
+    font-weight: 700;
   }
   .el-menu {
     border: 0 !important;

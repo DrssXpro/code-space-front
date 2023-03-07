@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { createPinia } from "pinia";
+import Pinia from "./stores/index";
 import App from "./App.vue";
 import router from "./router";
 import "@/style/global.less";
@@ -12,7 +12,7 @@ import ClickOutSide from "./directives/outSide";
 const app = createApp(App);
 app.directive("click-outside", ClickOutSide);
 app.directive("loading", vLoading);
-app.use(createPinia());
+app.use(Pinia);
 app.use(router);
 
 app.mount("#app");

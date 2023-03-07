@@ -1,3 +1,5 @@
+import useUserStore from "@/stores/userStore";
+import { ElMessage } from "element-plus";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -57,57 +59,68 @@ const router = createRouter({
           name: "admin",
           redirect: "/admin/personal",
           component: () => import("@/views/admin/index.vue"),
+          // 拦截未登录用户进入admin
+          beforeEnter: (to, form) => {
+            const { userInfo } = useUserStore();
+
+            if (!userInfo) {
+              ElMessage.warning("请先进行登录");
+              return "/login";
+            } else {
+              return true;
+            }
+          },
           children: [
-            {
-              path: "personal",
-              name: "adminPersonal",
-              component: () => import("@/views/admin/pages/personal/index.vue"),
-            },
-            {
-              path: "code",
-              name: "adminCode",
-              component: () => import("@/views/admin/pages/code/index.vue"),
-            },
-            {
-              path: "content/user",
-              name: "adminContentUser",
-              component: () => import("@/views/admin/pages/content/user/index.vue"),
-            },
-            {
-              path: "content/code",
-              name: "adminContentCode",
-              component: () => import("@/views/admin/pages/content/code/index.vue"),
-            },
-            {
-              path: "content/comment",
-              name: "adminContentComment",
-              component: () => import("@/views/admin/pages/content/comment/index.vue"),
-            },
-            {
-              path: "content/space",
-              name: "adminContentSpace",
-              component: () => import("@/views/admin/pages/content/space/index.vue"),
-            },
-            {
-              path: "power/role",
-              name: "adminPowerRole",
-              component: () => import("@/views/admin/pages/power/role/index.vue"),
-            },
-            {
-              path: "power/menu",
-              name: "adminPowerMenu",
-              component: () => import("@/views/admin/pages/power/menu/index.vue"),
-            },
-            {
-              path: "space/code",
-              name: "adminSpaceCode",
-              component: () => import("@/views/admin/pages/space/code/index.vue"),
-            },
-            {
-              path: "space/people",
-              name: "adminSpacePeole",
-              component: () => import("@/views/admin/pages/space/people/index.vue"),
-            },
+            // {
+            //   path: "personal",
+            //   name: "adminPersonal",
+            //   component: () => import("@/views/admin/pages/personal/index.vue"),
+            // },
+            // {
+            //   path: "code",
+            //   name: "adminCode",
+            //   component: () => import("@/views/admin/pages/code/index.vue"),
+            // },
+            // {
+            //   path: "content/user",
+            //   name: "adminContentUser",
+            //   component: () => import("@/views/admin/pages/content/user/index.vue"),
+            // },
+            // {
+            //   path: "content/code",
+            //   name: "adminContentCode",
+            //   component: () => import("@/views/admin/pages/content/code/index.vue"),
+            // },
+            // {
+            //   path: "content/comment",
+            //   name: "adminContentComment",
+            //   component: () => import("@/views/admin/pages/content/comment/index.vue"),
+            // },
+            // {
+            //   path: "content/space",
+            //   name: "adminContentSpace",
+            //   component: () => import("@/views/admin/pages/content/space/index.vue"),
+            // },
+            // {
+            //   path: "power/role",
+            //   name: "adminPowerRole",
+            //   component: () => import("@/views/admin/pages/power/role/index.vue"),
+            // },
+            // {
+            //   path: "power/menu",
+            //   name: "adminPowerMenu",
+            //   component: () => import("@/views/admin/pages/power/menu/index.vue"),
+            // },
+            // {
+            //   path: "space/code",
+            //   name: "adminSpaceCode",
+            //   component: () => import("@/views/admin/pages/space/code/index.vue"),
+            // },
+            // {
+            //   path: "space/people",
+            //   name: "adminSpacePeole",
+            //   component: () => import("@/views/admin/pages/space/people/index.vue"),
+            // },
           ],
         },
       ],

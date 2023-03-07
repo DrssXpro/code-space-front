@@ -18,6 +18,7 @@ export interface IUserLoginInfo {
   email: string;
   roleId: number;
   roleName: string;
+  roleChar: string;
   avatar: string;
   spaceId: null | number;
   token: string;

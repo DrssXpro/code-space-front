@@ -73,3 +73,33 @@ export function handleMenuToTree(menuList: ITreeItem[]) {
 
   return treeList;
 }
+
+export interface IRouteItem {
+  name: string;
+  path: string;
+  component: any;
+  meta: {
+    title: string;
+  };
+}
+
+// 菜单列表动态路由注册
+export function handleMenuMapRoutes(menuTree: IMenuItem[]): any {
+  const modules = import.meta.glob("./../views/admin/pages/*/*.vue"); // vite动态路由添加踩坑
+  console.log(modules);
+  return menuTree
+    .filter((item) => item.menuType === "D")
+    .map((item) => {
+      console.log(item.comPath);
+      const routeItem: IRouteItem = {
+        name: item.name,
+        path: item.routePath!,
+        component: modules[`../views/admin/pages/${item.comPath!}`],
+        // component: ()=>import(`@/views/admin/pages/${item.comPath!}`) // ❌该方案在vite不适用
+        meta: {
+          title: item.name,
+        },
+      };
+      return routeItem;
+    });
+}
