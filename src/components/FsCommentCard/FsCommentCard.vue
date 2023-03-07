@@ -4,7 +4,7 @@
       <img src="@/assets/image/avatar.jpg" alt="" />
       <div class="user-info">
         <span>_Async__</span>
-        <el-tag effect="danger">空间主</el-tag>
+        <el-tag effect="dark">空间主</el-tag>
       </div>
     </div>
     <div class="fs-comment-card_content">
@@ -22,7 +22,7 @@
         <img src="@/assets/image/avatar.jpg" alt="" />
         <div class="user-info">
           <span>_Async__</span>
-          <el-tag effect="danger">空间主</el-tag>
+          <el-tag effect="dark">空间主</el-tag>
         </div>
       </div>
       <div class="child-content">

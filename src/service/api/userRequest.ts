@@ -1,6 +1,22 @@
 import type { IResponseData } from "@/types/responseType";
-import type { IUserAddByAdmin, IUserUpdateByAdmin } from "@/types/userType";
+import type { IUserAddByAdmin, IUserLoginInfo, IUserUpdateByAdmin } from "@/types/userType";
 import { myRequest } from "../";
+
+// 用户登录
+function userLogin(payload: { username: string; password: string }) {
+  return myRequest.post<IResponseData<IUserLoginInfo>>({
+    url: "/user/login",
+    data: payload,
+  });
+}
+
+// 用户注册
+function userRegister(payload: { username: string; password: string; email: string }) {
+  return myRequest.post<IResponseData>({
+    url: "/user/register",
+    data: payload,
+  });
+}
 
 // 管理员：获取用户列表
 function getUserListByAdmin(payload: { limit: number; offset: number }) {
@@ -33,4 +49,4 @@ function deleteUserByAdmin(id: string) {
   });
 }
 
-export { getUserListByAdmin, addUserByAdmin, updateUserByAdmin, deleteUserByAdmin };
+export { userLogin, userRegister, getUserListByAdmin, addUserByAdmin, updateUserByAdmin, deleteUserByAdmin };

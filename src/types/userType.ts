@@ -12,6 +12,17 @@ export interface IUserItem {
   };
 }
 
+// 用户登录拿到的信息
+export interface IUserLoginInfo {
+  name: string;
+  email: string;
+  roleId: number;
+  roleName: string;
+  avatar: string;
+  spaceId: null | number;
+  token: string;
+}
+
 // 管理员添加用户参数
 export interface IUserAddByAdmin {
   name: string;

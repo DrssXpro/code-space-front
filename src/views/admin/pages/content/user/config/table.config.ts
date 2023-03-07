@@ -41,9 +41,9 @@ const tableConfig: ITableConifg[] = [
     width: "70",
   },
   {
-    prop: "updatedAt",
+    prop: "createdAt",
     label: "创建时间",
-    slotName: "updatedAt",
+    slotName: "createdAt",
   },
   {
     prop: "updatedAt",
