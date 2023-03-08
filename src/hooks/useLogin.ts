@@ -5,7 +5,7 @@ import useUserStore from "@/stores/userStore";
 import { userLogin } from "@/service/api/userRequest";
 import { useRouter } from "vue-router";
 import { getRoleMenu } from "@/service/api/roleRequest";
-import { handleMenuMapRoutes, handleMenuToTree } from "@/utils/tools";
+import { handleMenuToTree } from "@/utils/tools";
 import type { IMenuItem } from "@/types/menuType";
 
 const { loginValidator } = validator;
@@ -50,13 +50,12 @@ export default function useLogin(formRef: Ref<FormInstance | undefined>) {
             // 存储menus菜单
             menus.value = res2.code === 1000 ? (handleMenuToTree(res2.data) as IMenuItem[]) : [];
             // 动态添加路由
-            addDynamicRoutes.value();
-
+            await addDynamicRoutes.value();
             // 保存信息至缓存
             saveUserInfo.value();
             res2.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
             // 注意需要先缓存再跳转
-            res2.code === 1000 && $router.push(mapRoutes.value![0].path);
+            res2.code === 1000 && $router.push({ path: mapRoutes.value ? mapRoutes.value[0].path : "/admin" });
           }
         } catch (err) {
           ElMessage.warning("登录失败");

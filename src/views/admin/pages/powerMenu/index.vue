@@ -144,7 +144,7 @@ const resetForm = () => {
 </script>
 
 <style scoped lang="less">
-@import "../../public.less";
+@import "../public.less";
 
 .content-menu-container {
   width: 100%;

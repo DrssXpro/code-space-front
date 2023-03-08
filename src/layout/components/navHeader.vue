@@ -21,27 +21,44 @@
         <i :class="[themeFlag ? 'fa fa-sun-o' : 'fa fa-moon-o']"></i>
       </fs-switch>
       <el-button type="danger"><a href="/share" target="_blank">分享</a></el-button>
-      <div class="nav-menu_right__operator" @click="$router.push('/login')">
-        <span>登录</span>
-        <span>/</span>
-        <span>注册</span>
+      <div class="nav-menu_right__operator">
+        <div class="login-operator" v-if="!userInfo" @click="$router.push('/login')">
+          <span>登录</span>
+          <span>/</span>
+          <span>注册</span>
+        </div>
+        <div class="login-info" v-else>
+          <img :src="userInfo.avatar" />
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              {{ userInfo.name }}
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="cancelLogin">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, toRefs } from "vue";
 import FsSwitch from "@/components/FsSwitch/FsSwitch.vue";
 import { useDark, useToggle } from "@vueuse/core";
 import { useRoute } from "vue-router";
-
+import useUserStore from "@/stores/userStore";
 import { __debounce } from "@/utils/tools";
 const $route = useRoute();
 
 const isDark = useDark();
 const themeFlag = ref(!isDark.value);
 const toggleDark = useToggle(isDark);
+
+const { userInfo, cancelLogin } = toRefs(useUserStore());
 
 const activeIndex = computed(() => menus.findIndex((item) => $route.fullPath.split("/")[1] === item.path.slice(1)));
 
@@ -154,6 +171,16 @@ const menus = [
       &:hover {
         font-weight: 700;
         color: var(--font-main-color);
+      }
+    }
+    .login-info {
+      display: flex;
+      align-items: center;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin: 0 10px;
       }
     }
   }

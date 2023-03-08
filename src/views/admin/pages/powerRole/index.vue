@@ -163,7 +163,7 @@ const resetForm = () => {
 </script>
 
 <style scoped lang="less">
-@import "../../public.less";
+@import "../public.less";
 
 .content-role-container {
   width: 100%;

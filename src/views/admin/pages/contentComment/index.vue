@@ -179,7 +179,7 @@ const tableData = [
 </script>
 
 <style scoped lang="less">
-@import "../../public.less";
+@import "../public.less";
 
 .content-comment-container {
   width: 100%;

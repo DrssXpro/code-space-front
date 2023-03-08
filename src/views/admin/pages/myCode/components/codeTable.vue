@@ -80,7 +80,7 @@ const handleEditCode = () => {
 </script>
 
 <style scoped lang="less">
-@import "../../public.less";
+@import "../public.less";
 .code-table {
   width: 100%;
   min-height: calc(100vh - 230px);

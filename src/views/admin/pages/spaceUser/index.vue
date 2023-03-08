@@ -1,6 +1,6 @@
 <template>
-  <div class="content-space-container">
-    <div class="content-space-form gap-item">
+  <div class="space-people-container">
+    <div class="space-people-form gap-item">
       <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
         <template #operator>
           <el-button type="danger" class="btn" @click="searchDataList"
@@ -12,7 +12,7 @@
         </template>
       </fs-form>
     </div>
-    <div class="content-space-table gap-item">
+    <div class="space-people-table gap-item">
       <fs-table
         :list-data="tableData"
         :list-count="50"
@@ -24,8 +24,8 @@
       >
         <template #header>
           <div class="header-config">
-            <span>角色列表</span>
-            <el-button type="primary" @click="showAddModal">添加角色</el-button>
+            <span>人员列表</span>
+            <el-button type="primary" @click="showAddModal">邀请人员</el-button>
           </div>
         </template>
         <template #createdAt="{ row }">
@@ -40,7 +40,7 @@
       <fs-modal
         v-model="modalData"
         ref="fsModalRef"
-        title="添加角色"
+        title="邀请人员"
         :modal-config="modalConfig"
         :mobal-rules="modalValid"
       >
@@ -68,7 +68,7 @@ const formConfigReactive = ref(formConfig);
 const loading = ref(false);
 
 const formData = ref({
-  title: "12",
+  title: "1",
   lan: "1",
 });
 
@@ -180,12 +180,12 @@ const tableData = [
 </script>
 
 <style scoped lang="less">
-@import "../../public.less";
+@import "../public.less";
 
-.content-space-container {
+.space-people-container {
   width: 100%;
 
-  .content-space-form {
+  .space-people-form {
     width: 100%;
     .public-container();
     .form-container();
@@ -199,7 +199,7 @@ const tableData = [
     }
   }
 
-  .content-space-table {
+  .space-people-table {
     width: 100%;
     min-height: calc(100vh - 230px);
     .public-container();

@@ -1,6 +1,6 @@
 <template>
-  <div class="content-code-container">
-    <div class="content-code-form gap-item">
+  <div class="space-code-container">
+    <div class="space-code-form gap-item">
       <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
         <template #operator>
           <el-button type="danger" class="btn" @click="searchDataList"
@@ -12,7 +12,7 @@
         </template>
       </fs-form>
     </div>
-    <div class="content-code-table gap-item">
+    <div class="space-code-table gap-item">
       <fs-table
         :list-data="tableData"
         :list-count="50"
@@ -145,12 +145,12 @@ const tableData = [
 </script>
 
 <style scoped lang="less">
-@import "../../public.less";
+@import "../public.less";
 
-.content-code-container {
+.space-code-container {
   width: 100%;
 
-  .content-code-form {
+  .space-code-form {
     width: 100%;
     .public-container();
     .form-container();
@@ -164,7 +164,7 @@ const tableData = [
     }
   }
 
-  .content-code-table {
+  .space-code-table {
     width: 100%;
     min-height: calc(100vh - 230px);
     .public-container();

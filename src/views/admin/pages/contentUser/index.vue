@@ -135,7 +135,7 @@ const searchDataList = () => {
 </script>
 
 <style scoped lang="less">
-@import "../../public.less";
+@import "../public.less";
 
 .content-user-container {
   width: 100%;

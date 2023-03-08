@@ -86,11 +86,9 @@ export interface IRouteItem {
 // 菜单列表动态路由注册
 export function handleMenuMapRoutes(menuTree: IMenuItem[]): any {
   const modules = import.meta.glob("./../views/admin/pages/*/*.vue"); // vite动态路由添加踩坑
-  console.log(modules);
   return menuTree
     .filter((item) => item.menuType === "D")
     .map((item) => {
-      console.log(item.comPath);
       const routeItem: IRouteItem = {
         name: item.name,
         path: item.routePath!,

@@ -51,7 +51,7 @@ const codes = [
 </script>
 
 <style scoped lang="less">
-@import "../../public.less";
+@import "../public.less";
 .code-rules {
   width: 100%;
   .public-container();

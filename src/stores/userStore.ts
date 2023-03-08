@@ -5,6 +5,8 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import $router from "@/router/index";
 import { getRoleMenu } from "@/service/api/roleRequest";
+import router from "@/router/index";
+import { ElMessage } from "element-plus";
 
 const useUserStore = defineStore("user", () => {
   const userInfo = ref<IUserLoginInfo | undefined>(JSON.parse(localStorage.getItem("userInfo") as string));
@@ -25,12 +27,6 @@ const useUserStore = defineStore("user", () => {
     const rid = userInfo.value?.roleId;
     const res = await getRoleMenu(rid!);
     mapRoutes.value = handleMenuMapRoutes(res.data);
-    console.log(mapRoutes.value);
-    // 删除原有路由
-    // mapRoutes.value?.forEach((item) => {
-    //   $router.removeRoute(item.name);
-    // });
-    // 添加新路由
     mapRoutes.value?.forEach((item) => {
       $router.addRoute("admin", item);
     });
@@ -40,6 +36,9 @@ const useUserStore = defineStore("user", () => {
   const cancelLogin = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("menus");
+    router.push("/login");
+    ElMessage.success("退出成功");
     userInfo.value = undefined;
   };
 
