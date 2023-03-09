@@ -73,7 +73,7 @@ function validateEmailCode(rule: any, value: any, callback: any) {
 function validateSpaceName(rule: any, value: any, callback: any) {
   if (value == "") {
     callback(new Error("空间名不能为空"));
-  } else if (value.length <= 4 || value.length >= 10) {
+  } else if (value.length < 4 || value.length > 10) {
     callback(new Error("空间名在4-10个字符之间"));
   } else {
     callback();
@@ -84,7 +84,7 @@ function validateSpaceName(rule: any, value: any, callback: any) {
 function validateSpaceIntroduce(rule: any, value: any, callback: any) {
   if (value == "") {
     callback(new Error("空间介绍不能为空"));
-  } else if (value.length <= 4 || value.length >= 50) {
+  } else if (value.length < 4 || value.length > 50) {
     callback(new Error("空间介绍在4-50个字符之间"));
   } else {
     callback();

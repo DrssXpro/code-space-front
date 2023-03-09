@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
 import { addMenu, getMenuList, updateMenu } from "@/service/api/menuRequest";
-import type { IMenuAddPayload, IMenuItem } from "@/types/menuType";
+import type { IMenuAddPayload } from "@/types/menuType";
 import { handleMenuToTree } from "@/utils/tools";
 import { ElMessage } from "element-plus";
 import { onMounted, reactive, ref } from "vue";

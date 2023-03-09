@@ -1,6 +1,6 @@
 <template>
   <div class="admin-menu-container">
-    <div class="menu-title">{{ userInfo?.roleChar }}</div>
+    <div class="menu-title">{{ userInfo?.role.roleChar }}</div>
     <el-menu
       :default-active="defaultRouter"
       router

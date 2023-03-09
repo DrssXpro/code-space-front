@@ -18,6 +18,13 @@ function userRegister(payload: { username: string; password: string; email: stri
   });
 }
 
+// 获取指定用户信息
+function getUserInfo(id: string) {
+  return myRequest.get<IResponseData<IUserLoginInfo>>({
+    url: `/user/info/${id}`,
+  });
+}
+
 // 管理员：获取用户列表
 function getUserListByAdmin(payload: { limit: number; offset: number }) {
   return myRequest.get<IResponseData>({
@@ -49,4 +56,12 @@ function deleteUserByAdmin(id: string) {
   });
 }
 
-export { userLogin, userRegister, getUserListByAdmin, addUserByAdmin, updateUserByAdmin, deleteUserByAdmin };
+export {
+  userLogin,
+  userRegister,
+  getUserInfo,
+  getUserListByAdmin,
+  addUserByAdmin,
+  updateUserByAdmin,
+  deleteUserByAdmin,
+};

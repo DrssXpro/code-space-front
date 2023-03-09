@@ -19,12 +19,7 @@
         <el-button type="danger" plain>退出</el-button>
       </div>
     </div>
-    <div class="user-info_count">
-      <div class="count-title">个人信息</div>
-      <div class="info-count">获赞数：79</div>
-      <div class="info-count">收藏数：101</div>
-      <div class="info-count">分享代码：100</div>
-    </div>
+
     <div class="user-edit">
       <el-button type="primary" text @click="showEditDialog">编辑</el-button>
     </div>
@@ -48,9 +43,11 @@ const showEditDialog = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
     width: 300px;
-    max-height: 500px;
     padding: 20px;
+    max-height: 360px;
     background-color: var(--el-bg-color-overlay);
     border-radius: 20px;
     .user-edit {

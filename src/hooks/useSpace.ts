@@ -1,9 +1,12 @@
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
 import validator from "@/utils/validator";
 import { reactive, ref, type Ref } from "vue";
+import { addSpace, updateSpace } from "@/service/api/spaceRequest";
+import useUserStore from "@/stores/userStore";
 
 const { spaceValidator } = validator;
 export default function useSpace(formRef: Ref<FormInstance | undefined>) {
+  const { userInfo } = useUserStore();
   const formState = reactive({
     // 空间名
     spacename: "",
@@ -15,6 +18,9 @@ export default function useSpace(formRef: Ref<FormInstance | undefined>) {
 
     // 是否使用默认头像
     isDefault: 1,
+
+    // 空间头像地址（不使用默认头像）
+    avatar: "",
   });
   // 生成空间头像
   const imageUrl = ref("");
@@ -27,14 +33,36 @@ export default function useSpace(formRef: Ref<FormInstance | undefined>) {
   };
 
   // 提交空间表单：设置空间信息
-  async function submitToSpace() {
+  async function submitToSpace(isEdit: boolean, cb?: Function) {
     if (!formRef.value) return;
     formRef.value.validate(async (valid) => {
       if (valid) {
-        try {
-          ElMessage.success("设置成功");
-        } catch (err) {
-          ElMessage.warning("设置失败");
+        if (!isEdit) {
+          // 创建操作
+          try {
+            const userId = userInfo?.id;
+            const res = await addSpace(userId!, {
+              spaceintroduce: formState.spaceintroduce,
+              spacename: formState.spacename,
+              inviteCode: formState.inviteCode,
+              avatar: formState.avatar.length ? formState.avatar : undefined,
+            });
+            res.code === 1000 ? ElMessage.success("设置成功") : ElMessage.warning(res.message);
+            res.code === 1000 && cb && cb(); // 操作成功后执行回调
+          } catch (err) {
+            ElMessage.warning("设置失败");
+          }
+        } else {
+          // 修改操作
+          const spaceId = userInfo?.space?.spaceId as number;
+          const res = await updateSpace(spaceId, {
+            spaceintroduce: formState.spaceintroduce,
+            spacename: formState.spacename,
+            inviteCode: formState.inviteCode,
+            avatar: formState.avatar.length ? formState.avatar : undefined,
+          });
+          res.code === 1000 ? ElMessage.success("修改成功") : ElMessage.warning(res.message);
+          res.code === 1000 && cb && cb(); // 操作成功后执行回调
         }
       } else {
         ElMessage.warning("输入内容不符合规范");

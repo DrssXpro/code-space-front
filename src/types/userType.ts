@@ -14,14 +14,20 @@ export interface IUserItem {
 
 // 用户登录拿到的信息
 export interface IUserLoginInfo {
+  id: string;
   name: string;
   email: string;
-  roleId: number;
-  roleName: string;
-  roleChar: string;
   avatar: string;
-  spaceId: null | number;
   token: string;
+  role: {
+    roleName: string;
+    roleId: number;
+    roleChar: string;
+  };
+  space?: {
+    spaceId: number;
+    spaceName: string;
+  };
 }
 
 // 管理员添加用户参数

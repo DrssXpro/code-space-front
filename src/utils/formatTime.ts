@@ -24,4 +24,14 @@ function timeTypeOne(date: string): string {
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
-export { formatTime };
+// 获取两个时间戳之间的天数差
+function getDisDay(time1: number, time2: number) {
+  const day = 1000 * 60 * 60 * 24;
+  const d1 = new Date(time1).getTime();
+  const d2 = new Date(time2).getTime();
+
+  const diff = Math.round(Math.abs(d2 - d1) / day);
+  return diff;
+}
+
+export { formatTime, getDisDay };

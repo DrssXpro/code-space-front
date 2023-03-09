@@ -1,12 +1,11 @@
 <template>
-  <el-card shadow="never" class="space-card">
-    <div class="card-title">空间信息</div>
+  <el-dialog v-model="isShow" title="编辑空间信息" width="25%" append-to-body>
     <el-form ref="formRef" :model="formState" :rules="spaceRules">
       <el-form-item label="空间名称" label-width="90" prop="spacename">
         <el-input v-model="formState.spacename" placeholder="请输入空间名称"></el-input>
       </el-form-item>
       <el-form-item label="空间介绍" label-width="90" prop="spaceintroduce">
-        <el-input type="textarea" v-model="formState.spaceintroduce" placeholder="请输入空间名称"></el-input>
+        <el-input type="textarea" v-model="formState.spaceintroduce" placeholder="请输入空间介绍"></el-input>
       </el-form-item>
       <el-form-item label="空间邀请码" label-width="90" prop="inviteCode">
         <div class="invite-code">
@@ -32,30 +31,29 @@
           </el-upload>
         </div>
       </el-form-item>
-      <el-button type="info" class="btn" @click="handleCreateSpace">提交</el-button>
+      <el-button type="info" class="btn" @click="handleSubmitEdit">提交</el-button>
     </el-form>
-  </el-card>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ElMessage, type FormInstance, type UploadProps } from "element-plus";
 import { ref } from "vue";
 import useSpace from "@/hooks/useSpace";
-import useUserStore from "@/stores/userStore";
-
+import { ElMessage, type FormInstance, type UploadProps } from "element-plus";
+import type { ISpaceDetail } from "@/types/spaceType";
+import mitter from "@/utils/mitter";
 const formRef = ref<FormInstance>();
 
-const emit = defineEmits<{
-  (e: "createSuccess"): void;
-}>();
-const { spaceRules, formState, imageUrl, submitToSpace, generateInviteCode } = useSpace(formRef);
-const { getUserInfoData } = useUserStore();
+const isShow = ref(false);
 
-const handleCreateSpace = () => {
-  submitToSpace(false, async () => {
-    await getUserInfoData();
+const { formState, imageUrl, spaceRules, submitToSpace, generateInviteCode } = useSpace(formRef);
 
-    emit("createSuccess");
+// 提交修改表单
+const handleSubmitEdit = () => {
+  // 成功后关闭弹窗
+  submitToSpace(true, () => {
+    isShow.value = false;
+    mitter.emit("refreshInfo");
   });
 };
 
@@ -75,28 +73,33 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
 
   return true;
 };
+
+// 控制dialog显示
+const controllModal = (show: boolean, detail?: ISpaceDetail) => {
+  isShow.value = show;
+  formState.spacename = detail?.spaceDetail.name || "";
+  formState.spaceintroduce = detail?.spaceDetail.introduce || "";
+  formState.inviteCode = detail?.spaceDetail.inviteCode || "";
+  imageUrl.value = detail?.spaceDetail.avatar || "";
+};
+
+defineExpose({
+  controllModal,
+});
 </script>
 
 <style scoped lang="less">
-.space-card {
-  width: 350px;
-  padding: 20px;
-  .card-title {
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 20px;
-  }
-  .invite-code {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .btn {
-    display: block;
-    margin: 0 auto;
-    width: 140px;
-  }
+.invite-code {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+.btn {
+  display: block;
+  margin: 0 auto;
+  width: 140px;
+}
+
 .avatar-form {
   display: flex;
   flex-direction: column;
@@ -107,6 +110,10 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
   height: 100px;
   display: block;
   margin-top: 10px;
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
   .upload-icon {
     width: 100px;
     height: 100px;

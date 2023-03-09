@@ -42,7 +42,7 @@ export default function useLogin(formRef: Ref<FormInstance | undefined>) {
 
           if (res.code === 1000) {
             // 获取该角色的菜单列表
-            const res2 = await getRoleMenu(res.data.roleId);
+            const res2 = await getRoleMenu(res.data.role.roleId);
             // 个人信息、树形菜单存储至store 缓存
             const { userInfo, menus, mapRoutes, saveUserInfo, addDynamicRoutes } = toRefs(useUserStore());
 
@@ -55,9 +55,11 @@ export default function useLogin(formRef: Ref<FormInstance | undefined>) {
             saveUserInfo.value();
             res2.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
             // 注意需要先缓存再跳转
+            console.log("check:", !!mapRoutes.value);
             res2.code === 1000 && $router.push({ path: mapRoutes.value ? mapRoutes.value[0].path : "/admin" });
           }
         } catch (err) {
+          console.log("check:", err);
           ElMessage.warning("登录失败");
         }
       } else {

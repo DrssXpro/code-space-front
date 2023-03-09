@@ -7,6 +7,7 @@ import $router from "@/router/index";
 import { getRoleMenu } from "@/service/api/roleRequest";
 import router from "@/router/index";
 import { ElMessage } from "element-plus";
+import { getUserInfo } from "@/service/api/userRequest";
 
 const useUserStore = defineStore("user", () => {
   const userInfo = ref<IUserLoginInfo | undefined>(JSON.parse(localStorage.getItem("userInfo") as string));
@@ -24,12 +25,21 @@ const useUserStore = defineStore("user", () => {
 
   // 动态添加路由
   const addDynamicRoutes = async () => {
-    const rid = userInfo.value?.roleId;
+    const rid = userInfo.value?.role.roleId;
     const res = await getRoleMenu(rid!);
     mapRoutes.value = handleMenuMapRoutes(res.data);
     mapRoutes.value?.forEach((item) => {
       $router.addRoute("admin", item);
     });
+  };
+
+  // 重新获取个人信息并保存(刷新存储)
+  const getUserInfoData = async () => {
+    const id = userInfo.value?.id;
+    const res = await getUserInfo(id!);
+    userInfo.value = res.data;
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("userInfo", JSON.stringify(res.data));
   };
 
   // 注销登录
@@ -49,6 +59,7 @@ const useUserStore = defineStore("user", () => {
     saveUserInfo,
     cancelLogin,
     addDynamicRoutes,
+    getUserInfoData,
   };
 });
 

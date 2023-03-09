@@ -35,7 +35,6 @@ const handleClick = (tab: any, event: Event) => {
 <style scoped lang="less">
 .user-content-container {
   flex: 1;
-
   padding: 20px;
   background-color: var(--el-bg-color-overlay);
   border-top-left-radius: 20px;
