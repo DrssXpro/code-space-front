@@ -25,6 +25,22 @@ function getUserInfo(id: string) {
   });
 }
 
+// 获取邮箱验证码
+function getEmailCode(payload: { name: string; email: string }) {
+  return myRequest.post<IResponseData>({
+    url: "/email/sendCode",
+    data: payload,
+  });
+}
+
+// 验证验证码并修改密码
+function verifyEmailCode(payload: { name: string; email: string; password: string; code: string }) {
+  return myRequest.post<IResponseData>({
+    url: "/email/verifyCode",
+    data: payload,
+  });
+}
+
 // 管理员：获取用户列表
 function getUserListByAdmin(payload: { limit: number; offset: number }) {
   return myRequest.get<IResponseData>({
@@ -60,6 +76,8 @@ export {
   userLogin,
   userRegister,
   getUserInfo,
+  getEmailCode,
+  verifyEmailCode,
   getUserListByAdmin,
   addUserByAdmin,
   updateUserByAdmin,

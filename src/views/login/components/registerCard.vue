@@ -6,7 +6,7 @@
   >
     <div class="card-content">
       <h2 class="title">注册</h2>
-      <el-form class="card-form" label-position="left" ref="formRef" :model="registerState" :rules="registerRules">
+      <el-form class="card-form" label-position="right" ref="formRef" :model="registerState" :rules="registerRules">
         <el-form-item label="用户名：" label-width="90px" prop="username">
           <el-input v-model="registerState.username" placeholder="请输入用户名"></el-input>
         </el-form-item>

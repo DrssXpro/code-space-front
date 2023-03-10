@@ -27,7 +27,38 @@
         <el-button type="danger" class="edit-btn" @click="handleEdit">编辑信息</el-button>
       </div>
     </div>
-    <div class="space-content_right"></div>
+    <div class="space-content_right">
+      <div class="space-count">
+        <div class="count-item">
+          <i class="count-icon fa fa-user"></i>
+          <div class="count">{{ spaceDetail?.userCount }}</div>
+          <div class="desc">所有成员</div>
+        </div>
+        <div class="count-item">
+          <i class="count-icon fa fa-user"></i>
+          <div class="count">{{ spaceDetail?.taskCount }}</div>
+          <div class="desc">所有任务</div>
+        </div>
+        <div class="count-item">
+          <i class="count-icon fa fa-user"></i>
+          <div class="count">{{ spaceDetail?.codeCount }}</div>
+          <div class="desc">所有代码</div>
+        </div>
+        <div class="count-item">
+          <i class="count-icon fa fa-user"></i>
+          <div class="count">100</div>
+          <div class="desc">所有成员</div>
+        </div>
+      </div>
+      <div class="code-table">
+        <div class="code-title">最新代码</div>
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column prop="date" label="Date" width="180" />
+          <el-table-column prop="name" label="Name" width="180" />
+          <el-table-column prop="address" label="Address" />
+        </el-table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -59,6 +90,59 @@ const getSpaceDetailData = async () => {
 mitter.on("refreshInfo", () => {
   getSpaceDetailData();
 });
+
+const tableData = [
+  {
+    date: "2016-05-03",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+  {
+    date: "2016-05-02",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+  {
+    date: "2016-05-04",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+  {
+    date: "2016-05-01",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+  {
+    date: "2016-05-01",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+  {
+    date: "2016-05-01",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+  {
+    date: "2016-05-01",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+  {
+    date: "2016-05-01",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+  {
+    date: "2016-05-01",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+  {
+    date: "2016-05-01",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
+  },
+];
 
 onActivated(() => {
   getSpaceDetailData();
@@ -152,10 +236,44 @@ const handleEdit = () => {
   &_right {
     flex: 1;
     height: calc(100vh - 110px);
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    background-color: var(--el-bg-color-overlay);
-    padding: 20px;
+    margin-right: 20px;
+    .space-count {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      .count-item {
+        flex: 1;
+        border-radius: 10px;
+        background-color: var(--el-bg-color-overlay);
+        padding: 30px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        .count-icon {
+          font-size: 30px;
+        }
+        .count {
+          font-size: 25px;
+          font-weight: 700;
+        }
+        .desc {
+          color: var(--el-text-color-secondary);
+        }
+      }
+    }
+    .code-table {
+      margin-top: 20px;
+      background-color: var(--el-bg-color-overlay);
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      padding: 20px;
+      .code-title {
+        margin-bottom: 20px;
+        font-size: 22px;
+      }
+    }
   }
 }
 </style>
