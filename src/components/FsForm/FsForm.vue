@@ -70,6 +70,7 @@ const formData = ref({ ...props.modelValue });
 const formConfigReactive = ref(props.formConfig);
 const remoteLoading = ref(false);
 
+// 远程搜索获取数据方法
 const remoteMethod = async (searchValue: string, field: string) => {
   if (searchValue.length) {
     remoteLoading.value = true;
@@ -89,7 +90,6 @@ const remoteMethod = async (searchValue: string, field: string) => {
 watch(
   () => formData.value,
   (newValue) => {
-    console.log("check:", newValue);
     emit("update:modelValue", newValue);
   },
   {

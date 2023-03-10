@@ -13,11 +13,17 @@ const validator = {
     email: validateEmail,
   },
 
-  // 空间信息展示校验
+  // 空间信息表单校验
   spaceValidator: {
     spacename: validateSpaceName,
     spaceintroduce: validateSpaceIntroduce,
     inviteCode: validateInviteCode,
+  },
+  // 任务信息表单校验
+  taskValidator: {
+    name: validateTaskName,
+    introduce: validateTaskIntroduce,
+    extime: validateTaskTime,
   },
 };
 
@@ -95,6 +101,39 @@ function validateSpaceIntroduce(rule: any, value: any, callback: any) {
 function validateInviteCode(rule: any, value: any, callback: any) {
   if (value == "") {
     callback(new Error("需要生成邀请码"));
+  } else {
+    callback();
+  }
+}
+
+// 检验任务名
+function validateTaskName(rule: any, value: any, callback: any) {
+  if (value == "") {
+    callback(new Error("任务名不能为空"));
+  } else if (value.length < 4 || value.length > 15) {
+    callback(new Error("任务名在4-15个字符之间"));
+  } else {
+    callback();
+  }
+}
+
+// 检验任务详情
+function validateTaskIntroduce(rule: any, value: any, callback: any) {
+  if (value == "") {
+    callback(new Error("任务详情不能为空"));
+  } else if (value.length < 4 || value.length > 80) {
+    callback(new Error("任务详情在4-80个字符之间"));
+  } else {
+    callback();
+  }
+}
+
+// 检查任务过期时间
+function validateTaskTime(rule: any, value: any, callback: any) {
+  if (value == "") {
+    callback(new Error("过期时间不能为空"));
+  } else if (Date.now() > new Date(value).getTime()) {
+    callback(new Error("过期时间不能小于当前时间"));
   } else {
     callback();
   }
