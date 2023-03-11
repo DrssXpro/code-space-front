@@ -1,20 +1,16 @@
 <template>
   <div class="content-role-container">
     <div class="content-role-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
+      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchForm">
         <template #operator>
-          <el-button type="danger" class="btn" @click="searchDataList"
-            ><i class="fa fa-search"></i><span>查询</span></el-button
-          >
-          <el-button type="info" class="btn" @click="resetForm"
-            ><i class="fa fa-refresh"></i><span>重置</span></el-button
-          >
+          <el-button type="danger" class="btn" @click="searchDataList">查询</el-button>
+          <el-button type="info" class="btn" @click="resetForm">重置</el-button>
         </template>
       </fs-form>
     </div>
     <div class="content-role-table gap-item">
       <fs-table
-        :list-data="tableState.tableList"
+        :list-data="tableState.tableData"
         :list-count="tableState.total"
         :loading="tableState.loading"
         :page-size="tableState.pageSize"
@@ -49,58 +45,33 @@
       </fs-table>
     </div>
 
-    <role-modal
-      ref="roleModalRef"
-      @refreash-table="getRoleListData(tableState.pageSize, tableState.current - 1)"
-      :current-power="currentPower"
-      :is-edit="isEdit"
-    />
+    <role-modal ref="roleModalRef" @refreash-table="getRoleListData" :current-power="currentPower" :is-edit="isEdit" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, ref } from "vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
 import roleModal from "./components/roleModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { deleteRole, getRoleList, getRoleMenu, updateRoleStatus } from "@/service/api/roleRequest";
+import useAdminRole from "@/hooks/useAdminRole";
+import { getRoleMenu, updateRoleStatus } from "@/service/api/roleRequest";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { formatTime } from "@/utils/formatTime";
-import type { IRoleItem } from "@/types/roleType";
 
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const roleModalRef = ref<InstanceType<typeof roleModal>>();
-const formConfigReactive = ref(formConfig);
 
-const formData = ref({
-  title: "1",
-  lan: "1",
-});
-
-const tableState = reactive({
-  tableList: [] as IRoleItem[],
-  current: 1,
-  pageSize: 10,
-  total: 0,
-  loading: false,
-});
+const { tableState, searchForm, getRoleListData, deleteRoleByAdmin } = useAdminRole();
 
 const isEdit = ref(false);
 const currentPower = ref<number[]>([]);
 
 onMounted(() => {
-  getRoleListData(tableState.pageSize, tableState.current - 1);
+  getRoleListData();
 });
-
-// 获取角色列表
-const getRoleListData = (limit: number, offset: number) => {
-  getRoleList({ limit, offset }).then((res) => {
-    tableState.total = res.data.count;
-    tableState.tableList = res.data.rows;
-  });
-};
 
 // change方法第一次进入会触发switch改变，改用before-change
 const beforeStatusChange = (row: any) => {
@@ -114,7 +85,7 @@ const beforeStatusChange = (row: any) => {
       .then(async () => {
         ElMessage.success(`${text}成功`);
         await updateRoleStatus(row.id, row.status === 0 ? 1 : 0);
-        getRoleListData(tableState.pageSize, tableState.current - 1);
+        getRoleListData();
         resolve(true);
       })
       .catch(() => {
@@ -125,14 +96,8 @@ const beforeStatusChange = (row: any) => {
 
 // 删除角色逻辑
 const handleDeleteRole = (row: any) => {
-  ElMessageBox.confirm(`确定要删除id为 ${row.id} 的这个角色吗？`, {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(async () => {
-    const res = await deleteRole(row.id);
-    getRoleListData(tableState.pageSize, tableState.current - 1);
-    res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+  deleteRoleByAdmin(row.id as number, () => {
+    getRoleListData();
   });
 };
 
@@ -150,7 +115,7 @@ const showModal = async (show: boolean, row?: any) => {
   }
 };
 const searchDataList = () => {
-  console.log("check:", formData.value);
+  console.log("check:", searchForm.value);
 };
 
 const handlePageChange = (current: number) => {

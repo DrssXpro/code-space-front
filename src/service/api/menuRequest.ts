@@ -1,4 +1,4 @@
-import type { IMenuItem, IMenuAddPayload } from "@/types/menuType";
+import type { IMenuItem, IMenuPayload } from "@/types/menuType";
 import type { IResponseData, IList } from "@/types/responseType";
 import { myRequest } from "../";
 
@@ -10,7 +10,7 @@ function getMenuList() {
 }
 
 // 添加菜单
-function addMenu(payload: IMenuAddPayload) {
+function addMenu(payload: IMenuPayload) {
   return myRequest.post<IResponseData>({
     url: "/menu/add",
     data: payload,
@@ -18,7 +18,7 @@ function addMenu(payload: IMenuAddPayload) {
 }
 
 // 修改菜单
-function updateMenu(id: number, payload: IMenuAddPayload) {
+function updateMenu(id: number, payload: IMenuPayload) {
   return myRequest.post<IResponseData>({
     url: `/menu/update/${id}`,
     data: payload,

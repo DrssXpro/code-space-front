@@ -9,6 +9,6 @@ export interface IFormConfigItem {
 }
 
 export interface ISelectItem {
-  value: string;
+  value: string | number;
   text: string;
 }

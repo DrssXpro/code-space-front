@@ -16,7 +16,7 @@ export interface IMenuItem {
 }
 
 // 添加菜单参数
-export interface IMenuAddPayload {
+export interface IMenuPayload {
   name: string;
   menuIcon: string;
   routePath: string;

@@ -1,7 +1,7 @@
 <template>
   <div class="content-menu-container">
     <div class="content-menu-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
+      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="formData">
         <template #operator>
           <el-button type="danger" class="btn" @click="searchDataList"
             ><i class="fa fa-search"></i><span>查询</span></el-button
@@ -14,7 +14,7 @@
     </div>
     <div class="content-menu-table gap-item">
       <fs-table
-        :list-data="tableState.tableList"
+        :list-data="tableState.tableData"
         :loading="tableState.loading"
         :show-footer="false"
         :table-config="tableConfig"
@@ -52,82 +52,27 @@ import FsTable from "@/components/FsTable/FsTable.vue";
 import menuModal from "./components/menuModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { deleteMenu, getMenuList } from "@/service/api/menuRequest";
-import type { IMenuItem } from "@/types/menuType";
-import { handleMenuToTree } from "@/utils/tools";
 import { formatTime } from "@/utils/formatTime";
-import { ElMessage, ElMessageBox } from "element-plus";
-
+import useMenu from "@/hooks/useMenu";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const menuModalRef = ref<InstanceType<typeof menuModal>>();
-const formConfigReactive = ref(formConfig);
 const formData = ref({
   title: "12312321",
   lan: "1",
 });
 
-const isEdit = ref(false);
+const { tableState, getMenuListData, deleteMenuData } = useMenu();
 
-const tableState = reactive({
-  tableList: [] as IMenuItem[],
-  current: 1,
-  pageSize: 10,
-  total: 0,
-  loading: false,
-});
+const isEdit = ref(false);
 
 onMounted(() => {
   getMenuListData();
 });
 
-// 获取菜单数据
-const getMenuListData = () => {
-  tableState.loading = true;
-  getMenuList().then((res) => {
-    tableState.tableList = JSON.parse(JSON.stringify(handleMenuToTree(res.data.rows)));
-    console.log("check:", tableState.tableList);
-    tableState.total = res.data.count;
-    tableState.loading = false;
-  });
-};
-
 // 删除指定的菜单
 const handleDeleteMenu = (row: any) => {
-  ElMessageBox.confirm(`确定要删除id为 ${row.id} 的这个菜单或权限吗？`, {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(async () => {
-    const res = await deleteMenu(row.id);
-    getMenuListData();
-    res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
-  });
+  deleteMenuData(row.id!, () => getMenuListData());
 };
-
-const getRemoteSelect = (searchValue: string) => {
-  const more = [
-    {
-      value: "4",
-      text: "1",
-    },
-    {
-      value: "5",
-      text: "2",
-    },
-    {
-      value: "6",
-      text: "3",
-    },
-  ];
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log("cb:", searchValue);
-      resolve(more);
-    }, 2000);
-  });
-};
-
-formConfigReactive.value.find((item) => item.field === "test")!.remoteSelectFunction = getRemoteSelect;
 
 const searchDataList = () => {
   console.log("check:", formData.value);

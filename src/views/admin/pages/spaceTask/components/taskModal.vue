@@ -18,7 +18,7 @@
     </el-form>
     <template #footer>
       <el-button @click="controllModal(false)">取消</el-button>
-      <el-button type="primary" :loading="formState.loading" @click="handleSubmit">确定</el-button>
+      <el-button type="primary" :loading="formLoading" @click="handleSubmit">确定</el-button>
     </template>
   </el-dialog>
 </template>
@@ -45,7 +45,10 @@ const currentId = ref(0); // 编辑：当前任务id
 const formRef = ref<FormInstance>();
 
 // hooks:封装增删改查操作
-const { showModal, updateTaskData, addTaskData, formRules, formState } = useTask(userInfo?.space?.spaceId!, formRef);
+const { showModal, formRules, formState, formLoading, updateTaskData, addTaskData } = useTask(
+  userInfo?.space?.spaceId!,
+  formRef
+);
 
 // 控制表单状态并设置数据回显
 const controllModal = (show: boolean, row?: any) => {

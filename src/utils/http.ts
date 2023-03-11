@@ -1,3 +1,4 @@
+import useUserStore from "@/stores/userStore";
 import axios, {
   type AxiosInstance,
   type AxiosRequestConfig,
@@ -51,6 +52,12 @@ class FsRequest {
     });
 
     this.instance.interceptors.response.use((config) => {
+      console.log("check:", config.data);
+      if (config.data.code === 1100) {
+        ElMessage.warning(config.data.message);
+        const { cancelLogin } = useUserStore();
+        cancelLogin();
+      }
       deleteRequestMap(config, this.abortControllerMap);
       return config.data;
     });
