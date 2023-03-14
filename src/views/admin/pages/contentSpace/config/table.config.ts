@@ -2,36 +2,31 @@ import type { ITableConifg } from "@/components/FsTable/type";
 
 const tableConfig: ITableConifg[] = [
   {
-    prop: "test1",
+    prop: "id",
     label: "编号",
     width: "100",
-    slotName: "test1",
+    slotName: "id",
   },
   {
-    prop: "test2",
-    label: "用户名",
+    prop: "name",
+    label: "空间名",
     width: "100",
-    slotName: "test2",
+    slotName: "name",
   },
   {
-    prop: "test3",
-    label: "头像",
-    slotName: "test3",
+    prop: "introduce",
+    label: "空间介绍",
+    slotName: "introduce",
+  },
+  {
+    prop: "user.authorName",
+    label: "空间主",
+    slotName: "user.authorName",
   },
   {
     prop: "createdAt",
-    label: "邮箱",
+    label: "创建时间",
     slotName: "createdAt",
-  },
-  {
-    prop: "updatedAt",
-    label: "身份",
-    slotName: "updatedAt",
-  },
-  {
-    prop: "updatedAt",
-    label: "所属空间",
-    slotName: "updatedAt",
   },
   {
     prop: "updatedAt",
@@ -41,6 +36,7 @@ const tableConfig: ITableConifg[] = [
   {
     prop: "operator",
     label: "操作",
+    width: "70",
     slotName: "operator",
   },
 ];

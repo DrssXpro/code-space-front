@@ -53,6 +53,7 @@ interface ITreeItem {
   parentId: null | number;
   [key: string]: any;
 }
+
 export function handleMenuToTree(menuList: ITreeItem[]) {
   const treeList: ITreeItem[] = [],
     treeMap: any = {};
@@ -62,7 +63,6 @@ export function handleMenuToTree(menuList: ITreeItem[]) {
     }
     treeMap[item.id] = item;
   });
-
   menuList.forEach((item) => {
     if (item.parentId && treeMap[item.parentId]) {
       treeMap[item.parentId].children.push(item);

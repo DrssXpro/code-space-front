@@ -131,13 +131,13 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   const token = localStorage.getItem("token");
-  const whiteList = ["/login", "/square", "/search", "/space"];
+  const whiteList = ["/login", "/square", "/search", "/space", "/share"];
 
   if (token) {
     // 已经有登录态则不能再访问login页面，强制访问跳转至个人页面
     if (to.path === "/login") {
       return "/admin";
-    } else {
+    } else if (!whiteList.includes(to.path)) {
       const { addDynamicRoutes, mapRoutes } = useUserStore();
       !mapRoutes &&
         addDynamicRoutes()
@@ -148,6 +148,8 @@ router.beforeEach((to, from) => {
             ElMessage.warning("获取权限失败");
             return "/login";
           });
+    } else {
+      return true;
     }
   } else {
     // 没有token，判断访问路由是否在白名单内，不在需要强制转到login

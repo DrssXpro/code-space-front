@@ -11,6 +11,14 @@ function getRoleList(payload: { limit: number; offset: number }) {
   });
 }
 
+// 获取空间对应的角色列表
+function getRoleListBySpace(payload: { limit: number; offset: number }) {
+  return myRequest.get<IResponseData<IList<IRoleItem>>>({
+    url: "/role_space_list",
+    params: payload,
+  });
+}
+
 // 获取角色列表菜单
 function getRoleMenu(id: number) {
   return myRequest.get<IResponseData<IMenuItem[]>>({
@@ -22,6 +30,14 @@ function getRoleMenu(id: number) {
 function addRole(payload: IRoleFormPayload) {
   return myRequest.post<IResponseData>({
     url: "/role/add",
+    data: payload,
+  });
+}
+
+// 空间主：添加角色
+function addRoleBySpace(payload: IRoleFormPayload) {
+  return myRequest.post<IResponseData>({
+    url: "/role_space/add",
     data: payload,
   });
 }
@@ -49,4 +65,13 @@ function deleteRole(id: number) {
   });
 }
 
-export { getRoleList, addRole, updateRole, updateRoleStatus, getRoleMenu, deleteRole };
+export {
+  getRoleList,
+  getRoleListBySpace,
+  addRole,
+  addRoleBySpace,
+  updateRole,
+  updateRoleStatus,
+  getRoleMenu,
+  deleteRole,
+};

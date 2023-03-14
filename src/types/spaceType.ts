@@ -6,6 +6,19 @@ export interface ISpacePayload {
   avatar?: string;
 }
 
+// 空间项
+export interface ISpaceItem {
+  id: number;
+  name: string;
+  introduce: string;
+  avatar: string;
+  createdAt: string;
+  updatedAt: string;
+  "user.authorId": string;
+  "user.authorAvatar": string;
+  "user.authorName": string;
+}
+
 // 获取到空间详情
 export interface ISpaceDetail {
   spaceDetail: {

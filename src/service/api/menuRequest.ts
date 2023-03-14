@@ -9,6 +9,13 @@ function getMenuList() {
   });
 }
 
+// 空间主：获取菜单权限列表
+function getMenuListBySpace() {
+  return myRequest.get<IResponseData<IMenuItem[]>>({
+    url: "/menu/space_list",
+  });
+}
+
 // 添加菜单
 function addMenu(payload: IMenuPayload) {
   return myRequest.post<IResponseData>({
@@ -32,4 +39,4 @@ function deleteMenu(id: number) {
   });
 }
 
-export { getMenuList, addMenu, updateMenu, deleteMenu };
+export { getMenuList, getMenuListBySpace, addMenu, updateMenu, deleteMenu };

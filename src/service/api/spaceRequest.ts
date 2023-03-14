@@ -1,5 +1,5 @@
-import type { IResponseData } from "@/types/responseType";
-import type { ISpacePayload, ISpaceDetail } from "@/types/spaceType";
+import type { IList, IResponseData } from "@/types/responseType";
+import type { ISpacePayload, ISpaceDetail, ISpaceItem } from "@/types/spaceType";
 import { myRequest } from "..";
 
 // 添加空间
@@ -18,6 +18,14 @@ function updateSpace(spaceId: number, payload: ISpacePayload) {
   });
 }
 
+// 获取空间列表
+function getSpaceList(payload: { limit: number; offset: number }) {
+  return myRequest.get<IResponseData<IList<ISpaceItem>>>({
+    url: "/space/list",
+    params: payload,
+  });
+}
+
 // 获取空间详情
 function getSpaceDetail(spaceId: number) {
   return myRequest.get<IResponseData<ISpaceDetail>>({
@@ -25,4 +33,11 @@ function getSpaceDetail(spaceId: number) {
   });
 }
 
-export { addSpace, updateSpace, getSpaceDetail };
+// 删除空间：管理员删除
+function deleteSpace(spaceId: number) {
+  return myRequest.post<IResponseData>({
+    url: `/space/delete/${spaceId}`,
+  });
+}
+
+export { addSpace, updateSpace, getSpaceList, getSpaceDetail, deleteSpace };
