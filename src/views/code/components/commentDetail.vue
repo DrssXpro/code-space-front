@@ -3,7 +3,7 @@
     <template #header> <span style="font-size: 24px; font-weight: 700">评论区</span></template>
     <div class="comment-detail">
       <div class="comment-info">
-        <span style="font-size: 18px">64 个评论</span>
+        <span style="font-size: 18px">{{ commentState.total }} 个评论</span>
         <el-radio-group v-model="commentSort">
           <el-radio-button label="0">最新</el-radio-button>
           <el-radio-button label="1">最热</el-radio-button>
@@ -17,8 +17,8 @@
         </div>
       </div>
       <div class="comment-list">
-        <div class="comment-item" v-for="i in 5">
-          <fs-comment-card />
+        <div class="comment-item" v-for="item in commentState.commentList" :key="item.id">
+          <fs-comment-card :comment-detail="item" />
         </div>
         <div class="comment-pagination">
           <el-pagination background layout="prev, pager, next" :total="50" />
@@ -29,10 +29,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import FsCommentCard from "@/components/FsCommentCard/FsCommentCard.vue";
 import FsTextEditor from "@/components/FsTextEditor/FsTextEditor.vue";
+import type { ICommentItem } from "@/types/commentType";
+import { useRoute } from "vue-router";
+import { getCurrentCodeComment } from "@/service/api/codeRequest";
 const commentSort = ref("0");
+
+const $route = useRoute();
+const codeId = $route.params.id as string; // 拿到路由id
+
+const commentState = reactive({
+  commentList: [] as ICommentItem[],
+  page: 1,
+  pageSize: 10,
+  total: 0,
+});
+
+onMounted(() => {
+  getCommentList();
+});
+
+const getCommentList = async () => {
+  const res = await getCurrentCodeComment(codeId, { limit: commentState.pageSize, offset: commentState.page - 1 });
+  commentState.commentList = res.data.rows;
+  commentState.total = res.data.count;
+};
 </script>
 
 <style scoped lang="less">

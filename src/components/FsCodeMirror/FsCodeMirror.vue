@@ -31,7 +31,7 @@ const codeContent = ref("");
 const props = defineProps<{
   code: string;
   disabled: boolean;
-  height: string;
+  height?: string;
 }>();
 
 const isDark = useDark();

@@ -2,29 +2,29 @@
   <el-card shadow="never">
     <template #header>
       <div class="code-detail_header">
-        <img src="@/assets/image/avatar.jpg" alt="" />
+        <img :src="codeDetail?.user.authorAvatar" alt="" />
         <div class="code-info">
-          <div class="code-name">快速排序</div>
+          <div class="code-name">{{ codeDetail?.title }}</div>
           <div class="info-list">
             <div class="icon-info">
               <i class="fa fa-user"></i>
-              <span>_Async__</span>
+              <span>{{ codeDetail?.user.authorName }}</span>
             </div>
             <div class="icon-info">
               <i class="fa fa-calendar"></i>
-              <span>2023-02-24 10:22</span>
+              <span>{{ formatTime(codeDetail?.createdAt!, "YYYY-MM-DD hh:ss:mm") }}</span>
             </div>
             <div class="icon-info">
               <i class="fa fa-eye"></i>
-              <span>144</span>
+              <span>{{ codeDetail?.views }}</span>
             </div>
             <div class="icon-info operator">
               <i class="fa fa-thumbs-o-up"></i>
-              <span>144</span>
+              <span>{{ codeDetail?.liked }}</span>
             </div>
             <div class="icon-info operator">
               <i class="fa fa-star-o"></i>
-              <span>144</span>
+              <span>{{ codeDetail?.collectCount }}</span>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="code-detail-fragment">
-        <fs-code-mirror ref="codeMirrorRef" :code="state.code" :disabled="true" height="200px" />
+        <fs-code-mirror ref="codeMirrorRef" :code="codeDetail?.content || ''" :disabled="true" height="100px" />
       </div>
     </div>
   </el-card>
@@ -67,25 +67,26 @@
 
 <script setup lang="ts">
 import FsCodeMirror from "@/components/FsCodeMirror/FsCodeMirror.vue";
-import { ref, reactive } from "vue";
+import { getCurrentCode } from "@/service/api/codeRequest";
+import type { ICodeDetail } from "@/types/codeType";
+import { formatTime } from "@/utils/formatTime";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 const codeMirrorRef = ref<InstanceType<typeof FsCodeMirror>>();
 
-const state = reactive({
-  code: `void quick_sort(int q[], int l, int r)
-{
-    if (l >= r) return;
+const $route = useRoute();
+const codeId = $route.params.id as string;
+const codeDetail = ref<ICodeDetail>();
 
-    int i = l - 1, j = r + 1, x = q[l + r >> 1];
-    while (i < j)
-    {
-        do i ++ ; while (q[i] < x);
-        do j -- ; while (q[j] > x);
-        if (i < j) swap(q[i], q[j]);
-    }
-    quick_sort(q, l, j), quick_sort(q, j + 1, r);
-}
-`,
+onMounted(async () => {
+  await getCodeDetail(codeId);
+  codeMirrorRef.value?.configCodeMirror(codeDetail.value?.lan!);
 });
+
+const getCodeDetail = async (codeId: string) => {
+  const res = await getCurrentCode(codeId);
+  codeDetail.value = res.data;
+};
 </script>
 
 <style scoped lang="less">

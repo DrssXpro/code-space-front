@@ -3,54 +3,65 @@
     <el-card shadow="never">
       <div class="fs-code-content">
         <div class="fs-code-card_header">
-          <!-- <fs-image src=""></fs-image> -->
-          <img src="@/assets/image/avatar.jpg" alt="" />
+          <fs-image :src="props.codeDetail.user.authorAvatar"></fs-image>
           <div class="person-info">
-            <span>_Async__</span>
+            <span>{{ props.codeDetail.user.authorName }}</span>
           </div>
         </div>
         <div class="fs-code-card_content">
-          <div class="content-title line-one">这里是一段代码</div>
+          <div class="content-title line-one">{{ props.codeDetail.title }}</div>
           <div class="content-preview line-one">
-            int main (){int a = 10; int b = 100; printf('%d', a + b); return 0;}
+            {{ props.codeDetail.preview }}
           </div>
           <div class="content-info">
             <img src="@/assets/image/JS.jpg" class="lan-img" alt="" />
-            <div>JavaScript</div>
-            <div><i class="fa fa-eye"></i> 220 浏览</div>
+            <div>{{ props.codeDetail.lan }}</div>
+            <div><i class="fa fa-eye"></i> {{ props.codeDetail.views }} 浏览</div>
             <div>306.00 bytes</div>
           </div>
         </div>
         <div class="fs-code-card_footer">
           <ul>
-            <li><span>2023-02-16 10:41</span></li>
             <li>
-              <div class="operator-btn">
+              <span>{{ formatTime(codeDetail.createdAt, "YYYY-MM-DD hh:ss:mm") }}</span>
+            </li>
+            <li>
+              <div class="operator-btn" @click.stop="handleLikedCode">
                 <i class="fa fa-thumbs-o-up"></i>
-                <span style="margin-left: 10px">0</span>
+                <span style="margin-left: 10px">{{ props.codeDetail.liked }}</span>
               </div>
             </li>
             <li>
-              <div class="operator-btn">
+              <div class="operator-btn" @click.stop="handleCollectCode">
                 <i class="fa fa-star-o"></i>
-                <span style="margin-left: 10px">0</span>
+                <span style="margin-left: 10px">{{ props.codeDetail.collectCount }}</span>
               </div>
             </li>
             <li>
               <div class="operator-btn">
                 <i class="fa fa-commenting-o"></i>
-                <span style="margin-left: 10px">0</span>
+                <span style="margin-left: 10px">{{ props.codeDetail.commentCount }}</span>
               </div>
             </li>
           </ul>
         </div>
-        <div class="fs-code-card_tag">私密</div>
+        <div class="fs-code-card_tag" v-if="props.codeDetail.isPwd">私密</div>
       </div>
     </el-card>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { ISquareCodeItem } from "@/types/codeType";
+import { formatTime } from "@/utils/formatTime";
+
+const props = defineProps<{
+  codeDetail: ISquareCodeItem;
+}>();
+
+const handleLikedCode = () => {};
+const handleCollectCode = () => {};
+</script>
 
 <style scoped lang="less">
 .fs-code-card {

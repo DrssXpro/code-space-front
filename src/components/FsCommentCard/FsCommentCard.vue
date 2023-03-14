@@ -59,7 +59,14 @@
 </template>
 
 <script setup lang="ts">
+import type { ICommentItem } from "@/types/commentType";
 import { ref } from "vue";
+import useUserStore from "@/stores/userStore";
+const props = defineProps<{
+  commentDetail: ICommentItem;
+}>();
+
+const { userInfo } = useUserStore();
 const showReplay = ref(false);
 const content = ref(
   "<p> <strong>1.DOM（Document Object Model）: 文档对象模型</strong></p><p>获取过来的DOM元素是一个对象（object），所以称为文档对象模型</p><p>是W3C组织推荐的处理可扩展标记语言（HTML或者XML）的标准编程接口</p><p>W3C已经定义了一系列的DOM接口，通过这些DOM接口可以改变网页的内容、结构和样式 </p><p></p><p>1.对于JavaScript，为了能够使JavaScript操作HTML，JavaScript就有自己的dom编程接口</p><p>2.对于HTML，dom使得html形成一棵dom树，包含文档、元素、节点</p><p></p><p>关于dom操作，我们主要针对元素操作。主要有创建、增、删、改、查、属性操作、事件操作</p><p></p><p><strong>2.BOM（Browser Object Model）: 浏览器对象模型</strong></p><p>提供了独立于内容而与浏览器窗口进行交互效果（特别理解一下此处的加粗字体）</p><p></p><p>核心对象：window</p>"
