@@ -1,4 +1,6 @@
+import useFrontCode from "@/hooks/useFrontCode";
 import { getRoleMenu } from "@/service/api/roleRequest";
+import usePwdStore from "@/stores/usePwdStore";
 import useUserStore from "@/stores/userStore";
 import { handleMenuMapRoutes } from "@/utils/tools";
 import { ElMessage } from "element-plus";
@@ -55,6 +57,30 @@ const router = createRouter({
           path: "code/:id",
           name: "code",
           component: () => import("@/views/code/index.vue"),
+          // 拦截判断是否加密
+          beforeEnter: async (to, from) => {
+            const codeId = to.params.id as string;
+            const { judeIsEnctrypt } = useFrontCode();
+            const { codePwd } = usePwdStore();
+            try {
+              // 判断是否需要密码
+              await judeIsEnctrypt(codeId);
+              return;
+            } catch (error) {
+              // 查看缓存是否已输入密码验证
+              if (codePwd.includes(codeId)) {
+                return;
+              }
+              // 需要输入密码
+              ElMessage.warning("需要密码");
+              return `/encrypt/${codeId}`;
+            }
+          },
+        },
+        {
+          path: "encrypt/:id",
+          name: "encryptCode",
+          component: () => import("@/views/encryptCode/index.vue"),
         },
         {
           path: "admin",
@@ -71,58 +97,6 @@ const router = createRouter({
               return true;
             }
           },
-          // children: [
-          //   // {
-          //   //   path: "personal",
-          //   //   name: "adminPersonal",
-          //   //   component: () => import("@/views/admin/pages/personal/index.vue"),
-          //   // },
-          //   // {
-          //   //   path: "code",
-          //   //   name: "adminCode",
-          //   //   component: () => import("@/views/admin/pages/code/index.vue"),
-          //   // },
-          //   // {
-          //   //   path: "content/user",
-          //   //   name: "adminContentUser",
-          //   //   component: () => import("@/views/admin/pages/content/user/index.vue"),
-          //   // },
-          //   // {
-          //   //   path: "content/code",
-          //   //   name: "adminContentCode",
-          //   //   component: () => import("@/views/admin/pages/content/code/index.vue"),
-          //   // },
-          //   // {
-          //   //   path: "content/comment",
-          //   //   name: "adminContentComment",
-          //   //   component: () => import("@/views/admin/pages/content/comment/index.vue"),
-          //   // },
-          //   // {
-          //   //   path: "content/space",
-          //   //   name: "adminContentSpace",
-          //   //   component: () => import("@/views/admin/pages/content/space/index.vue"),
-          //   // },
-          //   // {
-          //   //   path: "power/role",
-          //   //   name: "adminPowerRole",
-          //   //   component: () => import("@/views/admin/pages/power/role/index.vue"),
-          //   // },
-          //   // {
-          //   //   path: "power/menu",
-          //   //   name: "adminPowerMenu",
-          //   //   component: () => import("@/views/admin/pages/power/menu/index.vue"),
-          //   // },
-          //   // {
-          //   //   path: "space/code",
-          //   //   name: "adminSpaceCode",
-          //   //   component: () => import("@/views/admin/pages/space/code/index.vue"),
-          //   // },
-          //   // {
-          //   //   path: "space/people",
-          //   //   name: "adminSpacePeole",
-          //   //   component: () => import("@/views/admin/pages/space/people/index.vue"),
-          //   // },
-          // ],
         },
       ],
     },
@@ -131,13 +105,13 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   const token = localStorage.getItem("token");
-  const whiteList = ["/login", "/square", "/search", "/space", "/share"];
+  const whiteList = ["/login", "/square", "/search", "/space", "/share", "/code", "/encrypt"];
 
   if (token) {
     // 已经有登录态则不能再访问login页面，强制访问跳转至个人页面
     if (to.path === "/login") {
       return "/admin";
-    } else if (!whiteList.includes(to.path)) {
+    } else if (!whiteList.filter((item) => to.path.includes(item)).length) {
       const { addDynamicRoutes, mapRoutes } = useUserStore();
       !mapRoutes &&
         addDynamicRoutes()
@@ -153,7 +127,7 @@ router.beforeEach((to, from) => {
     }
   } else {
     // 没有token，判断访问路由是否在白名单内，不在需要强制转到login
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (whiteList.filter((item) => to.path.includes(item)).length) {
       return true;
     } else {
       ElMessage.warning("请先进行登录");

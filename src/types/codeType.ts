@@ -53,3 +53,6 @@ export interface ICodeDetail {
     authorId: string;
   };
 }
+
+// 部分代码信息
+export type CodePart = Pick<ICodeDetail, "id" | "title" | "isPwd" | "user" | "createdAt" | "updatedAt">;

@@ -21,7 +21,7 @@
           <fs-comment-card :comment-detail="item" />
         </div>
         <div class="comment-pagination">
-          <el-pagination background layout="prev, pager, next" :total="50" />
+          <el-pagination background layout="prev, pager, next" :total="commentState.total" />
         </div>
       </div>
     </div>

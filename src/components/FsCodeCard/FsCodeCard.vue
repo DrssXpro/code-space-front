@@ -14,7 +14,7 @@
             {{ props.codeDetail.preview }}
           </div>
           <div class="content-info">
-            <img src="@/assets/image/JS.jpg" class="lan-img" alt="" />
+            <img :src="`/src/assets/icon/${props.codeDetail.lan}.svg`" class="lan-img" alt="" />
             <div>{{ props.codeDetail.lan }}</div>
             <div><i class="fa fa-eye"></i> {{ props.codeDetail.views }} 浏览</div>
             <div>306.00 bytes</div>
@@ -45,7 +45,7 @@
             </li>
           </ul>
         </div>
-        <div class="fs-code-card_tag" v-if="props.codeDetail.isPwd">私密</div>
+        <div class="fs-code-card_tag" v-if="props.codeDetail.isPwd">加密</div>
       </div>
     </el-card>
   </div>
@@ -154,10 +154,7 @@ const handleCollectCode = () => {};
       cursor: pointer;
       border-radius: 5px;
       transition: all 0.3s;
-
-      &:hover {
-        color: var(--el-text-color-primary);
-      }
+      color: var(--el-text-color-primary);
     }
   }
   &_tag {

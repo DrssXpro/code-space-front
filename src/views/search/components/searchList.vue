@@ -1,7 +1,7 @@
 <template>
   <div class="search-list-container">
     <div class="search-item" v-for="i in 10">
-      <fs-code-card />
+      <!-- <fs-code-card /> -->
     </div>
     <div class="search-pagination">
       <el-pagination background layout="prev, pager, next" :total="50" />

@@ -2,34 +2,31 @@
   <el-card shadow="never">
     <template #header>
       <div class="code-detail_header">
-        <img :src="codeDetail?.user.authorAvatar" alt="" />
+        <img :src="squareCodeDetail?.user.authorAvatar" alt="" />
         <div class="code-info">
-          <div class="code-name">{{ codeDetail?.title }}</div>
+          <div class="code-name">{{ squareCodeDetail?.title }}</div>
           <div class="info-list">
             <div class="icon-info">
               <i class="fa fa-user"></i>
-              <span>{{ codeDetail?.user.authorName }}</span>
+              <span>{{ squareCodeDetail?.user.authorName }}</span>
             </div>
             <div class="icon-info">
               <i class="fa fa-calendar"></i>
-              <span>{{ formatTime(codeDetail?.createdAt!, "YYYY-MM-DD hh:ss:mm") }}</span>
+              <span>{{ formatTime(squareCodeDetail?.createdAt!, "YYYY-MM-DD hh:ss:mm") }}</span>
             </div>
             <div class="icon-info">
               <i class="fa fa-eye"></i>
-              <span>{{ codeDetail?.views }}</span>
+              <span>{{ squareCodeDetail?.views }}</span>
             </div>
-            <div class="icon-info operator">
+            <div class="icon-info operator" @click="addCodeLikeBySquare">
               <i class="fa fa-thumbs-o-up"></i>
-              <span>{{ codeDetail?.liked }}</span>
+              <span>{{ squareCodeDetail?.liked }}</span>
             </div>
-            <div class="icon-info operator">
+            <div class="icon-info operator" @click="collectCode">
               <i class="fa fa-star-o"></i>
-              <span>{{ codeDetail?.collectCount }}</span>
+              <span>{{ squareCodeDetail?.collectCount }}</span>
             </div>
           </div>
-        </div>
-        <div class="code-operator">
-          <i class="fa fa-ellipsis-h"></i>
         </div>
       </div>
     </template>
@@ -37,8 +34,8 @@
       <div class="code-detail-operator">
         <div class="code-detail-operator__left">
           <el-tag type="info" class="lan">
-            <div style="display: flex; align-items: center; color: var(--el-text-color-primary)">
-              <img src="@/assets/image/JS.jpg" alt="" /> <span style="margin-left: 5px">JavaScript</span>
+            <div style="display: flex; align-items: center">
+              <img :src="`/src/assets/icon/${squareCodeDetail?.lan}.svg`" alt="" />
             </div>
           </el-tag>
           <el-tag type="info"><span style="color: var(--el-text-color-primary)">7.13KB</span></el-tag>
@@ -59,7 +56,7 @@
         </div>
       </div>
       <div class="code-detail-fragment">
-        <fs-code-mirror ref="codeMirrorRef" :code="codeDetail?.content || ''" :disabled="true" height="100px" />
+        <fs-code-mirror ref="codeMirrorRef" :code="squareCodeDetail?.content || ''" :disabled="true" height="100px" />
       </div>
     </div>
   </el-card>
@@ -67,26 +64,23 @@
 
 <script setup lang="ts">
 import FsCodeMirror from "@/components/FsCodeMirror/FsCodeMirror.vue";
-import { getCurrentCode } from "@/service/api/codeRequest";
-import type { ICodeDetail } from "@/types/codeType";
 import { formatTime } from "@/utils/formatTime";
+import { __debounce } from "@/utils/tools";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import useFrontCode from "@/hooks/useFrontCode";
+
+const { squareCodeDetail, addCodeLikeBySquare, addCodeViewBySquare, getSquareCodeDetail, collectCode } = useFrontCode();
+const $route = useRoute();
+const codeId = $route.params.id as string; // 拿到当前codeId
+
 const codeMirrorRef = ref<InstanceType<typeof FsCodeMirror>>();
 
-const $route = useRoute();
-const codeId = $route.params.id as string;
-const codeDetail = ref<ICodeDetail>();
-
 onMounted(async () => {
-  await getCodeDetail(codeId);
-  codeMirrorRef.value?.configCodeMirror(codeDetail.value?.lan!);
+  await addCodeViewBySquare(codeId);
+  await getSquareCodeDetail(codeId);
+  codeMirrorRef.value?.configCodeMirror(squareCodeDetail.value?.lan!); // 设置codeMirror语言
 });
-
-const getCodeDetail = async (codeId: string) => {
-  const res = await getCurrentCode(codeId);
-  codeDetail.value = res.data;
-};
 </script>
 
 <style scoped lang="less">
@@ -127,14 +121,6 @@ const getCodeDetail = async (codeId: string) => {
           color: var(--el-text-color-primary);
         }
       }
-    }
-    .code-operator {
-      position: absolute;
-      right: 5px;
-      top: 0;
-      z-index: 10;
-      font-size: 20px;
-      cursor: pointer;
     }
   }
   &_content {
