@@ -3,73 +3,100 @@ import type { IUserAddByAdmin, IUserLoginInfo, IUserUpdateByAdmin } from "@/type
 import { myRequest } from "../";
 
 // 用户登录
-function userLogin(payload: { username: string; password: string }) {
-  return myRequest.post<IResponseData<IUserLoginInfo>>({
-    url: "/user/login",
-    data: payload,
-  });
+function userLogin(payload: { username: string; password: string }, loading = false) {
+  return myRequest.post<IResponseData<IUserLoginInfo>>(
+    {
+      url: "/user/login",
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 用户注册
-function userRegister(payload: { username: string; password: string; email: string }) {
-  return myRequest.post<IResponseData>({
-    url: "/user/register",
-    data: payload,
-  });
+function userRegister(payload: { username: string; password: string; email: string }, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: "/user/register",
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 获取指定用户信息
-function getUserInfo(id: string) {
-  return myRequest.get<IResponseData<IUserLoginInfo>>({
-    url: `/user/info/${id}`,
-  });
+function getUserInfo(id: string, loading = false) {
+  return myRequest.get<IResponseData<IUserLoginInfo>>(
+    {
+      url: `/user/info/${id}`,
+    },
+    loading
+  );
 }
 
 // 获取邮箱验证码
-function getEmailCode(payload: { name: string; email: string }) {
-  return myRequest.post<IResponseData>({
-    url: "/email/sendCode",
-    data: payload,
-  });
+function getEmailCode(payload: { name: string; email: string }, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: "/email/sendCode",
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 验证验证码并修改密码
-function verifyEmailCode(payload: { name: string; email: string; password: string; code: string }) {
-  return myRequest.post<IResponseData>({
-    url: "/email/verifyCode",
-    data: payload,
-  });
+function verifyEmailCode(payload: { name: string; email: string; password: string; code: string }, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: "/email/verifyCode",
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 管理员：获取用户列表
-function getUserListByAdmin(payload: { limit: number; offset: number }) {
-  return myRequest.get<IResponseData>({
-    url: "/admin/user_list",
-    params: payload,
-  });
+function getUserListByAdmin(payload: { limit: number; offset: number }, loading = false) {
+  return myRequest.get<IResponseData>(
+    {
+      url: "/admin/user_list",
+      params: payload,
+    },
+    loading
+  );
 }
 
 // 管理员：直接添加用户
-function addUserByAdmin(payload: IUserAddByAdmin) {
-  return myRequest.post<IResponseData>({
-    url: "/admin/user/add",
-    data: payload,
-  });
+function addUserByAdmin(payload: IUserAddByAdmin, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: "/admin/user/add",
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 管理员：修改用户
-function updateUserByAdmin(id: string, payload: IUserUpdateByAdmin) {
-  return myRequest.post<IResponseData>({
-    url: `/admin/user/update/${id}`,
-    data: payload,
-  });
+function updateUserByAdmin(id: string, payload: IUserUpdateByAdmin, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/admin/user/update/${id}`,
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 管理员：删除用户
-function deleteUserByAdmin(id: string) {
-  return myRequest.post<IResponseData>({
-    url: `/admin/user/delete/${id}`,
-  });
+function deleteUserByAdmin(id: string, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/admin/user/delete/${id}`,
+    },
+    loading
+  );
 }
 
 export {

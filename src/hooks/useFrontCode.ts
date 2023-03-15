@@ -34,19 +34,19 @@ export default function useFrontCode() {
 
   // 获取代码详情
   async function getSquareCodeDetail(codeId: string) {
-    const res = await getCurrentCode(codeId);
+    const res = await getCurrentCode(codeId, true);
     squareCodeDetail.value = res.data;
   }
 
   // 获取代码部分信息：解密界面使用
   async function getPartCode(codeId: string) {
-    const res = await getEncryptCodeInfo(codeId);
+    const res = await getEncryptCodeInfo(codeId, true);
     partCode.value = res.data;
   }
 
   // 加密密码验证 + 获取代码信息
   async function getEncryptCode(codeId: string) {
-    const res = await getEnctryCodeDetail(codeId, { ...pwdState });
+    const res = await getEnctryCodeDetail(codeId, { ...pwdState }, true);
     res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
     if (res.code === 1000) {
       squareCodeDetail.value = res.data;

@@ -26,7 +26,7 @@ onMounted(() => {
 });
 
 const handleGetCodeList = async () => {
-  const res = await getCodeListBySquare({ limit: codeState.pageSize, offset: codeState.page - 1 });
+  const res = await getCodeListBySquare({ limit: codeState.pageSize, offset: codeState.page - 1 }, true);
   codeState.codeList = [...codeState.codeList, ...res.data.rows];
 };
 

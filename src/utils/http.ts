@@ -6,6 +6,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 import { ElLoading, ElMessage } from "element-plus";
+
 // 请求存储到map中
 function setRequestMap(config: InternalAxiosRequestConfig, map: Map<string, AbortController>) {
   const controller = new AbortController();
@@ -71,12 +72,16 @@ class FsRequest {
     this.abortControllerMap.clear();
   }
 
-  request<T>(config: AxiosRequestConfig): Promise<T> {
-    // this.loading = ElLoading.service({
-    //   lock: true,
-    //   text: "Loading",
-    //   background: "rgba(0, 0, 0, 0.7)",
-    // });
+  request<T>(config: AxiosRequestConfig, loading: boolean): Promise<T> {
+    if (loading) {
+      this.loading = ElLoading.service({
+        lock: true,
+        text: "等待中...",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      console.log("123:", this.loading);
+    }
+
     return new Promise<T>((resolve, reject) => {
       this.instance
         .request<any, T>(config)
@@ -90,21 +95,22 @@ class FsRequest {
         )
         .finally(() => {
           // this.loading.close();
+          loading && this.loading.close();
         });
     });
   }
 
-  get<T>(config: AxiosRequestConfig): Promise<T> {
-    return this.request({ method: "GET", ...config });
+  get<T>(config: AxiosRequestConfig, loading = false): Promise<T> {
+    return this.request({ method: "GET", ...config }, loading);
   }
 
-  post<T>(config: AxiosRequestConfig): Promise<T> {
-    return this.request({ method: "POST", ...config });
+  post<T>(config: AxiosRequestConfig, loading = false): Promise<T> {
+    return this.request({ method: "POST", ...config }, loading);
   }
 
-  uploadFilePost<T>(config: AxiosRequestConfig): Promise<T> {
+  uploadFilePost<T>(config: AxiosRequestConfig, loading = false): Promise<T> {
     config.headers = { "Content-Type": "multipart/form-data" };
-    return this.request<T>({ ...config, method: "POST" });
+    return this.request<T>({ ...config, method: "POST" }, loading);
   }
 }
 

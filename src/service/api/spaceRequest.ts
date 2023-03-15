@@ -3,41 +3,56 @@ import type { ISpacePayload, ISpaceDetail, ISpaceItem } from "@/types/spaceType"
 import { myRequest } from "..";
 
 // 添加空间
-function addSpace(id: string, payload: ISpacePayload) {
-  return myRequest.post<IResponseData>({
-    url: `/space/add/${id}`,
-    data: payload,
-  });
+function addSpace(id: string, payload: ISpacePayload, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space/add/${id}`,
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 更新空间信息
-function updateSpace(spaceId: number, payload: ISpacePayload) {
-  return myRequest.post<IResponseData>({
-    url: `/space/update/${spaceId}`,
-    data: payload,
-  });
+function updateSpace(spaceId: number, payload: ISpacePayload, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space/update/${spaceId}`,
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 获取空间列表
-function getSpaceList(payload: { limit: number; offset: number }) {
-  return myRequest.get<IResponseData<IList<ISpaceItem>>>({
-    url: "/space/list",
-    params: payload,
-  });
+function getSpaceList(payload: { limit: number; offset: number }, loading = false) {
+  return myRequest.get<IResponseData<IList<ISpaceItem>>>(
+    {
+      url: "/space/list",
+      params: payload,
+    },
+    loading
+  );
 }
 
 // 获取空间详情
-function getSpaceDetail(spaceId: number) {
-  return myRequest.get<IResponseData<ISpaceDetail>>({
-    url: `/space/detail/${spaceId}`,
-  });
+function getSpaceDetail(spaceId: number, loading = false) {
+  return myRequest.get<IResponseData<ISpaceDetail>>(
+    {
+      url: `/space/detail/${spaceId}`,
+    },
+    loading
+  );
 }
 
 // 删除空间：管理员删除
-function deleteSpace(spaceId: number) {
-  return myRequest.post<IResponseData>({
-    url: `/space/delete/${spaceId}`,
-  });
+function deleteSpace(spaceId: number, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space/delete/${spaceId}`,
+    },
+    loading
+  );
 }
 
 export { addSpace, updateSpace, getSpaceList, getSpaceDetail, deleteSpace };
