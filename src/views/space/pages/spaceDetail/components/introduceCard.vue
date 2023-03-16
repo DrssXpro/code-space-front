@@ -42,9 +42,10 @@
       background-image: linear-gradient(-180deg, rgba(0, 0, 0, 0) 4%, rgba(0, 0, 0, 0.6) 98%);
     }
     .space-info {
-      width: 210px;
+      width: 90%;
       bottom: -30px;
-      left: 20px;
+      // left: 20px;
+      margin: 0 10px;
       position: absolute;
       display: flex;
       align-items: center;

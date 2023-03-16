@@ -1,3 +1,4 @@
+import usePwdStore from "@/stores/usePwdStore";
 import useUserStore from "@/stores/userStore";
 import axios, {
   type AxiosInstance,
@@ -53,11 +54,12 @@ class FsRequest {
     });
 
     this.instance.interceptors.response.use((config) => {
-      console.log("check:", config.data);
       if (config.data.code === 1100) {
         ElMessage.warning(config.data.message);
         const { cancelLogin } = useUserStore();
+        const { clearCodePwd } = usePwdStore();
         cancelLogin();
+        clearCodePwd();
       }
       deleteRequestMap(config, this.abortControllerMap);
       return config.data;
@@ -79,7 +81,6 @@ class FsRequest {
         text: "等待中...",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      console.log("123:", this.loading);
     }
 
     return new Promise<T>((resolve, reject) => {

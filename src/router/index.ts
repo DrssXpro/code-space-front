@@ -1,13 +1,11 @@
 import useFrontCode from "@/hooks/useFrontCode";
-import { getRoleMenu } from "@/service/api/roleRequest";
 import usePwdStore from "@/stores/usePwdStore";
 import useUserStore from "@/stores/userStore";
-import { handleMenuMapRoutes } from "@/utils/tools";
 import { ElMessage } from "element-plus";
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes: [
     {
       path: "/",
@@ -25,11 +23,20 @@ const router = createRouter({
           name: "space",
           redirect: "/space/list",
           component: () => import("@/views/space/index.vue"),
+
           children: [
             {
               path: "list",
               name: "spaceList",
               component: () => import("@/views/space/pages/spaceList/index.vue"),
+              beforeEnter: (to, from) => {
+                const { userInfo } = useUserStore();
+                if (userInfo && userInfo.space) {
+                  return `/space/detail/${userInfo.space.spaceId}`;
+                } else {
+                  return true;
+                }
+              },
             },
             {
               path: "detail/:id",
@@ -111,7 +118,7 @@ router.beforeEach((to, from) => {
     // 已经有登录态则不能再访问login页面，强制访问跳转至个人页面
     if (to.path === "/login") {
       return "/admin";
-    } else if (!whiteList.filter((item) => to.path.includes(item)).length) {
+    } else if (!whiteList.filter((item) => to.path.indexOf(item) === 0).length) {
       const { addDynamicRoutes, mapRoutes } = useUserStore();
       !mapRoutes &&
         addDynamicRoutes()
@@ -126,8 +133,8 @@ router.beforeEach((to, from) => {
       return true;
     }
   } else {
-    // 没有token，判断访问路由是否在白名单内，不在需要强制转到login
-    if (whiteList.filter((item) => to.path.includes(item)).length) {
+    // 没有token，判断访问路由是否在白名单内，是的话不需要登录，不在需要强制转到login
+    if (whiteList.filter((item) => to.path.indexOf(item) === 0).length) {
       return true;
     } else {
       ElMessage.warning("请先进行登录");

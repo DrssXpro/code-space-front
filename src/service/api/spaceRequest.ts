@@ -55,4 +55,15 @@ function deleteSpace(spaceId: number, loading = false) {
   );
 }
 
-export { addSpace, updateSpace, getSpaceList, getSpaceDetail, deleteSpace };
+// 判断用户加入空间邀请码
+function joinSpaceByInviteCode(spaceId: number, inviteCode: string, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space/invite_code/${spaceId}`,
+      data: { inviteCode },
+    },
+    loading
+  );
+}
+
+export { addSpace, updateSpace, getSpaceList, getSpaceDetail, deleteSpace, joinSpaceByInviteCode };

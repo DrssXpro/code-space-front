@@ -8,6 +8,7 @@ import { getRoleMenu } from "@/service/api/roleRequest";
 import router from "@/router/index";
 import { ElMessage } from "element-plus";
 import { getUserInfo } from "@/service/api/userRequest";
+import usePwdStore from "./usePwdStore";
 
 const useUserStore = defineStore("user", () => {
   const userInfo = ref<IUserLoginInfo | undefined>(JSON.parse(localStorage.getItem("userInfo") as string));
@@ -44,10 +45,12 @@ const useUserStore = defineStore("user", () => {
 
   // 注销登录
   const cancelLogin = () => {
+    const { clearCodePwd } = usePwdStore();
     localStorage.removeItem("token");
     localStorage.removeItem("userInfo");
     localStorage.removeItem("menus");
     router.push("/login");
+    clearCodePwd(); // 退出后清空存储的加密代码
     ElMessage.success("退出成功");
     userInfo.value = undefined;
   };

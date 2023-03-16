@@ -18,11 +18,11 @@
               <i class="fa fa-eye"></i>
               <span>{{ squareCodeDetail?.views }}</span>
             </div>
-            <div class="icon-info operator" @click="addCodeLikeBySquare">
+            <div class="icon-info operator" @click="addCodeLikeBySquare(squareCodeDetail?.id!)">
               <i class="fa fa-thumbs-o-up"></i>
               <span>{{ squareCodeDetail?.liked }}</span>
             </div>
-            <div class="icon-info operator" @click="collectCode">
+            <div class="icon-info operator" @click="collectOrCancelCollect(squareCodeDetail?.id!)">
               <i class="fa fa-star-o"></i>
               <span>{{ squareCodeDetail?.collectCount }}</span>
             </div>
@@ -42,20 +42,29 @@
         </div>
         <div class="code-detail-operator__right">
           <el-tooltip content="将代码文件下载至本地" placement="bottom" effect="light">
-            <el-tag effect="plain" class="operator-item"><i class="fa fa-cloud-download"></i> <span>下载</span></el-tag>
+            <el-tag
+              effect="plain"
+              class="operator-item"
+              @click="downloadCode(squareCodeDetail!.title, squareCodeDetail!.content, squareCodeDetail!.lan)"
+              ><i class="fa fa-cloud-download"></i> <span>下载</span></el-tag
+            >
           </el-tooltip>
           <el-tooltip content="复制代码内容" placement="bottom" effect="light">
-            <el-tag effect="plain" class="operator-item"><i class="fa fa-chain-broken"></i> <span>复制</span></el-tag>
+            <el-tag effect="plain" class="operator-item" @click="copyCode(squareCodeDetail?.content || '')"
+              ><i class="fa fa-chain-broken"></i> <span>复制</span></el-tag
+            >
           </el-tooltip>
           <el-tooltip content="将代码导出为图片" placement="bottom" effect="light">
-            <el-tag effect="plain" class="operator-item"
+            <el-tag effect="plain" class="operator-item" @click="codeExportImage(codeFragmentRef!)"
               ><i class="fa fa-file-image-o"></i> <span>导出图片</span></el-tag
             >
           </el-tooltip>
-          <el-tag effect="plain" class="operator-item"><i class="fa fa-share"></i> <span>分享</span></el-tag>
+          <el-tag effect="plain" class="operator-item" @click="() => copyCodeLink()"
+            ><i class="fa fa-share"></i> <span>分享</span></el-tag
+          >
         </div>
       </div>
-      <div class="code-detail-fragment">
+      <div class="code-detail-fragment" ref="codeFragmentRef">
         <fs-code-mirror ref="codeMirrorRef" :code="squareCodeDetail?.content || ''" :disabled="true" height="100px" />
       </div>
     </div>
@@ -69,8 +78,13 @@ import { __debounce } from "@/utils/tools";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import useFrontCode from "@/hooks/useFrontCode";
+import useCodeTool from "@/hooks/useCodeTool";
 
-const { squareCodeDetail, addCodeLikeBySquare, addCodeViewBySquare, getSquareCodeDetail, collectCode } = useFrontCode();
+const { squareCodeDetail, addCodeLikeBySquare, addCodeViewBySquare, getSquareCodeDetail, collectOrCancelCollect } =
+  useFrontCode();
+const { downloadCode, copyCode, codeExportImage, copyCodeLink } = useCodeTool();
+
+const codeFragmentRef = ref<HTMLElement>();
 const $route = useRoute();
 const codeId = $route.params.id as string; // 拿到当前codeId
 

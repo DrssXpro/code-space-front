@@ -1,6 +1,6 @@
 <template>
   <div class="code-list">
-    <a class="code-item" :href="`code/${item.id}`" v-for="item in codeState.codeList" :key="item.id" target="_blank">
+    <a class="code-item" :href="`/#/code/${item.id}`" v-for="item in codeState.codeList" :key="item.id" target="_blank">
       <fs-code-card :code-detail="item" />
     </a>
     <div class="code-more">

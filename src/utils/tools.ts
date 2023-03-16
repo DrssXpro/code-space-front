@@ -1,3 +1,4 @@
+import type { ICommentItem } from "@/types/commentType";
 import type { IMenuItem } from "@/types/menuType";
 
 // 观察dom是否进入视口，懒加载
@@ -100,4 +101,23 @@ export function handleMenuMapRoutes(menuTree: IMenuItem[]): any {
       };
       return routeItem;
     });
+}
+
+// 子评论树形结构化
+export function handleCommentMapTree(childList: ICommentItem[]) {
+  const treeList: ICommentItem[] = [];
+  const treeMap: Record<string, ICommentItem> = {};
+  childList.forEach((item) => {
+    if (!item.children) item.children = [];
+    treeMap[item.id] = item;
+  });
+  childList.forEach((item) => {
+    if (item.commentId && treeMap[item.commentId]) {
+      treeMap[item.commentId].children!.push(item);
+    } else {
+      treeList.push(item);
+    }
+  });
+
+  return treeList;
 }

@@ -4,10 +4,12 @@ function formatTime(date: string, type: TimeType) {
   switch (type) {
     case "YYYY-MM-DD hh:ss:mm":
       return timeTypeOne(date);
+    case "YYYY-MM-DD":
+      return timeTypeTwo(date);
   }
 }
 
-// 格式化时间
+// 格式化时间：YYYY-MM-DD hh:ss:mm
 function timeTypeOne(date: string): string {
   const year = new Date(date).getFullYear();
   let month: number | string = new Date(date).getMonth() + 1;
@@ -22,6 +24,16 @@ function timeTypeOne(date: string): string {
   minute = minute >= 10 ? minute : "0" + minute;
   second = second >= 10 ? second : "0" + second;
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+}
+
+// 格式化时间：YYYY-MM-DD
+function timeTypeTwo(date: string): string {
+  const year = new Date(date).getFullYear();
+  let month: number | string = new Date(date).getMonth() + 1;
+  let day: number | string = new Date(date).getDate();
+  month = month >= 10 ? month : "0" + month;
+  day = day >= 10 ? day : "0" + day;
+  return `${year}-${month}-${day}`;
 }
 
 // 获取两个时间戳之间的天数差

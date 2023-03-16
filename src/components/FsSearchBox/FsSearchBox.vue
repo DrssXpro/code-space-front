@@ -19,7 +19,7 @@
       >
         <div class="history-title">
           搜索记录
-          <my-icon name="trash" style="cursor: pointer" @click="('clearHistory')" />
+          <i class="fa fa-trash-o" style="cursor: pointer" @click="('clearHistory')"></i>
         </div>
         <div class="history-container">
           <ul class="history-list">
@@ -30,7 +30,7 @@
               @click="handleClickHistory(item)"
             >
               {{ item }}
-              <my-icon name="close" class="delete-icon" @click.stop="emit('deleteHistory', item)" />
+              <i class="delete-icon fa fa-close" @click.stop="emit('deleteHistory', item)"></i>
             </li>
           </ul>
         </div>

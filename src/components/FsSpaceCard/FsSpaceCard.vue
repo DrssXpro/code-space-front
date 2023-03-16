@@ -1,22 +1,25 @@
 <template>
   <div class="fs-space-card">
-    <div class="fs-space-card_title">Python程序设计——2022秋季（软件学院）</div>
+    <div class="fs-space-card_title">{{ props.spaceDetail.name }}</div>
     <div class="fs-space-card_avatar">
-      <img src="@/assets/image/avatar.jpg" alt="" />
-      <div>_Async__</div>
+      <img :src="props.spaceDetail[`user.authorAvatar`]" alt="" />
+      <div style="margin-top: 10px">{{ props.spaceDetail["user.authorName"] }}</div>
     </div>
     <div class="fs-space-card_info">
       <div class="info-item">
-        <i class="fa fa-eye"></i>
-        <span>1123</span>
+        <i class="fa fa-tasks"></i>
+        <span>{{ props.spaceDetail.taskCount }}</span>
       </div>
       <div class="info-item">
         <i class="fa fa-users"></i>
-        <span>76</span>
+        <span>{{ props.spaceDetail.peopleCount }}</span>
       </div>
       <div class="info-item">
         <i class="fa fa-code"></i>
-        <span>144</span>
+        <span>{{ props.spaceDetail.codeCount }}</span>
+      </div>
+      <div class="info-item time">
+        {{ formatTime(props.spaceDetail.createdAt, "YYYY-MM-DD") }}
       </div>
     </div>
     <div class="fs-space-card__mask">
@@ -25,7 +28,14 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { ISpaceItem } from "@/types/spaceType";
+import { formatTime } from "@/utils/formatTime";
+
+const props = defineProps<{
+  spaceDetail: ISpaceItem;
+}>();
+</script>
 
 <style scoped lang="less">
 .fs-space-card {
@@ -44,6 +54,9 @@
     margin-bottom: 20px;
   }
   &_avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     img {
       width: 60px;
       height: 60px;
@@ -64,6 +77,10 @@
     span {
       margin-left: 5px;
     }
+  }
+  .time {
+    margin-left: 50px;
+    color: var(--el-text-color-secondary);
   }
   &__mask {
     position: absolute;

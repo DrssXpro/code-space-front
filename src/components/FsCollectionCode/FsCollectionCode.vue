@@ -2,58 +2,52 @@
   <div class="fs-collection-code">
     <div class="fs-collection-code_header">
       <div class="left">
-        <img src="@/assets/image/avatar.jpg" alt="" />
+        <img :src="props.codeDetail.user.authorAvatar" alt="作者头像" />
         <div class="code-info">
-          <div style="font-size: 18px">二分查找</div>
+          <div style="font-size: 18px">{{ props.codeDetail.title }}</div>
           <div class="user-info">
             <i class="fa fa-user-circle-o"></i>
-            <span>_Async__</span>
+            <span>{{ props.codeDetail.user.authorName }}</span>
           </div>
         </div>
       </div>
       <div class="right">
-        <el-button type="success" text>查看详情</el-button>
-        <el-button type="danger" text>取消收藏</el-button>
+        <el-button type="success" text @click="emit('checkCollectDetail', props.codeDetail.id)">查看详情</el-button>
+        <el-button type="danger" text @click="emit('cancelCollect', props.codeDetail.id)">取消收藏</el-button>
       </div>
     </div>
     <div class="fs-collection-code_content">
       <div class="code-preview">
-        {{
-          `void quick_sort(int q[], int l, int r)
-{
-    if (l >= r) return;
-
-    int i = l - 1, j = r + 1, x = q[l + r >> 1];
-    while (i < j)
-    {`
-        }}
+        {{ props.codeDetail.preview }}
       </div>
       <div class="code-count">
-        <img src="@/assets/image/JS.jpg" class="lan-img" alt="" />
-        <div>JavaScript</div>
-        <div><i class="fa fa-eye"></i> 220 浏览</div>
+        <img :src="`/src/assets/icon/${props.codeDetail.lan}.svg`" class="lan-img" alt="语言" />
+        <div>{{ props.codeDetail.lan }}</div>
+        <div><i class="fa fa-eye" style="margin-right: 3px"></i> {{ props.codeDetail.views }} 浏览</div>
         <div>306.00 bytes</div>
       </div>
     </div>
     <div class="fs-collection-code_footer">
       <ul>
-        <li><span>2023-02-16 10:41</span></li>
+        <li>
+          <span>{{ formatTime(props.codeDetail.createdAt, "YYYY-MM-DD hh:ss:mm") }}</span>
+        </li>
         <li>
           <div class="operator-btn">
             <i class="fa fa-thumbs-o-up"></i>
-            <span style="margin-left: 10px">0</span>
+            <span style="margin-left: 10px">{{ props.codeDetail.liked }}</span>
           </div>
         </li>
         <li>
           <div class="operator-btn">
             <i class="fa fa-star-o"></i>
-            <span style="margin-left: 10px">0</span>
+            <span style="margin-left: 10px">{{ props.codeDetail.collectCount }}</span>
           </div>
         </li>
         <li>
           <div class="operator-btn">
             <i class="fa fa-commenting-o"></i>
-            <span style="margin-left: 10px">0</span>
+            <span style="margin-left: 10px">{{ props.codeDetail.commentCount }}</span>
           </div>
         </li>
       </ul>
@@ -61,7 +55,19 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { ISquareCodeItem } from "@/types/codeType";
+import { formatTime } from "@/utils/formatTime";
+
+const props = defineProps<{
+  codeDetail: ISquareCodeItem;
+}>();
+
+const emit = defineEmits<{
+  (e: "checkCollectDetail", codeId: string): void;
+  (e: "cancelCollect", codeId: string): void;
+}>();
+</script>
 
 <style scoped lang="less">
 .fs-collection-code {

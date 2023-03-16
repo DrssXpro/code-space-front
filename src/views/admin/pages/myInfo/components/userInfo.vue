@@ -1,22 +1,23 @@
 <template>
   <div class="user-info-container">
     <div class="user-info_avatar">
-      <img src="@/assets/image/avatar.jpg" alt="" />
+      <img :src="userInfo?.avatar" alt="用户头像" />
     </div>
     <div class="user-info_content">
-      <div class="user-name">_Async__</div>
-      <div class="line-one user-introduce" title="这个人很神秘，暂时没有个人介绍~">这个人很神秘，暂时没有个人介绍~</div>
-      <div class="user-email">邮箱：1827951482@qq.com</div>
+      <div class="user-name">{{ userInfo?.name }}</div>
+      <div class="user-email">邮箱：{{ userInfo?.email }}</div>
     </div>
     <div class="user-info_count">
       <div class="count-title">所属空间</div>
       <div class="space-info">
-        <div class="space-info-content" @click="$router.push('/space/detail/123')">
-          <img src="@/assets/image/avatar.jpg" alt="" />
-          <span>我的空间 - <span style="font-size: 14px">_Async__</span></span>
+        <div class="space-empty" v-if="!userInfo?.space">
+          <span>暂未加入空间</span>
+        </div>
+        <div class="space-info-content" v-else @click="$router.push(`/space/detail/${userInfo?.space?.spaceId}`)">
+          <span>{{ userInfo?.space?.spaceName }} - <span style="font-size: 14px">_Async__</span></span>
           <div class="space-operator"></div>
         </div>
-        <el-button type="danger" plain>退出</el-button>
+        <el-button type="danger" plain v-if="userInfo?.space">退出</el-button>
       </div>
     </div>
 
@@ -27,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+import useUserStore from "@/stores/userStore";
+const { userInfo } = useUserStore();
 const emit = defineEmits<{
   (e: "showEditDialog"): void;
 }>();
@@ -72,15 +75,10 @@ const showEditDialog = () => {
       font-size: 18px;
       margin-top: 20px;
     }
-    .user-introduce,
+
     .user-email {
       width: 260px;
       font-size: 14px;
-    }
-    .line-one {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
   }
   &_count {
@@ -104,11 +102,6 @@ const showEditDialog = () => {
     .info-count {
       margin-bottom: 10px;
       font-size: 18px;
-    }
-    img {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
     }
   }
 }

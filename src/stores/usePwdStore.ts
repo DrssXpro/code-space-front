@@ -11,9 +11,15 @@ const usePwdStore = defineStore(
       codePwd.value.unshift(codeId);
     }
 
+    // 清空保存加密代码
+    function clearCodePwd() {
+      codePwd.value = [];
+    }
+
     return {
       codePwd,
       addCodePwd,
+      clearCodePwd,
     };
   },
   {

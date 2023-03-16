@@ -5,9 +5,6 @@
         <div class="gap-item">
           <introduce-card />
         </div>
-        <div class="gap-item">
-          <file-card />
-        </div>
       </div>
     </div>
     <div class="space-detail-container__center">
@@ -37,8 +34,6 @@ import codeList from "./components/codeList.vue";
 import workCard from "./components/workCard.vue";
 import greatCard from "./components/greatCard.vue";
 import introduceCard from "./components/introduceCard.vue";
-import fileCard from "./components/fileCard.vue";
-import FsSearchBox from "@/components/FsSearchBox/FsSearchBox.vue";
 
 import { reactive } from "vue";
 

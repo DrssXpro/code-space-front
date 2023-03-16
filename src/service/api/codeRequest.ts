@@ -1,14 +1,16 @@
 import type { CodePart, ICodeDetail, ISquareCodeItem, ISquareCodePayload } from "@/types/codeType";
-import type { ICommentItem } from "@/types/commentType";
 import type { IList, IResponseData } from "@/types/responseType";
 import { myRequest } from "..";
 
 // 广场分享代码
 function addCodeBySquare(payload: ISquareCodePayload, loading = false) {
-  return myRequest.post<IResponseData>({
-    url: "/square_code/add",
-    data: payload,
-  });
+  return myRequest.post<IResponseData>(
+    {
+      url: "/square_code/add",
+      data: payload,
+    },
+    (loading = false)
+  );
 }
 
 // 获取广场代码列表
@@ -27,17 +29,6 @@ function getCurrentCode(codeId: string, loading = false) {
   return myRequest.get<IResponseData<ICodeDetail>>(
     {
       url: `/code/detail/${codeId}`,
-    },
-    loading
-  );
-}
-
-// 获取指定代码评论
-function getCurrentCodeComment(codeId: string, payload: { limit: number; offset: number }, loading = false) {
-  return myRequest.get<IResponseData<IList<ICommentItem>>>(
-    {
-      url: `/code/comment/${codeId}`,
-      params: payload,
     },
     loading
   );
@@ -125,11 +116,29 @@ function getEnctryCodeDetail(codeId: string, payload: { pwd: string }, loading =
   );
 }
 
+// 收藏 / 取消收藏代码
+function collectCode(codeId: string, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/code/collect/${codeId}`,
+    },
+
+    loading
+  );
+}
+
+// 获取个人收藏代码
+function getCollectList(payload: { limit: number; offset: number }) {
+  return myRequest.get<IResponseData<IList<ISquareCodeItem>>>({
+    url: "/code/collect/list",
+    params: payload,
+  });
+}
+
 export {
   addCodeBySquare,
   getCodeListBySquare,
   getCurrentCode,
-  getCurrentCodeComment,
   likeCodeBySquare,
   viewCodeBySquare,
   likeCodeBySpace,
@@ -138,4 +147,6 @@ export {
   judgetCodeEncryptPwd,
   getEncryptCodeInfo,
   getEnctryCodeDetail,
+  collectCode,
+  getCollectList,
 };

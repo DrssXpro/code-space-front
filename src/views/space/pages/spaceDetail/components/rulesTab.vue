@@ -7,7 +7,7 @@
       </div>
       <div class="rules-content">
         <el-input v-model="searchContent" placeholder="请输入搜索内容"></el-input>
-        <el-button type="primary" text>搜索</el-button>
+        <el-button type="success" text>搜索</el-button>
       </div>
     </div>
     <div class="rules-item">

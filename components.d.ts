@@ -50,6 +50,8 @@ declare module '@vue/runtime-core' {
     ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FsBackTop: typeof import('./src/components/FsBackTop/FsBackTop.vue')['default']
+    FsChildComent: typeof import('./src/components/FsCommentCard/FsChildComent.vue')['default']
+    FsChildComment: typeof import('./src/components/FsCommentCard/FsChildComment.vue')['default']
     FsCodeCard: typeof import('./src/components/FsCodeCard/FsCodeCard.vue')['default']
     FsCodeMirror: typeof import('./src/components/FsCodeMirror/FsCodeMirror.vue')['default']
     FsCollectionCode: typeof import('./src/components/FsCollectionCode/FsCollectionCode.vue')['default']

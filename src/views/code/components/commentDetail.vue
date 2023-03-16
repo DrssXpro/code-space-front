@@ -10,18 +10,27 @@
         </el-radio-group>
       </div>
       <div class="comment-input">
-        <img src="@/assets/image/avatar.jpg" alt="" />
+        <img :src="userInfo?.avatar" alt="用户头像" />
         <div class="input-box">
-          <fs-text-editor />
-          <el-button type="info" style="margin-top: 40px; border-radius: 0">发表评论</el-button>
+          <fs-text-editor @text-html="handeGetComment" />
+          <el-button type="info" style="margin-top: 40px; border-radius: 0" @click="handleSubmit">发表评论</el-button>
         </div>
       </div>
       <div class="comment-list">
         <div class="comment-item" v-for="item in commentState.commentList" :key="item.id">
-          <fs-comment-card :comment-detail="item" />
+          <fs-comment-card
+            :comment-detail="item"
+            @like-comment="handleLikeComment"
+            @replay-son-comment="handleReplaySonComment"
+          />
         </div>
         <div class="comment-pagination">
-          <el-pagination background layout="prev, pager, next" :total="commentState.total" />
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :page-size="commentState.pageSize"
+            :total="commentState.total"
+          />
         </div>
       </div>
     </div>
@@ -29,33 +38,77 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, ref } from "vue";
 import FsCommentCard from "@/components/FsCommentCard/FsCommentCard.vue";
 import FsTextEditor from "@/components/FsTextEditor/FsTextEditor.vue";
-import type { ICommentItem } from "@/types/commentType";
 import { useRoute } from "vue-router";
-import { getCurrentCodeComment } from "@/service/api/codeRequest";
+import useComment from "@/hooks/useComment";
+import useUserStore from "@/stores/userStore";
+import { ElMessage } from "element-plus";
+import type { ICommentPayload } from "@/types/commentType";
 const commentSort = ref("0");
 
 const $route = useRoute();
 const codeId = $route.params.id as string; // 拿到路由id
 
-const commentState = reactive({
-  commentList: [] as ICommentItem[],
-  page: 1,
-  pageSize: 10,
-  total: 0,
-});
+const { userInfo } = useUserStore();
+const { commentPayload, commentState, getCommentList, addCommnetData, likeCommentData, getSonCommentList } =
+  useComment();
+
+// 拿到富文本编辑器里的文本
+const handeGetComment = (content: string) => {
+  commentPayload.content = content;
+};
+
+// 发表一级评论
+const handleSubmit = () => {
+  judgeCommentContent(commentPayload.content) && addCommnetData(codeId, () => getCommentList(codeId));
+};
+
+// 点赞评论
+const handleLikeComment = (commentId: number) => {
+  likeCommentData(commentId, () => {
+    commentState.commentList.find((item) => item.id === commentId)!.like++;
+  });
+};
+
+// 发表二级评论：回复根评论
+const handleReplaySonComment = (payload: ICommentPayload) => {
+  if (judgeCommentContent(payload.content)) {
+    commentPayload.commentId = payload.commentId;
+    commentPayload.rootId = payload.rootId;
+    commentPayload.content = payload.content;
+
+    addCommnetData(codeId, () => {
+      // getCommentList(codeId);
+      getSonCommentList(codeId, payload.rootId!);
+      commentPayload.commentId = undefined;
+      commentPayload.rootId = undefined;
+      commentPayload.content = "";
+    });
+  }
+};
+
+// 判断输入的内容
+function judgeCommentContent(content: string) {
+  if (!content.length) {
+    ElMessage.warning("评论内容不能为空");
+    return false;
+  }
+  if (
+    content.length < 4 ||
+    (!commentPayload.commentId && commentPayload.content.length > 300) ||
+    (commentPayload.commentId && commentPayload.content.length < 120)
+  ) {
+    ElMessage.warning("评论内容过长或过短");
+    return false;
+  }
+  return true;
+}
 
 onMounted(() => {
-  getCommentList();
+  getCommentList(codeId);
 });
-
-const getCommentList = async () => {
-  const res = await getCurrentCodeComment(codeId, { limit: commentState.pageSize, offset: commentState.page - 1 });
-  commentState.commentList = res.data.rows;
-  commentState.total = res.data.count;
-};
 </script>
 
 <style scoped lang="less">

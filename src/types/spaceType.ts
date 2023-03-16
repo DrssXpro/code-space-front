@@ -17,6 +17,9 @@ export interface ISpaceItem {
   "user.authorId": string;
   "user.authorAvatar": string;
   "user.authorName": string;
+  peopleCount: number;
+  codeCount: number;
+  taskCount: number;
 }
 
 // 获取到空间详情

@@ -1,7 +1,7 @@
 <template>
   <div class="code-list">
     <a class="code-item" href="/code/123" target="_blank" v-for="i in 10">
-      <fs-code-card />
+      <!-- <fs-code-card /> -->
     </a>
     <div class="code-more">
       <el-button class="more-btn" @click="handleGetMore" type="info">点击查看更多</el-button>

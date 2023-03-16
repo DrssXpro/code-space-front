@@ -1,4 +1,5 @@
 import {
+  collectCode,
   getCurrentCode,
   getEncryptCodeInfo,
   getEnctryCodeDetail,
@@ -79,13 +80,16 @@ export default function useFrontCode() {
     squareCodeDetail.value && squareCodeDetail.value.liked++;
   }, 500);
 
-  // 收藏代码
-  const collectCode = __debounce(function () {
+  // 收藏 / 取消收藏 代码
+  const collectOrCancelCollect = __debounce(async function (codeId: string) {
     if (!userInfo) {
       ElMessage.warning("请先进行登录");
       return;
     }
-    ElMessage.success("收藏成功");
+    const res = await collectCode(codeId, true);
+    res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+    squareCodeDetail.value &&
+      (res.message === "收藏成功" ? squareCodeDetail.value.collectCount++ : squareCodeDetail.value.collectCount--);
   }, 500);
 
   return {
@@ -96,7 +100,7 @@ export default function useFrontCode() {
     addCodeViewBySquare,
     judeIsEnctrypt,
     addCodeLikeBySquare,
-    collectCode,
+    collectOrCancelCollect,
     getPartCode,
     getEncryptCode,
   };

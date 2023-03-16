@@ -1,16 +1,31 @@
 <template>
   <div class="space-content-container">
-    <div class="space-item" v-for="i in 12" @click="$router.push('/space/detail/123')">
-      <fs-space-card />
+    <div class="space-item" v-for="item in tableState.tableData" :key="item.id" @click="handleJoinSpace(item.id)">
+      <fs-space-card :space-detail="item" />
     </div>
     <div class="space-pagination">
-      <el-pagination background layout="prev, pager, next" :total="50" />
+      <el-pagination background layout="prev, pager, next" :total="tableState.total" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import FsSpaceCard from "@/components/FsSpaceCard/FsSpaceCard.vue";
+import useSpace from "@/hooks/useSpace";
+import { onMounted } from "vue";
+const { tableState, getSpaceListByAdmin } = useSpace();
+
+const emit = defineEmits<{
+  (e: "joinSpace", spaceId: number): void;
+}>();
+
+onMounted(() => {
+  getSpaceListByAdmin();
+});
+
+const handleJoinSpace = (spaceId: number) => {
+  emit("joinSpace", spaceId);
+};
 </script>
 
 <style scoped lang="less">
