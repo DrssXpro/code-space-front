@@ -22,12 +22,14 @@
             :comment-detail="item"
             @like-comment="handleLikeComment"
             @replay-son-comment="handleReplaySonComment"
+            @get-more-son-comment="handleGetMoreSonComment"
           />
         </div>
         <div class="comment-pagination">
           <el-pagination
             background
             layout="prev, pager, next"
+            @current-change="handleCommentPageChange"
             :page-size="commentState.pageSize"
             :total="commentState.total"
           />
@@ -42,10 +44,10 @@ import { onMounted, ref } from "vue";
 import FsCommentCard from "@/components/FsCommentCard/FsCommentCard.vue";
 import FsTextEditor from "@/components/FsTextEditor/FsTextEditor.vue";
 import { useRoute } from "vue-router";
-import useComment from "@/hooks/useComment";
 import useUserStore from "@/stores/userStore";
 import { ElMessage } from "element-plus";
 import type { ICommentPayload } from "@/types/commentType";
+import useCommentStore from "@/stores/useCommentStore";
 const commentSort = ref("0");
 
 const $route = useRoute();
@@ -53,7 +55,16 @@ const codeId = $route.params.id as string; // 拿到路由id
 
 const { userInfo } = useUserStore();
 const { commentPayload, commentState, getCommentList, addCommnetData, likeCommentData, getSonCommentList } =
-  useComment();
+  useCommentStore();
+
+onMounted(() => {
+  getCommentList(codeId);
+});
+
+// 分页获取评论列表
+const handleCommentPageChange = (page: number) => {
+  getCommentList(codeId, page);
+};
 
 // 拿到富文本编辑器里的文本
 const handeGetComment = (content: string) => {
@@ -66,9 +77,17 @@ const handleSubmit = () => {
 };
 
 // 点赞评论
-const handleLikeComment = (commentId: number) => {
+const handleLikeComment = (commentId: number, rootId?: number) => {
   likeCommentData(commentId, () => {
+    // 点赞根评论
     commentState.commentList.find((item) => item.id === commentId)!.like++;
+
+    // 点赞子评论：从根评论获取到子评论，将树形子评论扁平后改变状态
+    if (rootId) {
+      const fItem = commentState.commentList.find((item) => item.id === rootId)!;
+      const flatChild = fItem.children!.flat(Infinity);
+      flatChild.find((item) => item.id === commentId)!.like++;
+    }
   });
 };
 
@@ -89,6 +108,11 @@ const handleReplaySonComment = (payload: ICommentPayload) => {
   }
 };
 
+// 获取该评论下的子评论
+const handleGetMoreSonComment = (rootId: number) => {
+  getSonCommentList(codeId, rootId);
+};
+
 // 判断输入的内容
 function judgeCommentContent(content: string) {
   if (!content.length) {
@@ -105,10 +129,6 @@ function judgeCommentContent(content: string) {
   }
   return true;
 }
-
-onMounted(() => {
-  getCommentList(codeId);
-});
 </script>
 
 <style scoped lang="less">

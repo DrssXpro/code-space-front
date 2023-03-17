@@ -18,8 +18,25 @@
       <el-button type="danger" text @click="showReplayBox">回复</el-button>
     </div>
     <template v-if="props.commentDetail.children && props.commentDetail.children.length">
-      <fs-child-comment v-for="item in props.commentDetail.children" :key="item.id" :comment-detail="item" />
+      <fs-child-comment
+        v-for="item in props.commentDetail.children"
+        :key="item.id"
+        :comment-detail="item"
+        @like-comment="handleSonCommentLike"
+        @replay-content="handleSonReplay"
+      />
+      <el-pagination
+        v-if="!showCount || props.commentDetail.childCount! <= 3"
+        layout="prev, pager, next"
+        :page-size="sonCommentMap[props.commentDetail.id].pageSize"
+        :total="sonCommentMap[props.commentDetail.id].total"
+        @current-change="handleSonCommentPage"
+      />
     </template>
+    <div class="fs-comment-card_count" v-if="showCount && props.commentDetail.childCount! > 3">
+      共{{ props.commentDetail.childCount }}条回复 ,
+      <span @click="handleGetMoreComment">点击查看</span>
+    </div>
     <div class="fs-comment-card_replay" v-show="showReplay">
       <el-input
         v-model="replayContent"
@@ -41,14 +58,19 @@ import { ref } from "vue";
 import FsChildComment from "./FsChildComment.vue";
 import type { ICommentItem, ICommentPayload } from "@/types/commentType";
 import { formatTime } from "@/utils/formatTime";
+import { ElMessage } from "element-plus";
+import useCommentStore from "@/stores/useCommentStore";
 const props = defineProps<{
   commentDetail: ICommentItem;
 }>();
 
 const emit = defineEmits<{
-  (e: "likeComment", commentId: number): void;
+  (e: "likeComment", commentId: number, rootId?: number): void;
   (e: "replaySonComment", commentPayload: ICommentPayload): void;
+  (e: "getMoreSonComment", rootId: number): void;
 }>();
+
+const { sonCommentMap, getSonCommentList } = useCommentStore();
 
 // 当前回复对象
 const currentReplayObj = ref("");
@@ -56,20 +78,65 @@ const currentReplayObj = ref("");
 // 展示回复框
 const showReplay = ref(false);
 
+// 展示更多标志
+const showCount = ref(true);
+
+// 回复内容
 const replayContent = ref("");
+
+// 回复id
+const replayId = ref(0);
+
+// 判断是子评论互评还是回复根评论
+const isSon = ref(false);
 
 const showReplayBox = () => {
   currentReplayObj.value = props.commentDetail.user.authorName;
   showReplay.value = true;
 };
 
-// 子评论回复根评论
+const handleSonCommentLike = (commentId: number, rootId: number) => {
+  emit("likeComment", commentId, rootId);
+};
+
+// 回复评论
 const handleReplaySon = () => {
-  emit("replaySonComment", {
-    content: replayContent.value,
-    commentId: props.commentDetail.id,
-    rootId: props.commentDetail.id,
-  });
+  if (replayContent.value.length < 4 || replayContent.value.length > 120) {
+    ElMessage.warning("评论过长或过短");
+    return;
+  }
+  // 判断是子评论互评还是回复根评论
+  isSon.value
+    ? emit("replaySonComment", {
+        content: replayContent.value,
+        commentId: replayId.value,
+        rootId: props.commentDetail.id,
+      })
+    : emit("replaySonComment", {
+        content: replayContent.value,
+        commentId: props.commentDetail.id,
+        rootId: props.commentDetail.id,
+      });
+  isSon.value = false;
+};
+
+// 子评论下的互相回复
+const handleSonReplay = (replay: number, replayName: string) => {
+  currentReplayObj.value = replayName;
+  isSon.value = true;
+  replayId.value = replay;
+  showReplay.value = true;
+};
+
+// 获取更多子评论
+const handleGetMoreComment = () => {
+  emit("getMoreSonComment", props.commentDetail.id);
+  showCount.value = false;
+};
+
+// 子评论处理分页
+const handleSonCommentPage = (page: number) => {
+  getSonCommentList(props.commentDetail.codeId, props.commentDetail.id, page);
 };
 </script>
 
@@ -88,6 +155,16 @@ const handleReplaySon = () => {
   }
   &_footer {
     .comment-footer();
+  }
+  &_count {
+    margin-top: 10px;
+    color: var(--el-text-color-secondary);
+    span {
+      cursor: pointer;
+      &:hover {
+        color: var(--el-color-primary);
+      }
+    }
   }
   &_replay {
     margin-left: 50px;

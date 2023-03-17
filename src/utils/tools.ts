@@ -113,6 +113,11 @@ export function handleCommentMapTree(childList: ICommentItem[]) {
   });
   childList.forEach((item) => {
     if (item.commentId && treeMap[item.commentId]) {
+      // 给子评论添加回复对象
+      item.replay = {
+        replayAvatar: treeMap[item.commentId].user.authorAvatar,
+        replayName: treeMap[item.commentId].user.authorName,
+      };
       treeMap[item.commentId].children!.push(item);
     } else {
       treeList.push(item);

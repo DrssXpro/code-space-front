@@ -9,9 +9,14 @@ export interface ICommentItem {
   like: number;
   createdAt: string;
   updatedAt: string;
+  childCount?: number;
   user: {
     authorAvatar: string;
     authorName: string;
+  };
+  replay?: {
+    replayAvatar: string;
+    replayName: string;
   };
   children?: ICommentItem[];
 }
