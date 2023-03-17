@@ -1,4 +1,4 @@
-import type { ICommentItem, ICommentPayload } from "@/types/commentType";
+import type { ICommentItem, ICommentPayload, IMyCommentItem } from "@/types/commentType";
 import type { IList, IResponseData } from "@/types/responseType";
 import { myRequest } from "..";
 
@@ -27,6 +27,27 @@ function getChildCodeCommentList(
     {
       url: `/comment_list/child/${codeId}`,
       params: payload,
+    },
+    loading
+  );
+}
+
+// 获取我的评论列表
+function getMyCommentList(payload: { limit: number; offset: number }, loading = false) {
+  return myRequest.get<IResponseData<IList<IMyCommentItem>>>(
+    {
+      url: `/comment_list/me`,
+      params: payload,
+    },
+    loading
+  );
+}
+
+// 删除自己的评论
+function deleteMyComment(commentId: number, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/comment/delete/${commentId}`,
     },
     loading
   );
@@ -63,4 +84,12 @@ function deleteComment(commentId: number, loading = false) {
   );
 }
 
-export { getCurrentCodeCommentList, getChildCodeCommentList, addComment, likeComment, deleteComment };
+export {
+  getCurrentCodeCommentList,
+  getChildCodeCommentList,
+  getMyCommentList,
+  deleteMyComment,
+  addComment,
+  likeComment,
+  deleteComment,
+};

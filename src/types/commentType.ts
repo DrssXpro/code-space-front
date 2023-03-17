@@ -21,6 +21,26 @@ export interface ICommentItem {
   children?: ICommentItem[];
 }
 
+// 我的评论item项
+export interface IMyCommentItem {
+  id: number;
+  content: string;
+  commentId: number | null;
+  rootId: number | null;
+  userId: string;
+  codeId: string;
+  like: number;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    authorAvatar: string;
+    authorName: string;
+  };
+  code: {
+    codeTitle: string;
+  };
+}
+
 // 评论参数
 export interface ICommentPayload {
   content: string;

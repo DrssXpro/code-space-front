@@ -2,19 +2,29 @@
   <div class="fs-my-comment">
     <div class="fs-my-comment_info">
       <div class="info-left">
-        我 2023-2-26 11:35 评论了 _Async__ 的代码
-        <span style="color: var(--el-color-primary); cursor: pointer">二分查找</span>
+        我在 {{ formatTime(props.commentDetail.createdAt, "YYYY-MM-DD hh:ss:mm") }} 评论了 代码
+        <span style="color: var(--el-color-primary); cursor: pointer">{{ props.commentDetail.code.codeTitle }}</span>
       </div>
       <div class="info-right">
-        <el-button type="success" text>详情</el-button>
-        <el-button type="danger" text>删除</el-button>
+        <el-button type="danger" text @click="emit('deleteComment', props.commentDetail.id)">删除</el-button>
       </div>
     </div>
-    <div class="fs-my-comment_content">这里是的内容</div>
+    <div class="fs-my-comment_content" :title="props.commentDetail.content">{{ props.commentDetail.content }}</div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { IMyCommentItem } from "@/types/commentType";
+import { formatTime } from "@/utils/formatTime";
+
+const emit = defineEmits<{
+  (e: "deleteComment", commentId: number): void;
+}>();
+
+const props = defineProps<{
+  commentDetail: IMyCommentItem;
+}>();
+</script>
 
 <style scoped lang="less">
 .fs-my-comment {
@@ -26,6 +36,10 @@
   }
   &_content {
     margin-top: 20px;
+    width: 50vw;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 </style>

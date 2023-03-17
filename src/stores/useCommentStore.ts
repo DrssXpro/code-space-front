@@ -8,7 +8,7 @@ import type { ICommentItem, ICommentPayload } from "@/types/commentType";
 import { flatCommentTree, handleCommentMapTree, __debounce } from "@/utils/tools";
 import { ElMessage } from "element-plus";
 import { defineStore } from "pinia";
-import { reactive, resolveDirective } from "vue";
+import { reactive } from "vue";
 
 interface ICommentState {
   commentList: ICommentItem[];

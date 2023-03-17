@@ -11,7 +11,7 @@
       <div class="count-title">所属空间</div>
       <div class="space-info">
         <div class="space-empty" v-if="!userInfo?.space">
-          <span>暂未加入空间</span>
+          <span style="color: var(--el-text-color-secondary)">暂未加入空间</span>
         </div>
         <div class="space-info-content" v-else @click="$router.push(`/space/detail/${userInfo?.space?.spaceId}`)">
           <span>{{ userInfo?.space?.spaceName }} - <span style="font-size: 14px">_Async__</span></span>

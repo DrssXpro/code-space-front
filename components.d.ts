@@ -57,6 +57,7 @@ declare module '@vue/runtime-core' {
     FsCollectionCode: typeof import('./src/components/FsCollectionCode/FsCollectionCode.vue')['default']
     FsCommentCard: typeof import('./src/components/FsCommentCard/FsCommentCard.vue')['default']
     FsDeepMenu: typeof import('./src/components/FsDeepMenu/FsDeepMenu.vue')['default']
+    FsEmptyBox: typeof import('./src/components/FsEmptyBox/FsEmptyBox.vue')['default']
     FsForm: typeof import('./src/components/FsForm/FsForm.vue')['default']
     FsImage: typeof import('./src/components/FsImage/FsImage.vue')['default']
     FsModal: typeof import('./src/components/FsModal/FsModal.vue')['default']

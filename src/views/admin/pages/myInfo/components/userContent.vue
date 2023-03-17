@@ -1,6 +1,6 @@
 <template>
   <div class="user-content-container" v-loading="collectState.loading">
-    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+    <el-tabs v-model="activeName" class="demo-tabs">
       <el-tab-pane :label="`我的收藏(${collectState.total})`" name="first">
         <div class="gap-item" v-for="item in collectState.collectList" :key="item.id">
           <fs-collection-code
@@ -9,22 +9,29 @@
             @check-collect-detail="handleCheckCollectCode"
           />
         </div>
-        <div class="pagination">
+        <div class="pagination" v-if="collectState.total">
           <el-pagination
             background
             layout="prev, pager, next"
             :page-size="collectState.pageSize"
             :total="collectState.total"
-            @current-change="handlePageChange"
+            @current-change="handleCollectPageChange"
           />
         </div>
+        <fs-empty-box v-else />
       </el-tab-pane>
-      <el-tab-pane :label="`我的评论(${10})`" name="second">
-        <div class="gap-item" v-for="i in 5">
-          <fs-my-comment />
+      <el-tab-pane :label="`我的评论(${commentState.total})`" name="second">
+        <div class="gap-item" v-for="i in commentState.commentList" :key="i.id">
+          <fs-my-comment :comment-detail="i" @delete-comment="handleDeleteComment" />
         </div>
         <div class="pagination">
-          <el-pagination background layout="prev, pager, next" :page-size="10" :total="100" /></div
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :page-size="commentState.pageSize"
+            :total="commentState.total"
+            @current-change="handleCommentPageChange"
+          /></div
       ></el-tab-pane>
     </el-tabs>
   </div>
@@ -33,24 +40,35 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import FsMyComment from "@/components/FsMyComment/FsMyComment.vue";
+import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
 import FsCollectionCode from "@/components/FsCollectionCode/FsCollectionCode.vue";
 import useInfo from "@/hooks/useInfo";
 
-const { collectState, getCollectListData, cancelCollectCode } = useInfo();
+const {
+  collectState,
+  commentState,
+  getCollectListData,
+  getMyCommentListData,
+  cancelCollectCode,
+  deleteMyCurrentComment,
+} = useInfo();
 const activeName = ref("first");
 
 // 获取收藏代码列表
 onMounted(() => {
   getCollectListData();
+  getMyCommentListData();
 });
 
 // 取消收藏代码
 const handleCancelCollectCode = (codeId: string) => {
-  cancelCollectCode(codeId, () => {
-    getCollectListData();
-  });
+  cancelCollectCode(codeId, () => getCollectListData());
 };
 
+// 删除指定评论
+const handleDeleteComment = (commentId: number) => {
+  deleteMyCurrentComment(commentId, () => getMyCommentListData());
+};
 // 跳转至代码详情
 const handleCheckCollectCode = (codeId: string) => {
   const location = window.location;
@@ -59,13 +77,15 @@ const handleCheckCollectCode = (codeId: string) => {
 };
 
 // 分页加载
-const handlePageChange = (page: number) => {
+const handleCollectPageChange = (page: number) => {
   collectState.page = page;
   getCollectListData();
 };
 
-const handleClick = (tab: any, event: Event) => {
-  console.log(tab, event);
+// 分页加载
+const handleCommentPageChange = (page: number) => {
+  commentState.page = page;
+  getMyCommentListData();
 };
 </script>
 
