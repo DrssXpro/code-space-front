@@ -3,16 +3,16 @@
     <template #header> <span style="font-size: 24px; font-weight: 700">评论区</span></template>
     <div class="comment-detail">
       <div class="comment-info">
-        <span style="font-size: 18px">{{ commentState.total }} 个评论</span>
-        <el-radio-group v-model="commentSort">
-          <el-radio-button label="0">最新</el-radio-button>
-          <el-radio-button label="1">最热</el-radio-button>
+        <span style="font-size: 18px">{{ commentState.total }} 条评论</span>
+        <el-radio-group v-model="commentSort" @change="handleSortChange">
+          <el-radio-button :label="0">最新</el-radio-button>
+          <el-radio-button :label="1">最热</el-radio-button>
         </el-radio-group>
       </div>
       <div class="comment-input">
         <img :src="userInfo?.avatar" alt="用户头像" />
         <div class="input-box">
-          <fs-text-editor @text-html="handeGetComment" />
+          <fs-text-editor ref="editorRef" @text-html="handeGetComment" />
           <el-button type="info" style="margin-top: 40px; border-radius: 0" @click="handleSubmit">发表评论</el-button>
         </div>
       </div>
@@ -48,7 +48,9 @@ import useUserStore from "@/stores/userStore";
 import { ElMessage } from "element-plus";
 import type { ICommentPayload } from "@/types/commentType";
 import useCommentStore from "@/stores/useCommentStore";
-const commentSort = ref("0");
+import { treeCommentGetCurrent } from "@/utils/tools";
+const commentSort = ref<0 | 1>(0);
+const editorRef = ref<InstanceType<typeof FsTextEditor>>();
 
 const $route = useRoute();
 const codeId = $route.params.id as string; // 拿到路由id
@@ -66,6 +68,12 @@ const handleCommentPageChange = (page: number) => {
   getCommentList(codeId, page);
 };
 
+// 排序获取评论列表
+const handleSortChange = () => {
+  commentState.sort = commentSort.value;
+  getCommentList(codeId);
+};
+
 // 拿到富文本编辑器里的文本
 const handeGetComment = (content: string) => {
   commentPayload.content = content;
@@ -73,20 +81,26 @@ const handeGetComment = (content: string) => {
 
 // 发表一级评论
 const handleSubmit = () => {
-  judgeCommentContent(commentPayload.content) && addCommnetData(codeId, () => getCommentList(codeId));
+  judgeCommentContent(commentPayload.content) &&
+    addCommnetData(codeId, () => {
+      getCommentList(codeId);
+      // 发表成功清空富文本内容
+      commentPayload.content = "";
+      editorRef.value?.clearContent();
+    });
 };
 
 // 点赞评论
 const handleLikeComment = (commentId: number, rootId?: number) => {
   likeCommentData(commentId, () => {
     // 点赞根评论
-    commentState.commentList.find((item) => item.id === commentId)!.like++;
+    !rootId && commentState.commentList.find((item) => item.id === commentId)!.like++;
 
     // 点赞子评论：从根评论获取到子评论，将树形子评论扁平后改变状态
     if (rootId) {
       const fItem = commentState.commentList.find((item) => item.id === rootId)!;
-      const flatChild = fItem.children!.flat(Infinity);
-      flatChild.find((item) => item.id === commentId)!.like++;
+      const currentComment = treeCommentGetCurrent(fItem.children!, commentId);
+      currentComment!.like++;
     }
   });
 };

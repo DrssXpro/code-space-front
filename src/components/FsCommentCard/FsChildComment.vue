@@ -33,6 +33,7 @@
     v-for="i in props.commentDetail.children"
     :key="i.id"
     @like-comment="handleLikeComment"
+    @replay-content="handleReplayComment"
   />
 </template>
 

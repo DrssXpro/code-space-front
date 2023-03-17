@@ -3,7 +3,11 @@ import type { IList, IResponseData } from "@/types/responseType";
 import { myRequest } from "..";
 
 // 获取当前代码下的评论列表
-function getCurrentCodeCommentList(codeId: string, payload: { limit: number; offset: number }, loading = false) {
+function getCurrentCodeCommentList(
+  codeId: string,
+  payload: { limit: number; offset: number; sort: 0 | 1 },
+  loading = false
+) {
   return myRequest.get<IResponseData<IList<ICommentItem>>>(
     {
       url: `/comment_list/code/${codeId}`,

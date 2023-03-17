@@ -25,13 +25,8 @@
         @like-comment="handleSonCommentLike"
         @replay-content="handleSonReplay"
       />
-      <el-pagination
-        v-if="!showCount || props.commentDetail.childCount! <= 3"
-        layout="prev, pager, next"
-        :page-size="sonCommentMap[props.commentDetail.id].pageSize"
-        :total="sonCommentMap[props.commentDetail.id].total"
-        @current-change="handleSonCommentPage"
-      />
+      <div class="comment-more" v-if="!isTotal && !showCount" @click="handleSonCommentPage">点击加载更多</div>
+      <div class="comment-more" v-if="isTotal" @click="closeSonComment">收起</div>
     </template>
     <div class="fs-comment-card_count" v-if="showCount && props.commentDetail.childCount! > 3">
       共{{ props.commentDetail.childCount }}条回复 ,
@@ -70,7 +65,7 @@ const emit = defineEmits<{
   (e: "getMoreSonComment", rootId: number): void;
 }>();
 
-const { sonCommentMap, getSonCommentList } = useCommentStore();
+const { getSonCommentList, clearSonCommentList } = useCommentStore();
 
 // 当前回复对象
 const currentReplayObj = ref("");
@@ -89,6 +84,9 @@ const replayId = ref(0);
 
 // 判断是子评论互评还是回复根评论
 const isSon = ref(false);
+
+// 判断评论是否已全部加载
+const isTotal = ref(false);
 
 const showReplayBox = () => {
   currentReplayObj.value = props.commentDetail.user.authorName;
@@ -122,6 +120,7 @@ const handleReplaySon = () => {
 
 // 子评论下的互相回复
 const handleSonReplay = (replay: number, replayName: string) => {
+  console.log("check:", replay, replayName);
   currentReplayObj.value = replayName;
   isSon.value = true;
   replayId.value = replay;
@@ -134,9 +133,19 @@ const handleGetMoreComment = () => {
   showCount.value = false;
 };
 
-// 子评论处理分页
-const handleSonCommentPage = (page: number) => {
-  getSonCommentList(props.commentDetail.codeId, props.commentDetail.id, page);
+// 子评论处理分页加载更多
+const handleSonCommentPage = () => {
+  getSonCommentList(props.commentDetail.codeId, props.commentDetail.id, () => {
+    isTotal.value = true;
+    ElMessage.success("已加载全部评论");
+  });
+};
+
+// 收起清空根评论下的内容
+const closeSonComment = () => {
+  clearSonCommentList(props.commentDetail.id);
+  showCount.value = true;
+  isTotal.value = false;
 };
 </script>
 
@@ -170,6 +179,15 @@ const handleSonCommentPage = (page: number) => {
     margin-left: 50px;
     margin-top: 20px;
     text-align: end;
+  }
+  .comment-more {
+    margin-left: 30px;
+    margin-top: 10px;
+    color: var(--el-text-color-secondary);
+    cursor: pointer;
+    &:hover {
+      color: var(--el-color-primary);
+    }
   }
 }
 </style>

@@ -23,9 +23,19 @@ const state = reactive({
   content: "",
 });
 
+// 输入内容改变时触发
 const handleHtmlChange = (str: string) => {
   emit("textHtml", str);
 };
+
+// 清空富文本内容
+const clearContent = () => {
+  state.content = "";
+};
+
+defineExpose({
+  clearContent,
+});
 </script>
 
 <style scoped lang="less">

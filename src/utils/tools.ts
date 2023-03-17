@@ -126,3 +126,34 @@ export function handleCommentMapTree(childList: ICommentItem[]) {
 
   return treeList;
 }
+
+// 树形评论扁平化
+export function flatCommentTree(childList: ICommentItem[]): ICommentItem[] {
+  let res: ICommentItem[] = [];
+  for (const item of childList) {
+    const { children, ...i } = item;
+    if (children && children.length) {
+      res = res.concat(flatCommentTree(children));
+    }
+    res.push({ ...i });
+  }
+  return res;
+}
+
+// 在树形评论中获取当前节点
+export function treeCommentGetCurrent(childList: ICommentItem[], commentId: number): ICommentItem | null {
+  let item: ICommentItem | null = null;
+  for (let i = 0; i < childList.length; i++) {
+    if (childList[i].id === commentId) {
+      item = childList[i];
+      break;
+    } else if (childList[i].children && childList[i].children!.length) {
+      const o = treeCommentGetCurrent(childList[i].children!, commentId);
+      if (o) {
+        item = o;
+        break;
+      }
+    }
+  }
+  return item;
+}
