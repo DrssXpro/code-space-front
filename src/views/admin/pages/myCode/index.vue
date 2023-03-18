@@ -14,10 +14,10 @@
     </div>
     <div class="content-code-table gap-item">
       <fs-table
-        :list-data="tableData"
-        :list-count="50"
-        :loading="loading"
-        :page-size="page.pageSize"
+        :list-data="codeState.codeList"
+        :list-count="codeState.total"
+        :loading="codeState.loading"
+        :page-size="codeState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
         :show-index-column="false"
@@ -27,48 +27,75 @@
             <span>代码列表</span>
           </div>
         </template>
+        <template #id="{ row }">
+          <div class="one-line" :title="row.id">{{ row.id }}</div>
+        </template>
+        <template #content="{ row }">
+          <div class="one-line" :title="row.content">{{ row.content }}</div>
+        </template>
+        <template #status="{ row }">
+          <el-tag :type="row.status ? 'success' : 'info'">{{ row.status ? "公开" : "私有" }}</el-tag>
+        </template>
+        <template #isPwd="{ row }">
+          <el-tag :type="row.isPwd ? 'danger' : ''">{{ row.isPwd ? "是" : "否" }}</el-tag>
+        </template>
         <template #createdAt="{ row }">
-          <el-tag type="danger">{{ row.createdAt }}</el-tag>
+          {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }}
+        </template>
+        <template #updatedAt="{ row }">
+          {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="info" link @click="handleCodeDrawer(false)">详情</el-button>
-          <el-button type="success" link @click="handleCodeDrawer(true)">编辑</el-button>
-          <el-button type="danger" link>删除</el-button>
+          <el-button type="info" link @click="handleSkipToDetail(row.id)">详情</el-button>
+          <el-button type="success" link @click="handleCodeDrawer(row)">编辑</el-button>
+          <el-button type="danger" link @click="handleDeleteCode(row.id)">删除</el-button>
         </template>
       </fs-table>
 
-      <code-drawer ref="codeDrawerRef" title="代码编辑" :is-edit="isEdit" />
+      <code-drawer ref="codeDrawerRef" @refresh-table="getMyCodeListData" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import codeDrawer from "./components/codeDrawer.vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
+import useMyCode from "@/hooks/useMyCode";
+import { formatTime } from "@/utils/formatTime";
+import type { IMyCodeItem } from "@/types/codeType";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const codeDrawerRef = ref<InstanceType<typeof codeDrawer>>();
 const formConfigReactive = ref(formConfig);
-const loading = ref(false);
 
+const { codeState, getMyCodeListData, deleteMyCodeData } = useMyCode();
 const formData = ref({
   title: "1",
   lan: "1",
 });
 
-const isEdit = ref(false);
-
-const page = ref({
-  current: 1,
-  pageSize: 10,
+onMounted(() => {
+  getMyCodeListData();
 });
 
-const handleCodeDrawer = (edit: boolean) => {
-  isEdit.value = edit;
-  codeDrawerRef.value?.controllDrawer(true);
+// 跳转至代码详情
+const handleSkipToDetail = (id: string) => {
+  const location = window.location;
+  const url = `${location.protocol}://${location.host}/#/code/${id}`;
+  window.open(url);
+};
+
+// 打开编辑抽屉：传递代码详情
+const handleCodeDrawer = (row: IMyCodeItem) => {
+  codeDrawerRef.value?.controllDrawer(true, row);
+};
+
+// 删除指定代码
+const handleDeleteCode = (id: string) => {
+  deleteMyCodeData(id, () => getMyCodeListData());
 };
 
 const searchDataList = () => {
@@ -82,65 +109,6 @@ const handlePageChange = (current: number) => {
 const resetForm = () => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
 };
-
-const tableData = [
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-];
 </script>
 
 <style scoped lang="less">
@@ -175,6 +143,12 @@ const tableData = [
         font-size: 20px;
       }
       margin-bottom: 20px;
+    }
+    .one-line {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

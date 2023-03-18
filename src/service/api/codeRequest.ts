@@ -1,4 +1,4 @@
-import type { CodePart, ICodeDetail, ISquareCodeItem, ISquareCodePayload } from "@/types/codeType";
+import type { CodePart, ICodeDetail, IMyCodeItem, ISquareCodeItem, ISquareCodePayload } from "@/types/codeType";
 import type { IList, IResponseData } from "@/types/responseType";
 import { myRequest } from "..";
 
@@ -9,7 +9,7 @@ function addCodeBySquare(payload: ISquareCodePayload, loading = false) {
       url: "/square_code/add",
       data: payload,
     },
-    (loading = false)
+    loading
   );
 }
 
@@ -22,6 +22,29 @@ function getCodeListBySquare(payload: { limit: number; offset: number }, loading
     },
     loading
   );
+}
+
+// 获取我的代码列表
+function getMyCodeList(payload: { limit: number; offset: number }) {
+  return myRequest.get<IResponseData<IList<IMyCodeItem>>>({
+    url: "/own_code/list",
+    params: payload,
+  });
+}
+
+// 删除我的代码
+function deleteMyCode(codeId: string) {
+  return myRequest.post<IResponseData>({
+    url: `/own_code/delete/${codeId}`,
+  });
+}
+
+// 更新的我代码
+function updateMyCode(codeId: string, payload: ISquareCodePayload) {
+  return myRequest.post<IResponseData>({
+    url: `/own_code/update/${codeId}`,
+    data: payload,
+  });
 }
 
 // 获取指定代码详情
@@ -128,17 +151,23 @@ function collectCode(codeId: string, loading = false) {
 }
 
 // 获取个人收藏代码
-function getCollectList(payload: { limit: number; offset: number }) {
-  return myRequest.get<IResponseData<IList<ISquareCodeItem>>>({
-    url: "/code/collect/list",
-    params: payload,
-  });
+function getCollectList(payload: { limit: number; offset: number }, loading = false) {
+  return myRequest.get<IResponseData<IList<ISquareCodeItem>>>(
+    {
+      url: "/code/collect/list",
+      params: payload,
+    },
+    loading
+  );
 }
 
 export {
   addCodeBySquare,
   getCodeListBySquare,
   getCurrentCode,
+  getMyCodeList,
+  updateMyCode,
+  deleteMyCode,
   likeCodeBySquare,
   viewCodeBySquare,
   likeCodeBySpace,

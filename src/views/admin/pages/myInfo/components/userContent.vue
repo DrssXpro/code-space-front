@@ -24,15 +24,17 @@
         <div class="gap-item" v-for="i in commentState.commentList" :key="i.id">
           <fs-my-comment :comment-detail="i" @delete-comment="handleDeleteComment" />
         </div>
-        <div class="pagination">
+        <div class="pagination" v-if="commentState.total">
           <el-pagination
             background
             layout="prev, pager, next"
             :page-size="commentState.pageSize"
             :total="commentState.total"
             @current-change="handleCommentPageChange"
-          /></div
-      ></el-tab-pane>
+          />
+        </div>
+        <fs-empty-box v-else
+      /></el-tab-pane>
     </el-tabs>
   </div>
 </template>

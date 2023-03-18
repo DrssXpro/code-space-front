@@ -4,7 +4,6 @@ export interface ISquareCodePayload {
   lan: TLanguage;
   content: string;
   isPwd: boolean;
-  link: string;
   pwd: string;
   taskId?: number;
   status: 0 | 1;
@@ -22,7 +21,7 @@ export interface ISquareCodeItem {
   liked: number;
   commentCount: number;
   collectCount: number;
-  link: string;
+  line: number;
   createdAt: string;
   updatedAt: string;
   user: {
@@ -32,13 +31,32 @@ export interface ISquareCodeItem {
   };
 }
 
+// 我的代码列表项
+export interface IMyCodeItem {
+  id: string;
+  title: string;
+  preview: string;
+  content: string;
+  lan: TLanguage;
+  status: 0 | 1;
+  isPwd: 0 | 1;
+  views: number;
+  liked: number;
+  line: number;
+  commentCount: number;
+  collectCount: number;
+  link: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // 代码详情
 export interface ICodeDetail {
   id: string;
   title: string;
   content: string;
   lan: TLanguage;
-  link: string;
+  line: number;
   status: 0 | 1;
   isPwd: 0 | 1;
   views: number;
