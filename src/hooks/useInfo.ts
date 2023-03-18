@@ -1,11 +1,24 @@
 import { collectCode, getCollectList } from "@/service/api/codeRequest";
 import { deleteMyComment, getMyCommentList } from "@/service/api/commentRequest";
+import { updateUserInfoByMe, userUploadAvatar } from "@/service/api/userRequest";
 import type { ISquareCodeItem } from "@/types/codeType";
-import type { ICommentItem, IMyCommentItem } from "@/types/commentType";
-import { ElMessage, ElMessageBox, type FormInstance } from "element-plus";
-import { reactive } from "vue";
+import type { IMyCommentItem } from "@/types/commentType";
+import validator from "@/utils/validator";
+import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
+import { reactive, ref, type Ref } from "vue";
 
-export default function useInfo(formRef?: FormInstance | undefined) {
+export default function useInfo(formRef?: Ref<FormInstance | undefined>) {
+  const { updateUserValidator } = validator;
+  // 用户信息：修改
+  const userState = reactive({
+    name: "",
+    email: "",
+    nickName: "",
+    avatar: "",
+    isDefault: true,
+  });
+
+  // 我的收藏
   const collectState = reactive({
     collectList: [] as ISquareCodeItem[],
     total: 0,
@@ -22,6 +35,13 @@ export default function useInfo(formRef?: FormInstance | undefined) {
     page: 1,
     loading: false,
   });
+
+  // 更新校验
+  const updateRules: FormRules = {
+    name: [{ validator: updateUserValidator.name, trigger: "blur" }],
+    email: [{ validator: updateUserValidator.email, trigger: "blur" }],
+    nickName: [{ validator: updateUserValidator.nickName, trigger: "blur" }],
+  };
 
   // 获取用户收藏列表
   async function getCollectListData() {
@@ -78,12 +98,52 @@ export default function useInfo(formRef?: FormInstance | undefined) {
     });
   }
 
+  // 用户头像上传
+  async function uploadUserAvatar(file: File) {
+    const fd = new FormData();
+    fd.append("avatar", file);
+    try {
+      const res = await userUploadAvatar(fd);
+      userState.avatar = res.data;
+    } catch (error) {
+      ElMessage.error("头像上传失败");
+    }
+  }
+
+  // 更新用户信息
+  async function updateMyInfo(userId: string, file?: File, cb?: Function) {
+    if (!formRef?.value) return;
+    formRef.value.validate(async (valid) => {
+      if (valid) {
+        try {
+          if (!userState.isDefault && !file) {
+            ElMessage.warning("未上传头像");
+            return;
+          }
+          // 上传用户头像:使用默认不进行上传
+          !userState.isDefault && file && (await uploadUserAvatar(file));
+          // 更新用户信息
+          const res = await updateUserInfoByMe(userId, { ...userState });
+          res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+          res.code === 1000 && cb && cb();
+        } catch (error) {
+          ElMessage.error("更新失败");
+        }
+      } else {
+        ElMessage.warning("输入内容不符合规范");
+      }
+    });
+  }
+
   return {
+    userState,
     collectState,
     commentState,
+    updateRules,
     getCollectListData,
     getMyCommentListData,
     cancelCollectCode,
     deleteMyCurrentComment,
+    updateMyInfo,
   };
 }

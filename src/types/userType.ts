@@ -19,6 +19,7 @@ export interface IUserLoginInfo {
   email: string;
   avatar: string;
   token: string;
+  nickName: string;
   role: {
     roleName: string;
     roleId: number;

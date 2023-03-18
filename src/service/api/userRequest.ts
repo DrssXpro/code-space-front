@@ -24,6 +24,29 @@ function userRegister(payload: { username: string; password: string; email: stri
   );
 }
 
+// 用户上传头像
+function userUploadAvatar(fd: FormData) {
+  return myRequest.uploadFilePost<IResponseData<string>>({
+    url: "/user/upload",
+    data: fd,
+  });
+}
+
+// 用户更新自己的信息
+function updateUserInfoByMe(
+  userId: string,
+  payload: { name: string; email: string; nickName: string; avatar: string; isDefault: boolean },
+  loading = false
+) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/user/update/${userId}`,
+      data: payload,
+    },
+    loading
+  );
+}
+
 // 获取指定用户信息
 function getUserInfo(id: string, loading = false) {
   return myRequest.get<IResponseData<IUserLoginInfo>>(
@@ -102,6 +125,7 @@ function deleteUserByAdmin(id: string, loading = false) {
 export {
   userLogin,
   userRegister,
+  userUploadAvatar,
   getUserInfo,
   getEmailCode,
   verifyEmailCode,
@@ -109,4 +133,5 @@ export {
   addUserByAdmin,
   updateUserByAdmin,
   deleteUserByAdmin,
+  updateUserInfoByMe,
 };

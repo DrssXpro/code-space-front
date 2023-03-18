@@ -29,7 +29,8 @@
 
 <script setup lang="ts">
 import useUserStore from "@/stores/userStore";
-const { userInfo } = useUserStore();
+import { toRefs } from "vue";
+const { userInfo } = toRefs(useUserStore());
 const emit = defineEmits<{
   (e: "showEditDialog"): void;
 }>();

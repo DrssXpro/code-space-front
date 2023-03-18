@@ -13,6 +13,13 @@ const validator = {
     email: validateEmail,
   },
 
+  // 更新自己的用户信息校验
+  updateUserValidator: {
+    name: validateUserName,
+    email: validateEmail,
+    nickName: validateUserNickName,
+  },
+
   // 空间信息表单校验
   spaceValidator: {
     spacename: validateSpaceName,
@@ -50,8 +57,19 @@ const validator = {
 function validateUserName(rule: any, value: any, callback: any) {
   if (value == "") {
     callback(new Error("用户名不能为空"));
-  } else if (value.length < 4 || value.length > 10) {
+  } else if (value.length < 2 || value.length > 15) {
     callback(new Error("用户名在4-10个字符之间"));
+  } else {
+    callback();
+  }
+}
+
+// 校验用户昵称名
+function validateUserNickName(rule: any, value: any, callback: any) {
+  if (value == "") {
+    callback(new Error("空间昵称不能为空"));
+  } else if (value.length < 2 || value.length > 15) {
+    callback(new Error("空间昵称在2-15个字符之间"));
   } else {
     callback();
   }
