@@ -79,7 +79,7 @@ const props = defineProps<{
     }
   }
   .time {
-    margin-left: 50px;
+    margin-left: 40px;
     color: var(--el-text-color-secondary);
   }
   &__mask {

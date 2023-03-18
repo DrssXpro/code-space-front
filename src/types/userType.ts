@@ -31,6 +31,19 @@ export interface IUserLoginInfo {
   };
 }
 
+// 空间用户列表项
+export interface ISpaceUserItem {
+  id: string;
+  name: string;
+  nickName: string;
+  email: string;
+  avatar: string;
+  "role.roleId": number;
+  "role.roleName": string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // 管理员添加用户参数
 export interface IUserAddByAdmin {
   name: string;

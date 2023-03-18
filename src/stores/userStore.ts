@@ -39,6 +39,7 @@ const useUserStore = defineStore("user", () => {
     const id = userInfo.value?.id;
     const res = await getUserInfo(id!);
     userInfo.value = res.data;
+    console.log("check:", userInfo.value);
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("userInfo", JSON.stringify(res.data));
   };

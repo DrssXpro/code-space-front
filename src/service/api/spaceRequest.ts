@@ -1,5 +1,6 @@
 import type { IList, IResponseData } from "@/types/responseType";
 import type { ISpacePayload, ISpaceDetail, ISpaceItem } from "@/types/spaceType";
+import type { ISpaceUserItem } from "@/types/userType";
 import { myRequest } from "..";
 
 // 添加空间
@@ -29,6 +30,17 @@ function getSpaceList(payload: { limit: number; offset: number }, loading = fals
   return myRequest.get<IResponseData<IList<ISpaceItem>>>(
     {
       url: "/space/list",
+      params: payload,
+    },
+    loading
+  );
+}
+
+// 获取空间用户列表
+function getSpaceUserList(payload: { limit: number; offset: number }, loading = false) {
+  return myRequest.get<IResponseData<IList<ISpaceUserItem>>>(
+    {
+      url: "/space/user/list",
       params: payload,
     },
     loading
@@ -66,4 +78,4 @@ function joinSpaceByInviteCode(spaceId: number, inviteCode: string, loading = fa
   );
 }
 
-export { addSpace, updateSpace, getSpaceList, getSpaceDetail, deleteSpace, joinSpaceByInviteCode };
+export { addSpace, updateSpace, getSpaceList, getSpaceUserList, getSpaceDetail, deleteSpace, joinSpaceByInviteCode };

@@ -101,12 +101,12 @@ const menus = [
     height: 100%;
     align-items: center;
     .icon {
-      font-size: 25px;
+      font-size: 24px;
       margin-right: 10px;
       font-weight: 600;
     }
     span {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 600;
     }
   }

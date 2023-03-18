@@ -17,7 +17,7 @@
           <el-tag size="large" type="success">{{ userInfo?.space?.spaceName }}</el-tag>
           <div class="space-operator"></div>
         </div>
-        <el-button type="danger" text v-if="userInfo?.space">退出</el-button>
+        <el-button type="danger" text v-if="userInfo?.space" @click="exitSpaceByOwn">退出</el-button>
       </div>
     </div>
 
@@ -28,13 +28,22 @@
 </template>
 
 <script setup lang="ts">
-import useUserStore from "@/stores/userStore";
 import { toRefs } from "vue";
-const { userInfo } = toRefs(useUserStore());
+import useUserStore from "@/stores/userStore";
+import useInfo from "@/hooks/useInfo";
+
+const { userInfo, getUserInfoData } = toRefs(useUserStore());
+const { exitSpace } = useInfo();
 const emit = defineEmits<{
   (e: "showEditDialog"): void;
 }>();
 
+// 退出空间
+const exitSpaceByOwn = () => {
+  exitSpace(() => getUserInfoData.value());
+};
+
+// 打开编辑dialog
 const showEditDialog = () => {
   emit("showEditDialog");
 };

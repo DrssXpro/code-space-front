@@ -1,6 +1,6 @@
 import { collectCode, getCollectList } from "@/service/api/codeRequest";
 import { deleteMyComment, getMyCommentList } from "@/service/api/commentRequest";
-import { updateUserInfoByMe, userUploadAvatar } from "@/service/api/userRequest";
+import { exitSpaceByOwn, updateUserInfoByMe, userUploadAvatar } from "@/service/api/userRequest";
 import type { ISquareCodeItem } from "@/types/codeType";
 import type { IMyCommentItem } from "@/types/commentType";
 import validator from "@/utils/validator";
@@ -70,6 +70,19 @@ export default function useInfo(formRef?: Ref<FormInstance | undefined>) {
     }
 
     commentState.loading = false;
+  }
+
+  // 手动退出空间
+  async function exitSpace(cb?: Function) {
+    ElMessageBox.confirm(`确定要退出这个空间吗？在该空间的信息都会被删除。`, {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    }).then(async () => {
+      const res = await exitSpaceByOwn();
+      res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+      res.code === 1000 && cb && cb();
+    });
   }
 
   // 取消收藏代码
@@ -145,5 +158,6 @@ export default function useInfo(formRef?: Ref<FormInstance | undefined>) {
     cancelCollectCode,
     deleteMyCurrentComment,
     updateMyInfo,
+    exitSpace,
   };
 }

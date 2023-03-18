@@ -47,6 +47,16 @@ function updateUserInfoByMe(
   );
 }
 
+// 手动退出空间
+function exitSpaceByOwn(loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: "/space/exit",
+    },
+    loading
+  );
+}
+
 // 获取指定用户信息
 function getUserInfo(id: string, loading = false) {
   return myRequest.get<IResponseData<IUserLoginInfo>>(
@@ -134,4 +144,5 @@ export {
   updateUserByAdmin,
   deleteUserByAdmin,
   updateUserInfoByMe,
+  exitSpaceByOwn,
 };

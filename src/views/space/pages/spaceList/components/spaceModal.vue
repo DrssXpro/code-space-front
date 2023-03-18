@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { joinSpaceByInviteCode } from "@/service/api/spaceRequest";
+import useUserStore from "@/stores/userStore";
 import { ElMessage } from "element-plus";
 import { reactive, ref } from "vue";
 const isShow = ref(false);
@@ -23,11 +24,14 @@ const state = reactive({
   spaceId: 0,
 });
 
+const { getUserInfoData } = useUserStore();
+
 // 加入空间申请
 const handleJoinSpace = async () => {
   const res = await joinSpaceByInviteCode(state.spaceId, state.inviteCode, true);
   res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
   isShow.value = false;
+  getUserInfoData();
 };
 
 // 控制模态框

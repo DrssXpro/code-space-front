@@ -14,10 +14,10 @@
     </div>
     <div class="space-people-table gap-item">
       <fs-table
-        :list-data="tableData"
-        :list-count="50"
-        :loading="loading"
-        :page-size="page.pageSize"
+        :list-data="userState.userList"
+        :list-count="userState.total"
+        :loading="userState.loading"
+        :page-size="userState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
         :show-index-column="false"
@@ -25,61 +25,55 @@
         <template #header>
           <div class="header-config">
             <span>人员列表</span>
-            <el-button type="primary" @click="showAddModal">邀请人员</el-button>
+            <el-button type="primary">邀请人员</el-button>
           </div>
         </template>
+        <template #id="{ row }">
+          <div class="one-line" :title="row.id">{{ row.id }}</div>
+        </template>
+        <template #avatar="{ row }">
+          <img :src="row.avatar" alt="用户头像" class="avatar" />
+        </template>
+        <template #roleName="{ row }">
+          <el-tag type="success">{{ row["role.roleName"] }}</el-tag>
+        </template>
         <template #createdAt="{ row }">
-          <el-tag type="danger">{{ row.createdAt }}</el-tag>
+          {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }}
+        </template>
+        <template #updatedAt="{ row }">
+          {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
           <el-button type="success" link>编辑</el-button>
           <el-button type="danger" link>删除</el-button>
         </template>
       </fs-table>
-
-      <fs-modal
-        v-model="modalData"
-        ref="fsModalRef"
-        title="邀请人员"
-        :modal-config="modalConfig"
-        :mobal-rules="modalValid"
-      >
-        <template #footer>
-          <el-button @click="closeModal">取消</el-button>
-          <el-button type="primary" @click="handleAdd">添加</el-button>
-        </template>
-      </fs-modal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
-import FsModal from "@/components/FsModal/FsModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { modalConfig, modalValid } from "./config/modal.config";
 import { ElMessage } from "element-plus";
+import useSpaceUser from "@/hooks/useSpaceUser";
+import { formatTime } from "@/utils/formatTime";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
-const fsModalRef = ref<InstanceType<typeof FsModal>>();
 const formConfigReactive = ref(formConfig);
 const loading = ref(false);
+
+const { userState, getSpaceUserListData } = useSpaceUser();
 
 const formData = ref({
   title: "1",
   lan: "1",
 });
 
-const modalData = ref({
-  title: "1",
-  lan: "2",
-});
-
-const page = ref({
-  current: 1,
-  pageSize: 10,
+onMounted(() => {
+  getSpaceUserListData();
 });
 
 const searchDataList = () => {
@@ -90,35 +84,10 @@ const handlePageChange = (current: number) => {
   console.log(current);
 };
 
-const showAddModal = () => {
-  fsModalRef.value?.controllModal(true);
-};
-
-const closeModal = () => {
-  fsModalRef.value?.controllModal(false);
-};
-
 const resetForm = () => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
 };
 
-const handleAdd = async () => {
-  if (fsModalRef.value && fsModalRef.value.formRef) {
-    await fsModalRef.value.formRef.validate((valid, fields) => {
-      if (valid) {
-        ElMessage.success("验证通过");
-      } else {
-        ElMessage.error("验证失败");
-      }
-    });
-  }
-};
-fsModalRef.value && fsModalRef.value.formRef?.resetFields();
-
-const resetModal = () => {
-  console.log(fsModalRef.value && fsModalRef.value.treeRef[0].getCheckedKeys(false));
-  // fsModalRef.value && fsModalRef.value.formRef?.resetFields();
-};
 const tableData = [
   {
     test1: "2016-05-03",
@@ -211,6 +180,10 @@ const tableData = [
         font-size: 20px;
       }
       margin-bottom: 20px;
+    }
+    .avatar {
+      width: 60px;
+      height: 60px;
     }
   }
 }

@@ -80,8 +80,8 @@ const emit = defineEmits<{
     .left {
       display: flex;
       img {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         margin-right: 20px;
       }
       .code-info {
@@ -90,6 +90,7 @@ const emit = defineEmits<{
         justify-content: space-between;
         .user-info {
           color: var(--el-text-color-secondary);
+          font-size: 14px;
           i {
             margin-right: 5px;
           }
