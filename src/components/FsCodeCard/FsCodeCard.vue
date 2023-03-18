@@ -10,14 +10,12 @@
         </div>
         <div class="fs-code-card_content">
           <div class="content-title line-one">{{ props.codeDetail.title }}</div>
-          <div class="content-preview line-one">
-            {{ props.codeDetail.preview }}
-          </div>
+          <div class="content-preview line-one">{{ props.codeDetail.preview }}...</div>
           <div class="content-info">
             <img :src="`/src/assets/icon/${props.codeDetail.lan}.svg`" class="lan-img" alt="" />
             <div>{{ props.codeDetail.lan }}</div>
             <div><i class="fa fa-eye"></i> {{ props.codeDetail.views }} 浏览</div>
-            <div>306.00 bytes</div>
+            <div>{{ props.codeDetail.line }} lines</div>
           </div>
         </div>
         <div class="fs-code-card_footer">

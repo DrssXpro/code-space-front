@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { onActivated, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { getSpaceDetail } from "@/service/api/spaceRequest";
 import mitter from "@/utils/mitter";
 import useUserStore from "@/stores/userStore";
@@ -144,7 +144,7 @@ const tableData = [
   },
 ];
 
-onActivated(() => {
+onMounted(() => {
   getSpaceDetailData();
 });
 

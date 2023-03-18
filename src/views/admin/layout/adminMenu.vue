@@ -80,22 +80,11 @@ const $route = useRoute();
   .menu-title {
     text-align: center;
     margin: 10px 0 20px 0;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 700;
   }
   .el-menu {
     border: 0 !important;
-  }
-  .is-active {
-    background-color: var(--el-bg-color-page);
-  }
-  .el-menu-item:hover {
-    color: var(--el-text-color-primary);
-    background-color: var(--el-bg-color-page);
-  }
-  :deep(.el-sub-menu__title):hover {
-    color: var(--el-text-color-primary) !important;
-    background-color: none !important;
   }
 }
 </style>

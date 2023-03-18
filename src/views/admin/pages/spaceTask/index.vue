@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { onActivated, ref } from "vue";
+import { onMounted, ref } from "vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
 import taskModal from "./components/taskModal.vue";
@@ -68,7 +68,7 @@ const { tableState, searchState, searchLoading, getTaskListData, deleteTaskData 
 // 编辑 or 添加
 const isEdit = ref(false);
 
-onActivated(() => {
+onMounted(() => {
   getTaskListData();
 });
 

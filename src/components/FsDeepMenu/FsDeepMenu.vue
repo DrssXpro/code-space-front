@@ -32,4 +32,15 @@ const props = defineProps<{
   font-size: 18px;
   margin-right: 10px;
 }
+.is-active {
+  background-color: var(--el-bg-color-page);
+}
+.el-menu-item:hover {
+  color: var(--el-text-color-primary);
+  background-color: var(--el-bg-color-page);
+}
+:deep(.el-sub-menu__title):hover {
+  color: var(--el-text-color-primary) !important;
+  background-color: none !important;
+}
 </style>

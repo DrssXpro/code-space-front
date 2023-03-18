@@ -2,9 +2,7 @@
   <div class="admin-content-container">
     <router-view v-slot="{ Component }">
       <transition name="slide-fade">
-        <keep-alive>
-          <component :is="Component" />
-        </keep-alive>
+        <component :is="Component" />
       </transition>
     </router-view>
   </div>

@@ -8,17 +8,11 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-const props = withDefaults(
-  defineProps<{
-    modelValue: boolean;
-    activeColor: string;
-    unActiveColor: string;
-  }>(),
-  {
-    activeColor: "#fff",
-    unActiveColor: "#000",
-  }
-);
+const props = defineProps<{
+  modelValue: boolean;
+  activeColor: string;
+  unActiveColor: string;
+}>();
 
 const emit = defineEmits<{
   (event: "update:modelValue", status: boolean): void;

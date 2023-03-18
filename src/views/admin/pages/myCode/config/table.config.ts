@@ -22,7 +22,7 @@ const tableConfig: ITableConifg[] = [
     prop: "lan",
     label: "语言",
     slotName: "lan",
-    width: "100",
+    width: "120",
   },
   {
     prop: "status",

@@ -17,7 +17,7 @@
       </ul>
     </div>
     <div class="nav-menu_right">
-      <fs-switch v-model="themeFlag" @change-status="handleChangeTheme">
+      <fs-switch v-model="themeFlag" @change-status="handleChangeTheme" active-color="#fff" un-active-color="#000">
         <i :class="[themeFlag ? 'fa fa-sun-o' : 'fa fa-moon-o']"></i>
       </fs-switch>
       <el-button type="danger"><a href="#/share" target="_blank">分享</a></el-button>
