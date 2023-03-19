@@ -57,7 +57,16 @@ const validator = {
     nickName: validateUserNickName,
     roleId: validRoleId,
   },
+  // 空间代码编辑校验
+  spaceCodeValidator: {
+    title: validCodeTitle,
+    lan: validCodeLan,
+    content: validCodeContent,
+  },
 };
+
+// code选项
+const codes = ["cpp", "Java", "JavaScript", "Python", "PHP", "CSS", "Vue"];
 
 // 校验用户名
 function validateUserName(rule: any, value: any, callback: any) {
@@ -316,6 +325,49 @@ function validMenuType(rule: any, value: any, callback: any) {
 function validMenuStatus(rule: any, value: any, callback: any) {
   if (!value || ![0, 1].includes(value)) {
     callback(new Error("菜单状态不能为空"));
+  } else {
+    callback();
+  }
+}
+
+// 校验代码标题
+function validCodeTitle(rule: any, value: any, callback: any) {
+  if (!value) {
+    callback(new Error("代码标题不能为空"));
+  } else if (value.length < 2 || value.length > 20) {
+    callback(new Error("代码标题的长度在2-20个字符之间"));
+  } else {
+    callback();
+  }
+}
+
+// 检验代码内容
+function validCodeContent(rule: any, value: any, callback: any) {
+  if (!value) {
+    callback(new Error("代码内容不能为空"));
+  } else if (value.length < 10 || value.length > 1000) {
+    callback(new Error("代码长度在10-1000个字符之间"));
+  } else {
+    callback();
+  }
+}
+
+// 检验代码语言
+function validCodeLan(role: any, value: any, callback: any) {
+  if (!value) {
+    callback(new Error("选择语言不能为空"));
+  } else if (!codes.includes(value)) {
+    callback(new Error("语言选择不在范围内"));
+  } else {
+    callback();
+  }
+}
+// 检验代码密码
+function validCodePwd(role: any, value: any, callback: any) {
+  if (!value) {
+    callback(new Error("设置密码不能为空"));
+  } else if (value.length < 2 || value.length > 15) {
+    callback(new Error("密码在2-15个字符之间"));
   } else {
     callback();
   }

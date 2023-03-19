@@ -14,10 +14,10 @@
     </div>
     <div class="space-code-table gap-item">
       <fs-table
-        :list-data="tableData"
-        :list-count="50"
-        :loading="loading"
-        :page-size="page.pageSize"
+        :list-data="codeState.codeList"
+        :list-count="codeState.total"
+        :loading="codeState.loading"
+        :page-size="codeState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
         :show-index-column="false"
@@ -27,49 +27,54 @@
             <span>代码列表</span>
           </div>
         </template>
-        <template #createdAt="{ row }">
-          <el-tag type="danger">{{ row.createdAt }}</el-tag>
+        <template #id="{ row }">
+          <div class="one-line" :title="row.id">{{ row.id }}</div>
         </template>
+        <template #preview="{ row }">
+          <div class="one-line" :title="row.content">{{ row.preview }}...</div>
+        </template>
+        <template #lan="{ row }">
+          <el-tag type="success">{{ row.lan }}</el-tag>
+        </template>
+        <template #createdAt="{ row }"> {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }} </template>
+        <template #updatedAt="{ row }"> {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }} </template>
         <template #operator="{ row }">
-          <el-button type="success" link @click="handleEditCode">编辑</el-button>
+          <el-button type="success" link @click="handleEditCode(row)">编辑</el-button>
           <el-button type="danger" link>删除</el-button>
         </template>
       </fs-table>
 
-      <code-drawer ref="codeDrawerRef" title="代码编辑" :is-edit="true" />
+      <code-drawer ref="codeDrawerRef" @refresh-table="getSpaceListData" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import codeDrawer from "./components/codeDrawer.vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
+import useSpaceCode from "@/hooks/useSpaceCode";
+import { formatTime } from "@/utils/formatTime";
+import type { ISpaceMasterCodeItem } from "@/types/codeType";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const codeDrawerRef = ref<InstanceType<typeof codeDrawer>>();
 const formConfigReactive = ref(formConfig);
-const loading = ref(false);
+const { codeState, getSpaceListData } = useSpaceCode();
+
+onMounted(() => {
+  getSpaceListData();
+});
 
 const formData = ref({
   title: "1",
   lan: "1",
 });
 
-const modalData = ref({
-  title: "1",
-  lan: "2",
-});
-
-const page = ref({
-  current: 1,
-  pageSize: 10,
-});
-
-const handleEditCode = () => {
-  codeDrawerRef.value?.controllDrawer(true);
+const handleEditCode = (row: ISpaceMasterCodeItem) => {
+  codeDrawerRef.value?.controllDrawer(true, row);
 };
 
 const searchDataList = () => {
@@ -83,65 +88,6 @@ const handlePageChange = (current: number) => {
 const resetForm = () => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
 };
-
-const tableData = [
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-];
 </script>
 
 <style scoped lang="less">

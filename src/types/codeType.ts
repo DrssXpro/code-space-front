@@ -16,6 +16,13 @@ export interface ISpaceCodePayload {
   taskId: number;
 }
 
+export interface ISpaceCodeUpdatePayload {
+  title: string;
+  lan: TLanguage;
+  content: string;
+  status: 1 | 2;
+}
+
 // 广场代码列表项
 export interface ISquareCodeItem {
   id: string;
@@ -100,6 +107,24 @@ export interface ISpaceCodeDetail {
     spaceName: string;
     spaceId: number;
   };
+}
+
+// 空间管理代码项
+export interface ISpaceMasterCodeItem {
+  id: string;
+  title: string;
+  preview: string;
+  content: string;
+  lan: TLanguage;
+  line: number;
+  status: 1 | 2;
+  createdAt: string;
+  updatedAt: string;
+  "user.authorName": string;
+  "user.authorAvatar": string;
+  "user.authorId": string;
+  "task.taskId": number;
+  "task.taskName": string;
 }
 
 // 部分代码信息

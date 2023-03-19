@@ -4,6 +4,8 @@ import type {
   IMyCodeItem,
   ISpaceCodeDetail,
   ISpaceCodePayload,
+  ISpaceCodeUpdatePayload,
+  ISpaceMasterCodeItem,
   ISquareCodeItem,
   ISquareCodePayload,
 } from "@/types/codeType";
@@ -43,27 +45,68 @@ function getCodeListBySquare(payload: { limit: number; offset: number }, loading
   );
 }
 
+// 空间主：获取空间代码列表
+function getCodeListBySpaceMaster(payload: { limit: number; offset: number }, loading = false) {
+  return myRequest.get<IResponseData<IList<ISpaceMasterCodeItem>>>(
+    {
+      url: "/space_master/code/list",
+      params: payload,
+    },
+    loading
+  );
+}
+
 // 获取我的代码列表
-function getMyCodeList(payload: { limit: number; offset: number }) {
-  return myRequest.get<IResponseData<IList<IMyCodeItem>>>({
-    url: "/own_code/list",
-    params: payload,
-  });
+function getMyCodeList(payload: { limit: number; offset: number }, loading = false) {
+  return myRequest.get<IResponseData<IList<IMyCodeItem>>>(
+    {
+      url: "/own_code/list",
+      params: payload,
+    },
+    loading
+  );
 }
 
 // 删除我的代码
-function deleteMyCode(codeId: string) {
-  return myRequest.post<IResponseData>({
-    url: `/own_code/delete/${codeId}`,
-  });
+function deleteMyCode(codeId: string, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/own_code/delete/${codeId}`,
+    },
+    loading
+  );
+}
+
+// 空间主：删除代码
+function deleteSpaceCode(codeId: string, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space_code/delete/${codeId}`,
+    },
+    loading
+  );
+}
+
+// 空间主：更新代码
+function updateSpaceCode(codeId: string, payload: ISpaceCodeUpdatePayload, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space_code/update/${codeId}`,
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 更新的我代码
-function updateMyCode(codeId: string, payload: ISquareCodePayload) {
-  return myRequest.post<IResponseData>({
-    url: `/own_code/update/${codeId}`,
-    data: payload,
-  });
+function updateMyCode(codeId: string, payload: ISquareCodePayload, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/own_code/update/${codeId}`,
+      data: payload,
+    },
+    loading
+  );
 }
 
 // 获取指定代码详情
@@ -194,11 +237,14 @@ export {
   addCodeBySquare,
   addCodeBySpace,
   getCodeListBySquare,
+  getCodeListBySpaceMaster,
   getCurrentCode,
   getSpaceCurrentCode,
+  updateSpaceCode,
   getMyCodeList,
   updateMyCode,
   deleteMyCode,
+  deleteSpaceCode,
   likeCodeBySquare,
   viewCodeBySquare,
   likeCodeBySpace,

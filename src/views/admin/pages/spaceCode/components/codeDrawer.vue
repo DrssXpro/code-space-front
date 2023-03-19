@@ -1,45 +1,35 @@
 <template>
   <div class="code-drawer-container">
-    <el-drawer v-model="showDrawer" :title="props.title" append-to-body>
+    <el-drawer v-model="showDrawer" title="编辑代码" append-to-body>
       <div class="code-form">
-        <el-form>
+        <el-form ref="formRef" :model="codeForm" :rules="codeRules">
           <el-form-item label="代码编号" label-width="70px">
-            <el-input v-model="state.id" disabled></el-input>
+            <el-input v-model="currentId" disabled></el-input>
           </el-form-item>
           <el-form-item label="作者" label-width="70px">
-            <el-input v-model="state.title" disabled></el-input>
+            <el-input v-model="currentAuthor" disabled></el-input>
           </el-form-item>
-          <el-form-item label="代码标题" label-width="70px">
-            <el-input v-model="state.title" :disabled="!props.isEdit"></el-input>
+          <el-form-item label="代码标题" label-width="70px" prop="title">
+            <el-input v-model="codeForm.title"></el-input>
           </el-form-item>
-          <el-form-item label="编程语言" label-width="70px">
-            <el-select
-              v-model="state.lan"
-              @change="handleLanChange"
-              placeholder="请选择合适的语言"
-              :disabled="!props.isEdit"
-            >
-              <el-option v-for="(item, index) in codes" :key="index" :label="item.text" :value="index" />
+          <el-form-item label="编程语言" label-width="70px" prop="lan">
+            <el-select v-model="codeForm.lan" @change="handleLanChange" placeholder="请选择合适的语言">
+              <el-option v-for="(item, index) in codes" :key="index" :label="item" :value="item" />
             </el-select>
           </el-form-item>
           <el-form-item label="代码状态" label-width="70px">
-            <el-select
-              v-model="state.lan"
-              @change="handleLanChange"
-              placeholder="设置当前状态"
-              :disabled="!props.isEdit"
-            >
-              <el-option v-for="(item, index) in codes" :key="index" :label="item.text" :value="index" />
+            <el-select v-model="codeForm.status" placeholder="设置当前状态">
+              <el-option v-for="(item, index) in statusOptions" :key="index" :label="item.text" :value="item.value" />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="代码内容" label-width="70px">
-            <fs-code-mirror ref="codeMirrorRef" :code="state.content" :disabled="!props.isEdit" height="auto" />
+          <el-form-item label="代码内容" label-width="70px" prop="content">
+            <fs-code-mirror ref="codeMirrorRef" :code="codeForm.content" height="auto" :disabled="false" />
           </el-form-item>
         </el-form>
-        <div class="operator-btn" v-show="props.isEdit">
-          <el-button type="success" plain @click="showDrawer = false">取消</el-button>
-          <el-button type="primary" plain>保存修改</el-button>
+        <div class="operator-btn">
+          <el-button type="success" plain @click="controllDrawer(false)">取消</el-button>
+          <el-button type="primary" plain :loading="formLoading" @click="updateCode">保存修改</el-button>
         </div>
       </div>
     </el-drawer>
@@ -47,75 +37,73 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import FsCodeMirror from "@/components/FsCodeMirror/FsCodeMirror.vue";
-const props = defineProps<{
-  title: string;
-  isEdit: boolean;
+import useSpaceCode from "@/hooks/useSpaceCode";
+import type { ISpaceMasterCodeItem } from "@/types/codeType";
+import { ElMessage, type FormInstance } from "element-plus";
+
+const emit = defineEmits<{
+  (e: "refreshTable"): void;
 }>();
 
+const formRef = ref<FormInstance>();
+
+// 当前代码id
+const currentId = ref("");
+
+// 当前代码作者
+const currentAuthor = ref("");
+
+// 代码展示实例
 const codeMirrorRef = ref<InstanceType<typeof FsCodeMirror>>();
 
-const state = reactive({
-  id: "abcdef",
-  title: "二分查找",
-  lan: 0,
-  isCode: false,
-  isPrivate: "1",
-  code: "",
-  content: `void quick_sort(int q[], int l, int r)
-{
-    if (l >= r) return;
-
-    int i = l - 1, j = r + 1, x = q[l + r >> 1];
-    while (i < j)
-    {
-        do i ++ ; while (q[i] < x);
-        do j -- ; while (q[j] > x);
-        if (i < j) swap(q[i], q[j]);
-    }
-    quick_sort(q, l, j), quick_sort(q, j + 1, r);
-}
-`,
-});
+// 控制抽屉
 const showDrawer = ref(false);
 
-const handleLanChange = () => {
-  codeMirrorRef.value?.configCodeMirror(codes[state.lan].text);
+const { codeForm, formLoading, codeRules, updateSpaceCodeData } = useSpaceCode(formRef);
+
+// 更新代码
+const updateCode = () => {
+  if (codeForm.content.length < 10 || codeForm.content.length > 1000) {
+    ElMessage.warning("代码长度在10-1000个字符之间");
+    return;
+  }
+  updateSpaceCodeData(currentId.value, () => {
+    controllDrawer(false);
+    emit("refreshTable");
+  });
 };
 
-const codes = [
+// 更改代码展示语言
+const handleLanChange = () => {
+  codeMirrorRef.value?.configCodeMirror(codeForm.lan);
+};
+
+// code选项
+const codes = ["cpp", "Java", "JavaScript", "Python", "PHP", "CSS", "Vue"];
+
+// status选项
+const statusOptions = [
   {
-    text: "cpp",
+    value: 1,
+    text: "正常",
   },
   {
-    text: "Java",
-  },
-  {
-    text: "JavaScript",
-  },
-  {
-    text: "Python",
-  },
-  {
-    text: "PHP",
-  },
-  {
-    text: "HTML",
-  },
-  {
-    text: "CSS",
-  },
-  {
-    text: "SQL",
-  },
-  {
-    text: "Vue",
+    value: 2,
+    text: "优秀",
   },
 ];
 
-const controllDrawer = (isShow: boolean) => {
+// 控制dialog
+const controllDrawer = (isShow: boolean, row?: ISpaceMasterCodeItem) => {
   showDrawer.value = isShow;
+  codeForm.content = row ? row.content : "";
+  codeForm.lan = row ? row.lan : "cpp";
+  codeForm.status = row ? row.status : 1;
+  codeForm.title = row ? row.title : "";
+  currentId.value = row ? row.id : "";
+  currentAuthor.value = row ? row["user.authorName"] : "";
 };
 
 defineExpose({

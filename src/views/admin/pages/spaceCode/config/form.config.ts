@@ -14,16 +14,32 @@ const formConfig: IFormConfigItem[] = [
     type: "select",
     options: [
       {
-        value: "1",
+        value: "cpp",
         text: "cpp",
       },
       {
-        value: "2",
-        text: "java",
+        value: "Java",
+        text: "Java",
       },
       {
-        value: "3",
+        value: "JavaScript",
         text: "JavaScript",
+      },
+      {
+        value: "Python",
+        text: "Python",
+      },
+      {
+        value: "PHP",
+        text: "PHP",
+      },
+      {
+        value: "CSS",
+        text: "CSS",
+      },
+      {
+        value: "Vue",
+        text: "Vue",
       },
     ],
   },
