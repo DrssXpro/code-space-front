@@ -3,13 +3,16 @@ import {
   getCurrentCode,
   getEncryptCodeInfo,
   getEnctryCodeDetail,
+  getSpaceCurrentCode,
   judgetCodeIsencrypt,
+  likeCodeBySpace,
   likeCodeBySquare,
+  viewCodeBySpace,
   viewCodeBySquare,
 } from "@/service/api/codeRequest";
 import usePwdStore from "@/stores/usePwdStore";
 import useUserStore from "@/stores/userStore";
-import type { CodePart, ICodeDetail } from "@/types/codeType";
+import type { CodePart, ICodeDetail, ISpaceCodeDetail } from "@/types/codeType";
 import { __debounce } from "@/utils/tools";
 import { ElMessage } from "element-plus";
 import { reactive, ref } from "vue";
@@ -18,6 +21,10 @@ import { useRouter } from "vue-router";
 export default function useFrontCode() {
   // 代码详情
   const squareCodeDetail = ref<ICodeDetail>();
+
+  // 空间代码详情
+  const spaceCodeDetail = ref<ISpaceCodeDetail>();
+
   // 部分代码信息
   const partCode = ref<CodePart>();
 
@@ -28,8 +35,8 @@ export default function useFrontCode() {
 
   const $router = useRouter();
 
-  // 登录信息：收藏使用
-  const { userInfo } = useUserStore();
+  // 登录信息：收藏使用，取消登录：空间代码使用
+  const { userInfo, cancelLogin } = useUserStore();
 
   const { addCodePwd } = usePwdStore();
 
@@ -37,6 +44,13 @@ export default function useFrontCode() {
   async function getSquareCodeDetail(codeId: string) {
     const res = await getCurrentCode(codeId, true);
     squareCodeDetail.value = res.data;
+  }
+
+  // 获取空间代码详情
+  async function getSpaceCodeDetail(codeId: string) {
+    const res = await getSpaceCurrentCode(codeId, true);
+    res.code === 1103 && ElMessage.warning(res.message) && cancelLogin();
+    if (res.code === 1000) spaceCodeDetail.value = res.data;
   }
 
   // 获取代码部分信息：解密界面使用
@@ -55,6 +69,18 @@ export default function useFrontCode() {
       $router.push(`/code/${squareCodeDetail.value.id}`);
     }
   }
+
+  // 增加空间代码浏览量
+  async function addCodeViewBySpace(codeId: string) {
+    await viewCodeBySpace(codeId);
+  }
+
+  // 增加空间代码点赞量
+  const addCodeLikeBySpace = __debounce(async function (codeId: string) {
+    const res = await likeCodeBySpace(codeId);
+    res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
+    spaceCodeDetail.value && spaceCodeDetail.value.liked++;
+  }, 500);
 
   // 增加代码浏览量
   async function addCodeViewBySquare(codeId: string) {
@@ -94,9 +120,13 @@ export default function useFrontCode() {
 
   return {
     squareCodeDetail,
+    spaceCodeDetail,
     partCode,
     pwdState,
     getSquareCodeDetail,
+    getSpaceCodeDetail,
+    addCodeViewBySpace,
+    addCodeLikeBySpace,
     addCodeViewBySquare,
     judeIsEnctrypt,
     addCodeLikeBySquare,

@@ -1,4 +1,12 @@
-import type { CodePart, ICodeDetail, IMyCodeItem, ISquareCodeItem, ISquareCodePayload } from "@/types/codeType";
+import type {
+  CodePart,
+  ICodeDetail,
+  IMyCodeItem,
+  ISpaceCodeDetail,
+  ISpaceCodePayload,
+  ISquareCodeItem,
+  ISquareCodePayload,
+} from "@/types/codeType";
 import type { IList, IResponseData } from "@/types/responseType";
 import { myRequest } from "..";
 
@@ -7,6 +15,17 @@ function addCodeBySquare(payload: ISquareCodePayload, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: "/square_code/add",
+      data: payload,
+    },
+    loading
+  );
+}
+
+// 空间内分享代码
+function addCodeBySpace(payload: ISpaceCodePayload, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: "/space_code/add",
       data: payload,
     },
     loading
@@ -52,6 +71,16 @@ function getCurrentCode(codeId: string, loading = false) {
   return myRequest.get<IResponseData<ICodeDetail>>(
     {
       url: `/code/detail/${codeId}`,
+    },
+    loading
+  );
+}
+
+// 获取指定空间代码详情
+function getSpaceCurrentCode(codeId: string, loading = false) {
+  return myRequest.get<IResponseData<ISpaceCodeDetail>>(
+    {
+      url: `/space_code/detail/${codeId}`,
     },
     loading
   );
@@ -163,8 +192,10 @@ function getCollectList(payload: { limit: number; offset: number }, loading = fa
 
 export {
   addCodeBySquare,
+  addCodeBySpace,
   getCodeListBySquare,
   getCurrentCode,
+  getSpaceCurrentCode,
   getMyCodeList,
   updateMyCode,
   deleteMyCode,

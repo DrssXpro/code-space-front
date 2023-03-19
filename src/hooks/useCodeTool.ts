@@ -1,13 +1,15 @@
+import { EXTMAP } from "@/config/config";
+import type { TLanguage } from "@/types/codeType";
 import domtoimage from "dom-to-image";
 import { ElMessage, ElLoading } from "element-plus";
 export default function useCodeTool() {
   // 下载代码
-  function downloadCode(title: string, codeContent: string, lan: string) {
+  function downloadCode(title: string, codeContent: string, lan: TLanguage) {
     const blob = new Blob([codeContent]);
     const url = window.URL.createObjectURL(blob);
     const aTag = document.createElement("a");
     aTag.href = url;
-    aTag.download = `${title}.${lan}`;
+    aTag.download = `${title}.${EXTMAP[lan]}`;
     aTag.click();
     aTag.remove();
     ElMessage.success("下载中，请稍等。");

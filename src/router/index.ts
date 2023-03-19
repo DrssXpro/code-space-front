@@ -90,6 +90,11 @@ const router = createRouter({
           component: () => import("@/views/encryptCode/index.vue"),
         },
         {
+          path: "spaceCode/:id",
+          name: "spaceCode",
+          component: () => import("@/views/spaceCode/index.vue"),
+        },
+        {
           path: "admin",
           name: "admin",
           component: () => import("@/views/admin/index.vue"),

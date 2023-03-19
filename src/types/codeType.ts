@@ -1,4 +1,4 @@
-type TLanguage = "JavaScript" | "Java" | "Python" | "PHP" | "CSS" | "cpp" | "Vue";
+export type TLanguage = "JavaScript" | "Java" | "Python" | "PHP" | "CSS" | "cpp" | "Vue";
 export interface ISquareCodePayload {
   title: string;
   lan: TLanguage;
@@ -7,6 +7,13 @@ export interface ISquareCodePayload {
   pwd: string;
   taskId?: number;
   status: 0 | 1;
+}
+
+export interface ISpaceCodePayload {
+  title: string;
+  lan: TLanguage;
+  content: string;
+  taskId: number;
 }
 
 // 广场代码列表项
@@ -69,6 +76,29 @@ export interface ICodeDetail {
     authorName: string;
     authorAvatar: string;
     authorId: string;
+  };
+}
+
+// 空间代码详情
+export interface ISpaceCodeDetail {
+  id: string;
+  title: string;
+  content: string;
+  lan: TLanguage;
+  line: number;
+  status: 1 | 2;
+  views: number;
+  liked: number;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    authorName: string;
+    authorAvatar: string;
+    authorId: string;
+  };
+  space: {
+    spaceName: string;
+    spaceId: number;
   };
 }
 
