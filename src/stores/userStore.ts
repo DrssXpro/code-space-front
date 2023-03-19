@@ -26,6 +26,11 @@ const useUserStore = defineStore("user", () => {
 
   // 动态添加路由
   const addDynamicRoutes = async () => {
+    console.log(userInfo.value);
+    if (!userInfo.value) {
+      ElMessage.warning("该用户未登录，无法拿到对应权限");
+      throw new Error("no info");
+    }
     const rid = userInfo.value?.role.roleId;
     const res = await getRoleMenu(rid!);
     mapRoutes.value = handleMenuMapRoutes(res.data);
@@ -39,7 +44,6 @@ const useUserStore = defineStore("user", () => {
     const id = userInfo.value?.id;
     const res = await getUserInfo(id!);
     userInfo.value = res.data;
-    console.log("check:", userInfo.value);
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("userInfo", JSON.stringify(res.data));
   };

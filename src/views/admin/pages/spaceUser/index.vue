@@ -25,7 +25,7 @@
         <template #header>
           <div class="header-config">
             <span>人员列表</span>
-            <el-button type="primary">邀请人员</el-button>
+            <el-button type="primary" @click="inviteUser">邀请人员</el-button>
           </div>
         </template>
         <template #id="{ row }">
@@ -44,10 +44,12 @@
           {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="success" link>编辑</el-button>
-          <el-button type="danger" link>删除</el-button>
+          <el-button type="success" link @click="showEditModal(row)">编辑</el-button>
+          <el-button type="danger" link @click="kickUserOut(row.id)">踢出</el-button>
         </template>
       </fs-table>
+      <invite-modal ref="modalRef" @refresh-table="getSpaceUserListData" />
+      <edit-modal ref="editModalRef" @refresh-table="getSpaceUserListData" />
     </div>
   </div>
 </template>
@@ -56,16 +58,22 @@
 import { onMounted, ref } from "vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
+import inviteModal from "./components/inviteModal.vue";
+import editModal from "./components/editModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { ElMessage } from "element-plus";
 import useSpaceUser from "@/hooks/useSpaceUser";
+import useUserStore from "@/stores/userStore";
 import { formatTime } from "@/utils/formatTime";
+import { ElMessage } from "element-plus";
+import type { ISpaceUserItem } from "@/types/userType";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
+const modalRef = ref<InstanceType<typeof inviteModal>>();
+const editModalRef = ref<InstanceType<typeof editModal>>();
 const formConfigReactive = ref(formConfig);
-const loading = ref(false);
 
-const { userState, getSpaceUserListData } = useSpaceUser();
+const { userState, getSpaceUserListData, kickSpaceUser } = useSpaceUser();
+const { userInfo, cancelLogin } = useUserStore();
 
 const formData = ref({
   title: "1",
@@ -75,6 +83,29 @@ const formData = ref({
 onMounted(() => {
   getSpaceUserListData();
 });
+
+// 打开邀请dialog
+const inviteUser = () => {
+  modalRef.value?.controllModal(true);
+};
+
+// 打开编辑dialog
+const showEditModal = (row: ISpaceUserItem) => {
+  editModalRef.value?.controllModal(true, row);
+};
+
+// 踢出用户
+const kickUserOut = (userId: string) => {
+  if (!userInfo) {
+    cancelLogin();
+    return;
+  }
+  if (userInfo.id == userId) {
+    ElMessage.warning("不能踢出自己");
+    return;
+  }
+  kickSpaceUser(userId, () => getSpaceUserListData());
+};
 
 const searchDataList = () => {
   console.log("check:", formData.value);
@@ -87,65 +118,6 @@ const handlePageChange = (current: number) => {
 const resetForm = () => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
 };
-
-const tableData = [
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-];
 </script>
 
 <style scoped lang="less">

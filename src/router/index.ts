@@ -112,9 +112,9 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   const token = localStorage.getItem("token");
+  const userInfo = localStorage.getItem("userInfo");
   const whiteList = ["/login", "/square", "/search", "/space", "/share", "/code", "/encrypt"];
-
-  if (token) {
+  if (token && userInfo) {
     // 已经有登录态则不能再访问login页面，强制访问跳转至个人页面
     if (to.path === "/login") {
       return "/admin";

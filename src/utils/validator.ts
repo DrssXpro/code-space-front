@@ -51,6 +51,12 @@ const validator = {
     menuType: validMenuType,
     status: validMenuStatus,
   },
+
+  // 空间用户表单校验
+  spaceUserValidator: {
+    nickName: validateUserNickName,
+    roleId: validRoleId,
+  },
 };
 
 // 校验用户名
@@ -107,6 +113,17 @@ function validateEmailCode(rule: any, value: any, callback: any) {
     callback(new Error("验证码不能为空"));
   } else if (value.lengh !== 6) {
     callback(new Error("验证码为六位数"));
+  } else {
+    callback();
+  }
+}
+
+// 校验选择角色
+function validRoleId(rule: any, value: any, callback: any) {
+  if (typeof value !== "number") {
+    callback(new Error("选择角色不能为空"));
+  } else if (value <= 0) {
+    callback(new Error("选择角色不符合规范"));
   } else {
     callback();
   }

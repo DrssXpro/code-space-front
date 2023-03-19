@@ -10,13 +10,11 @@ const tableConfig: ITableConifg[] = [
   {
     prop: "name",
     label: "用户名",
-    width: "100",
     slotName: "name",
   },
   {
     prop: "nickName",
     label: "空间昵称",
-    width: "100",
     slotName: "nickName",
   },
   {
@@ -28,7 +26,6 @@ const tableConfig: ITableConifg[] = [
   {
     prop: "email",
     label: "邮箱",
-    width: "150",
     slotName: "email",
   },
   {
@@ -40,16 +37,19 @@ const tableConfig: ITableConifg[] = [
   {
     prop: "createdAt",
     label: "创建时间",
+    width: "190",
     slotName: "createdAt",
   },
   {
     prop: "updatedAt",
     label: "修改时间",
+    width: "190",
     slotName: "updatedAt",
   },
   {
     prop: "operator",
     label: "操作",
+    width: "120",
     slotName: "operator",
   },
 ];

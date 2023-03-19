@@ -47,6 +47,38 @@ function getSpaceUserList(payload: { limit: number; offset: number }, loading = 
   );
 }
 
+// 踢出空间用户
+function kickUserOut(userId: string, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space/kick/${userId}`,
+    },
+    loading
+  );
+}
+
+// 编辑空间用户
+function editSpaceUser(userId: string, payload: { nickName: string; roleId: number }, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space/user/edit/${userId}`,
+      data: payload,
+    },
+    loading
+  );
+}
+
+// 邀请用户
+function inviteUser(payload: { name: string }, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: "/space/invite_user",
+      data: payload,
+    },
+    loading
+  );
+}
+
 // 获取空间详情
 function getSpaceDetail(spaceId: number, loading = false) {
   return myRequest.get<IResponseData<ISpaceDetail>>(
@@ -78,4 +110,15 @@ function joinSpaceByInviteCode(spaceId: number, inviteCode: string, loading = fa
   );
 }
 
-export { addSpace, updateSpace, getSpaceList, getSpaceUserList, getSpaceDetail, deleteSpace, joinSpaceByInviteCode };
+export {
+  addSpace,
+  updateSpace,
+  getSpaceList,
+  getSpaceUserList,
+  kickUserOut,
+  editSpaceUser,
+  inviteUser,
+  getSpaceDetail,
+  deleteSpace,
+  joinSpaceByInviteCode,
+};
