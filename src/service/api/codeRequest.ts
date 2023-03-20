@@ -8,6 +8,7 @@ import type {
   ISpaceMasterCodeItem,
   ISquareCodeItem,
   ISquareCodePayload,
+  TLanguage,
 } from "@/types/codeType";
 import type { IList, IResponseData } from "@/types/responseType";
 import { myRequest } from "..";
@@ -46,7 +47,10 @@ function getCodeListBySquare(payload: { limit: number; offset: number }, loading
 }
 
 // 空间主：获取空间代码列表
-function getCodeListBySpaceMaster(payload: { limit: number; offset: number }, loading = false) {
+function getCodeListBySpaceMaster(
+  payload: { limit: number; offset: number; kw: string; lan: string; task: number | string },
+  loading = false
+) {
   return myRequest.get<IResponseData<IList<ISpaceMasterCodeItem>>>(
     {
       url: "/space_master/code/list",
@@ -57,7 +61,7 @@ function getCodeListBySpaceMaster(payload: { limit: number; offset: number }, lo
 }
 
 // 获取我的代码列表
-function getMyCodeList(payload: { limit: number; offset: number }, loading = false) {
+function getMyCodeList(payload: { limit: number; offset: number; kw: string; lan: string }, loading = false) {
   return myRequest.get<IResponseData<IList<IMyCodeItem>>>(
     {
       url: "/own_code/list",

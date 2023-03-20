@@ -1,14 +1,10 @@
 <template>
   <div class="content-code-container">
     <div class="content-code-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
+      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchState">
         <template #operator>
-          <el-button type="danger" class="btn" @click="searchDataList"
-            ><i class="fa fa-search"></i><span>查询</span></el-button
-          >
-          <el-button type="info" class="btn" @click="resetForm"
-            ><i class="fa fa-refresh"></i><span>重置</span></el-button
-          >
+          <el-button type="danger" @click="searchDataList">查询</el-button>
+          <el-button type="info" @click="resetForm">重置</el-button>
         </template>
       </fs-form>
     </div>
@@ -67,11 +63,11 @@ import formConfig from "./config/form.config";
 import useMyCode from "@/hooks/useMyCode";
 import { formatTime } from "@/utils/formatTime";
 import type { IMyCodeItem } from "@/types/codeType";
+import { __debounce } from "@/utils/tools";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const codeDrawerRef = ref<InstanceType<typeof codeDrawer>>();
-const formConfigReactive = ref(formConfig);
 
-const { codeState, getMyCodeListData, deleteMyCodeData } = useMyCode();
+const { codeState, searchState, getMyCodeListData, deleteMyCodeData } = useMyCode();
 const formData = ref({
   title: "1",
   lan: "1",
@@ -98,17 +94,18 @@ const handleDeleteCode = (id: string) => {
   deleteMyCodeData(id, () => getMyCodeListData());
 };
 
-const searchDataList = () => {
-  console.log("check:", formData.value);
-};
+const searchDataList = __debounce(() => {
+  getMyCodeListData();
+}, 500);
 
 const handlePageChange = (current: number) => {
   console.log(current);
 };
 
-const resetForm = () => {
+const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
-};
+  getMyCodeListData();
+}, 500);
 </script>
 
 <style scoped lang="less">
@@ -121,14 +118,6 @@ const resetForm = () => {
     width: 100%;
     .public-container();
     .form-container();
-
-    .btn {
-      display: flex;
-      align-items: center;
-      i {
-        margin-right: 5px;
-      }
-    }
   }
 
   .content-code-table {

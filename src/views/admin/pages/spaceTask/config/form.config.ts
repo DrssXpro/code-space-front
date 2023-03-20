@@ -7,22 +7,6 @@ const formConfig: IFormConfigItem[] = [
     field: "kw",
     type: "input",
   },
-  {
-    label: "过期查询",
-    placeholder: "查看任务是否过期",
-    field: "isEx",
-    type: "select",
-    options: [
-      {
-        value: "1",
-        text: "是",
-      },
-      {
-        value: "2",
-        text: "否",
-      },
-    ],
-  },
 ];
 
 export default formConfig;

@@ -1,5 +1,5 @@
-import type { IResponseData } from "@/types/responseType";
-import type { IUserAddByAdmin, IUserLoginInfo, IUserUpdateByAdmin } from "@/types/userType";
+import type { IList, IResponseData } from "@/types/responseType";
+import type { IUserAddByAdmin, IUserItem, IUserLoginInfo, IUserUpdateByAdmin } from "@/types/userType";
 import { myRequest } from "../";
 
 // 用户登录
@@ -90,8 +90,8 @@ function verifyEmailCode(payload: { name: string; email: string; password: strin
 }
 
 // 管理员：获取用户列表
-function getUserListByAdmin(payload: { limit: number; offset: number }, loading = false) {
-  return myRequest.get<IResponseData>(
+function getUserListByAdmin(payload: { limit: number; offset: number; kw: string; email: string }, loading = false) {
+  return myRequest.get<IResponseData<IList<IUserItem>>>(
     {
       url: "/admin/user_list",
       params: payload,

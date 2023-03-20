@@ -4,12 +4,12 @@ export interface IUserItem {
   email: string;
   avatar: string;
   status: 0 | 1;
+  "role.roleName": string;
+  "role.roleId": number;
+  spaceId: null | number;
+  spaceName: undefined | string;
   createdAt: string;
   updatedAt: string;
-  role: {
-    roleName: string;
-    roleId: number;
-  };
 }
 
 // 用户登录拿到的信息
@@ -60,4 +60,5 @@ export interface IUserUpdateByAdmin {
   roleId: number;
   status: 0 | 1;
   isDefault: boolean; // 选择是否为默认头像
+  avatar: string;
 }

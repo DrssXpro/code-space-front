@@ -10,8 +10,13 @@ import { reactive, ref, type Ref } from "vue";
 export default function useSpaceRole(formRef?: Ref<FormInstance | undefined>, treeRef?: Ref<any>) {
   // modal验证规则
   const { roleValidator } = validator;
-  // 搜索loading
-  const searchLoading = ref(false);
+
+  // 搜索条件
+  const searchState = ref({
+    kw: "",
+    status: 1,
+  });
+
 
   // 表单loading
   const formLoading = ref(false);
@@ -32,9 +37,6 @@ export default function useSpaceRole(formRef?: Ref<FormInstance | undefined>, tr
     // 角色状态
     status: 1,
   });
-
-  // 搜索条件 form
-  const searchForm = ref({ kw: "", status: 1 });
 
   // 菜单列表
   const allMenus = ref<IMenuItem[]>();
@@ -126,9 +128,15 @@ export default function useSpaceRole(formRef?: Ref<FormInstance | undefined>, tr
   async function getRoleListData() {
     tableState.loading = true;
     try {
-      const res = await getRoleListBySpace({ limit: tableState.pageSize, offset: tableState.currentPage - 1 });
-      tableState.tableData = res.data.rows;
-      tableState.total = res.data.count;
+      const res = await getRoleListBySpace({
+        limit: tableState.pageSize,
+        offset: tableState.currentPage - 1,
+        kw: searchState.value.kw,
+        status: searchState.value.status,
+      });
+      tableState.tableData = res.code === 1000 ? res.data.rows : [];
+      tableState.total = res.code === 1000 ? res.data.count : 0;
+      res.code !== 1000 && ElMessage.warning(res.message);
     } catch (error) {
       ElMessage.warning("获取列表数据失败");
     }
@@ -138,8 +146,7 @@ export default function useSpaceRole(formRef?: Ref<FormInstance | undefined>, tr
   return {
     formState,
     tableState,
-    searchForm,
-    searchLoading,
+    searchState,
     formLoading,
     showModal,
     roleRules,

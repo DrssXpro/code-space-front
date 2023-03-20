@@ -18,20 +18,20 @@ const tableConfig: ITableConifg[] = [
     slotName: "introduce",
   },
   {
-    prop: "extime",
-    label: "是否过期",
-    width: "100",
-    slotName: "isEx",
-  },
-  {
-    prop: "extime",
-    label: "过期时间",
-    slotName: "extime",
+    prop: "codeCount",
+    label: "收集代码量",
+    width: "150",
+    slotName: "codeCount",
   },
   {
     prop: "createdAt",
     label: "创建时间",
     slotName: "createdAt",
+  },
+  {
+    prop: "updatedAt",
+    label: "修改时间",
+    slotName: "updatedAt",
   },
   {
     prop: "operator",

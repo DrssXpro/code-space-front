@@ -7,8 +7,7 @@ export default function useTask(spaceId: number, formRef?: Ref<FormInstance | un
   // modal验证规则
   const { taskValidator } = validator;
 
-  // 搜索loading
-  const searchLoading = ref(false);
+
 
   // 表单loading
   const formLoading = ref(false);
@@ -22,14 +21,11 @@ export default function useTask(spaceId: number, formRef?: Ref<FormInstance | un
     name: "",
     // 任务描述
     introduce: "",
-    // 过期时间
-    extime: "",
   });
 
   // 搜索条件：自主封装的FsForm组件限制只能使用ref，不然无法触发v-model响应式更新
   const searchState = ref({
     kw: "",
-    isEx: "",
   });
 
   // 表格数据
@@ -55,7 +51,7 @@ export default function useTask(spaceId: number, formRef?: Ref<FormInstance | un
       if (valid) {
         try {
           formLoading.value = true;
-          const res = await addTask({ name: formState.name, introduce: formState.introduce, extime: formState.extime });
+          const res = await addTask({ name: formState.name, introduce: formState.introduce });
           res.code === 1000 ? ElMessage.success("添加成功") : ElMessage.warning(res.message);
           res.code === 1000 && cb && cb();
         } catch (error) {
@@ -78,7 +74,6 @@ export default function useTask(spaceId: number, formRef?: Ref<FormInstance | un
           const res = await updateTask(id, {
             name: formState.name,
             introduce: formState.introduce,
-            extime: formState.extime,
           });
           res.code === 1000 ? ElMessage.success("更新成功") : ElMessage.warning(res.message);
           res.code === 1000 && cb && cb();
@@ -109,9 +104,15 @@ export default function useTask(spaceId: number, formRef?: Ref<FormInstance | un
   async function getTaskListData() {
     tableState.loading = true;
     try {
-      const res = await getTaskList({ spaceId, limit: tableState.pageSize, offset: tableState.currentPage - 1 });
-      tableState.tableData = res.data.rows;
-      tableState.total = res.data.count;
+      const res = await getTaskList({
+        spaceId,
+        limit: tableState.pageSize,
+        offset: tableState.currentPage - 1,
+        kw: searchState.value.kw,
+      });
+      tableState.tableData = res.code === 1000 ? res.data.rows : [];
+      tableState.total = res.code === 1000 ? res.data.count : 0;
+      res.code !== 1000 && ElMessage.warning(res.message);
     } catch (error) {
       ElMessage.warning("获取列表数据失败");
     }
@@ -124,7 +125,6 @@ export default function useTask(spaceId: number, formRef?: Ref<FormInstance | un
     formState,
     tableState,
     showModal,
-    searchLoading,
     formLoading,
     addTaskData,
     updateTaskData,

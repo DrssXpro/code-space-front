@@ -1,7 +1,7 @@
 <template>
   <div class="space-role-container">
     <div class="space-role-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchForm">
+      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchState">
         <template #operator>
           <el-button type="danger" class="btn" @click="searchDataList">查询</el-button>
           <el-button type="info" class="btn" @click="resetForm">重置</el-button>
@@ -61,11 +61,12 @@ import useSpaceRole from "@/hooks/useSpaceRole";
 import { getRoleMenu, updateRoleStatus } from "@/service/api/roleRequest";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { formatTime } from "@/utils/formatTime";
+import { __debounce } from "@/utils/tools";
 
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const roleModalRef = ref<InstanceType<typeof roleModal>>();
 
-const { tableState, searchForm, getRoleListData, deleteRoleBySpace } = useSpaceRole();
+const { tableState, searchState, getRoleListData, deleteRoleBySpace } = useSpaceRole();
 
 const isEdit = ref(false);
 const currentPower = ref<number[]>([]);
@@ -115,17 +116,18 @@ const showModal = async (show: boolean, row?: any) => {
     roleModalRef.value?.controllModal(show);
   }
 };
-const searchDataList = () => {
-  console.log("check:", searchForm.value);
-};
+const searchDataList = __debounce(() => {
+  getRoleListData();
+}, 500);
 
 const handlePageChange = (current: number) => {
   console.log(current);
 };
 
-const resetForm = () => {
+const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
-};
+  getRoleListData();
+}, 500);
 </script>
 
 <style scoped lang="less">

@@ -1,7 +1,7 @@
 <template>
   <div class="content-role-container">
     <div class="content-role-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchForm">
+      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchState">
         <template #operator>
           <el-button type="danger" class="btn" @click="searchDataList">查询</el-button>
           <el-button type="info" class="btn" @click="resetForm">重置</el-button>
@@ -64,7 +64,7 @@ import { formatTime } from "@/utils/formatTime";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const roleModalRef = ref<InstanceType<typeof roleModal>>();
 
-const { tableState, searchForm, getRoleListData, deleteRoleByAdmin } = useAdminRole();
+const { tableState, searchState, getRoleListData, deleteRoleByAdmin } = useAdminRole();
 
 const isEdit = ref(false);
 const currentPower = ref<number[]>([]);
@@ -115,7 +115,7 @@ const showModal = async (show: boolean, row?: any) => {
   }
 };
 const searchDataList = () => {
-  console.log("check:", searchForm.value);
+  console.log("check:", searchState.value);
 };
 
 const handlePageChange = (current: number) => {

@@ -16,12 +16,25 @@ const tableConfig: ITableConifg[] = [
   {
     prop: "introduce",
     label: "空间介绍",
+    width: "200",
     slotName: "introduce",
   },
   {
     prop: "user.authorName",
     label: "空间主",
     slotName: "user.authorName",
+  },
+  {
+    prop: "peopleCount",
+    label: "空间人数",
+    width: "90",
+    slotName: "peopleCount",
+  },
+  {
+    prop: "codeCount",
+    label: "空间代码量",
+    width: "110",
+    slotName: "codeCount",
   },
   {
     prop: "createdAt",

@@ -4,6 +4,8 @@ const FAKE_IMAGE = "http://pic.fasyncsy.com.cn/coverPic/fake.png";
 
 const EMPTY_IMAGE = "http://pic.fasyncsy.com.cn/empty.png";
 
+const DEFAULT_AVATAR = "http://pic.fasyncsy.com.cn/avatar/default.jpg";
+
 const LANGUAGE = ["JavaScript", "Java", "Python", "PHP", "CSS", "cpp", "Vue"];
 
 const EXTMAP: Record<TLanguage, string> = {
@@ -16,4 +18,4 @@ const EXTMAP: Record<TLanguage, string> = {
   PHP: "php",
 };
 
-export { FAKE_IMAGE, EMPTY_IMAGE, LANGUAGE, EXTMAP };
+export { FAKE_IMAGE, EMPTY_IMAGE, DEFAULT_AVATAR, LANGUAGE, EXTMAP };

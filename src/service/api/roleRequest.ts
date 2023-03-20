@@ -4,10 +4,10 @@ import type { IRoleItem, IRoleFormPayload } from "@/types/roleType";
 import { myRequest } from "../";
 
 // 获取角色列表
-function getRoleList(payload: { limit: number; offset: number }, loading = false) {
+function getRoleList(payload: { limit: number; offset: number; kw: string; status: 0 | 1 }, loading = false) {
   return myRequest.get<IResponseData<IList<IRoleItem>>>(
     {
-      url: "/role_list",
+      url: "/admin/role_list",
       params: payload,
     },
     loading
@@ -15,7 +15,7 @@ function getRoleList(payload: { limit: number; offset: number }, loading = false
 }
 
 // 获取空间对应的角色列表
-function getRoleListBySpace(payload: { limit: number; offset: number }, loading = false) {
+function getRoleListBySpace(payload: { limit: number; offset: number; kw: string; status: number }, loading = false) {
   return myRequest.get<IResponseData<IList<IRoleItem>>>(
     {
       url: "/role_space_list",

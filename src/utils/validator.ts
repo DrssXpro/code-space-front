@@ -63,6 +63,13 @@ const validator = {
     lan: validCodeLan,
     content: validCodeContent,
   },
+  // 管理员更新用户校验
+  updateAdminUserValidator: {
+    name: validateUserName,
+    email: validateEmail,
+    password: validateUserPassword,
+    roleId: validRoleId,
+  },
 };
 
 // code选项

@@ -4,6 +4,12 @@ import { ElMessage, ElMessageBox, type FormInstance } from "element-plus";
 import { reactive, ref, type Ref } from "vue";
 
 export default function useMyCode(formRef?: Ref<FormInstance | undefined>) {
+  // 条件搜索
+  const searchState = ref({
+    kw: "",
+    lan: "",
+  });
+
   // 表单
   const codeForm: ISquareCodePayload = reactive({
     title: "",
@@ -29,7 +35,12 @@ export default function useMyCode(formRef?: Ref<FormInstance | undefined>) {
   async function getMyCodeListData() {
     codeState.loading = true;
     try {
-      const res = await getMyCodeList({ limit: codeState.pageSize, offset: codeState.page - 1 });
+      const res = await getMyCodeList({
+        limit: codeState.pageSize,
+        offset: codeState.page - 1,
+        kw: searchState.value.kw,
+        lan: searchState.value.lan,
+      });
       codeState.codeList = res.data.rows;
       codeState.total = res.data.count;
     } catch (error) {
@@ -72,6 +83,7 @@ export default function useMyCode(formRef?: Ref<FormInstance | undefined>) {
   }
 
   return {
+    searchState,
     codeState,
     codeForm,
     formLoading,

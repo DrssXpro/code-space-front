@@ -6,6 +6,13 @@ import { reactive, ref, type Ref } from "vue";
 
 export default function useSpaceUser(formRef?: Ref<FormInstance | undefined>) {
   const { spaceUserValidator } = validator;
+
+  // 查询条件
+  const searchState = ref({
+    nameKw: "",
+    nickKw: "",
+  });
+
   // 编辑表单
   const userForm = reactive({
     nickName: "",
@@ -36,7 +43,12 @@ export default function useSpaceUser(formRef?: Ref<FormInstance | undefined>) {
   async function getSpaceUserListData() {
     userState.loading = true;
     try {
-      const res = await getSpaceUserList({ limit: userState.pageSize, offset: userState.page - 1 });
+      const res = await getSpaceUserList({
+        limit: userState.pageSize,
+        offset: userState.page - 1,
+        nameKw: searchState.value.nameKw,
+        nickKw: searchState.value.nickKw,
+      });
       userState.userList = res.data.rows;
       userState.total = res.data.count;
     } catch (error) {
@@ -97,6 +109,7 @@ export default function useSpaceUser(formRef?: Ref<FormInstance | undefined>) {
     userForm,
     formLoading,
     spaceUserRules,
+    searchState,
     getSpaceUserListData,
     kickSpaceUser,
     inviteSpaceUser,

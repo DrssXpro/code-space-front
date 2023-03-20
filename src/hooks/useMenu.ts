@@ -9,9 +9,6 @@ export default function useMenu(formRef?: Ref<FormInstance | undefined>) {
   // modal验证规则
   const { menuValidator } = validator;
 
-  // 搜索loading
-  const searchLoading = ref(false);
-
   // 表单loading
   const formLoading = ref(false);
 
@@ -35,7 +32,7 @@ export default function useMenu(formRef?: Ref<FormInstance | undefined>) {
   });
 
   // 搜索参数
-  const searchForm = ref({ kw: "", type: "M" });
+  const searchState = ref({ kw: "", type: "M" });
 
   // 表格数据
   const tableState = reactive({
@@ -128,10 +125,9 @@ export default function useMenu(formRef?: Ref<FormInstance | undefined>) {
 
   return {
     showModal,
-    searchLoading,
     formLoading,
     formState,
-    searchForm,
+    searchState,
     tableState,
     menus,
     menuRules,

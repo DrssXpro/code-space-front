@@ -25,14 +25,14 @@ const tableConfig: ITableConifg[] = [
     width: "170",
   },
   {
-    prop: "roleName",
+    prop: "role.roleName",
     label: "角色",
     slotName: "roleName",
   },
   {
-    prop: "spaceName",
+    prop: "spaceId",
     label: "所属空间",
-    slotName: "spaceName",
+    slotName: "spaceId",
   },
   {
     prop: "status",

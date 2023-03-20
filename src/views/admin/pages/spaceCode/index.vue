@@ -1,14 +1,10 @@
 <template>
   <div class="space-code-container">
     <div class="space-code-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
+      <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="searchState">
         <template #operator>
-          <el-button type="danger" class="btn" @click="searchDataList"
-            ><i class="fa fa-search"></i><span>查询</span></el-button
-          >
-          <el-button type="info" class="btn" @click="resetForm"
-            ><i class="fa fa-refresh"></i><span>重置</span></el-button
-          >
+          <el-button type="danger" class="btn" @click="searchDataList">查询</el-button>
+          <el-button type="info" class="btn" @click="resetForm">重置</el-button>
         </template>
       </fs-form>
     </div>
@@ -59,35 +55,50 @@ import formConfig from "./config/form.config";
 import useSpaceCode from "@/hooks/useSpaceCode";
 import { formatTime } from "@/utils/formatTime";
 import type { ISpaceMasterCodeItem } from "@/types/codeType";
+import { __debounce } from "@/utils/tools";
+import { getTaskList } from "@/service/api/taskRequest";
+import useUserStore from "@/stores/userStore";
+import { ElMessage } from "element-plus";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const codeDrawerRef = ref<InstanceType<typeof codeDrawer>>();
 const formConfigReactive = ref(formConfig);
-const { codeState, getSpaceListData } = useSpaceCode();
+const { codeState, searchState, getSpaceListData } = useSpaceCode();
+const { userInfo } = useUserStore();
 
 onMounted(() => {
   getSpaceListData();
+  getTaskOptions();
 });
 
-const formData = ref({
-  title: "1",
-  lan: "1",
-});
+// 获取任务列表选项
+const getTaskOptions = async () => {
+  if (!userInfo || !userInfo.space) return ElMessage.warning("获取任务列表失败");
+  const res = await getTaskList({ limit: 100, offset: 0, kw: "", spaceId: userInfo.space.spaceId });
+  if (res.code !== 1000) return ElMessage.warning("获取任务列表失败");
+  formConfigReactive.value[2].options = res.data.rows.map((item) => ({ value: item.id, text: item.name }));
+};
 
+// 控制抽屉展示
 const handleEditCode = (row: ISpaceMasterCodeItem) => {
   codeDrawerRef.value?.controllDrawer(true, row);
 };
 
-const searchDataList = () => {
-  console.log("check:", formData.value);
-};
+// 搜索列表
+const searchDataList = __debounce(() => {
+  console.log(searchState.value);
+  getSpaceListData();
+}, 500);
 
+// 分页展示
 const handlePageChange = (current: number) => {
   console.log(current);
 };
 
-const resetForm = () => {
+// 重置表单
+const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
-};
+  getSpaceListData();
+}, 500);
 </script>
 
 <style scoped lang="less">
@@ -100,14 +111,6 @@ const resetForm = () => {
     width: 100%;
     .public-container();
     .form-container();
-
-    .btn {
-      display: flex;
-      align-items: center;
-      i {
-        margin-right: 5px;
-      }
-    }
   }
 
   .space-code-table {

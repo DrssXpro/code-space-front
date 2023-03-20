@@ -1,14 +1,10 @@
 <template>
   <div class="space-people-container">
     <div class="space-people-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
+      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchState">
         <template #operator>
-          <el-button type="danger" class="btn" @click="searchDataList"
-            ><i class="fa fa-search"></i><span>查询</span></el-button
-          >
-          <el-button type="info" class="btn" @click="resetForm"
-            ><i class="fa fa-refresh"></i><span>重置</span></el-button
-          >
+          <el-button type="danger" @click="searchDataList">查询</el-button>
+          <el-button type="info" @click="resetForm">重置</el-button>
         </template>
       </fs-form>
     </div>
@@ -67,18 +63,13 @@ import useUserStore from "@/stores/userStore";
 import { formatTime } from "@/utils/formatTime";
 import { ElMessage } from "element-plus";
 import type { ISpaceUserItem } from "@/types/userType";
+import { __debounce } from "@/utils/tools";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const modalRef = ref<InstanceType<typeof inviteModal>>();
 const editModalRef = ref<InstanceType<typeof editModal>>();
-const formConfigReactive = ref(formConfig);
 
-const { userState, getSpaceUserListData, kickSpaceUser } = useSpaceUser();
+const { userState, searchState, getSpaceUserListData, kickSpaceUser } = useSpaceUser();
 const { userInfo, cancelLogin } = useUserStore();
-
-const formData = ref({
-  title: "1",
-  lan: "1",
-});
 
 onMounted(() => {
   getSpaceUserListData();
@@ -107,17 +98,18 @@ const kickUserOut = (userId: string) => {
   kickSpaceUser(userId, () => getSpaceUserListData());
 };
 
-const searchDataList = () => {
-  console.log("check:", formData.value);
-};
+const searchDataList = __debounce(() => {
+  getSpaceUserListData()
+}, 500);
 
 const handlePageChange = (current: number) => {
   console.log(current);
 };
 
-const resetForm = () => {
+const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
-};
+  getSpaceUserListData()
+}, 500);
 </script>
 
 <style scoped lang="less">
@@ -130,14 +122,6 @@ const resetForm = () => {
     width: 100%;
     .public-container();
     .form-container();
-
-    .btn {
-      display: flex;
-      align-items: center;
-      i {
-        margin-right: 5px;
-      }
-    }
   }
 
   .space-people-table {

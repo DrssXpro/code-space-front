@@ -26,7 +26,7 @@ function updateSpace(spaceId: number, payload: ISpacePayload, loading = false) {
 }
 
 // 获取空间列表
-function getSpaceList(payload: { limit: number; offset: number }, loading = false) {
+function getSpaceList(payload: { limit: number; offset: number; kw: string }, loading = false) {
   return myRequest.get<IResponseData<IList<ISpaceItem>>>(
     {
       url: "/space/list",
@@ -37,7 +37,7 @@ function getSpaceList(payload: { limit: number; offset: number }, loading = fals
 }
 
 // 获取空间用户列表
-function getSpaceUserList(payload: { limit: number; offset: number }, loading = false) {
+function getSpaceUserList(payload: { limit: number; offset: number; nameKw: string; nickKw: string }, loading = false) {
   return myRequest.get<IResponseData<IList<ISpaceUserItem>>>(
     {
       url: "/space/user/list",

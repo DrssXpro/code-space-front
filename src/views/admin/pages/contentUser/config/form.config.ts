@@ -3,29 +3,15 @@ import type { IFormConfigItem } from "@/components/FsForm/type";
 const formConfig: IFormConfigItem[] = [
   {
     label: "关键词查询",
-    placeholder: "请输入菜单标题",
-    field: "title",
+    placeholder: "请输入用户名",
+    field: "kw",
     type: "input",
   },
   {
-    label: "关键词查询",
-    placeholder: "请选择编程语言",
-    field: "lan",
-    type: "select",
-    options: [
-      {
-        value: "1",
-        text: "cpp",
-      },
-      {
-        value: "2",
-        text: "java",
-      },
-      {
-        value: "3",
-        text: "JavaScript",
-      },
-    ],
+    label: "邮箱查询",
+    placeholder: "请输入用户邮箱",
+    field: "email",
+    type: "input",
   },
 ];
 

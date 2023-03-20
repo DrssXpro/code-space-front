@@ -4,7 +4,7 @@ const formConfig: IFormConfigItem[] = [
   {
     label: "关键词查询",
     placeholder: "请输入角色名称",
-    field: "name",
+    field: "kw",
     type: "input",
   },
   {

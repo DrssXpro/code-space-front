@@ -99,7 +99,11 @@ export default function useSpace(formRef?: Ref<FormInstance | undefined>) {
   // 获取空间列表数据
   async function getSpaceListByAdmin() {
     try {
-      const res = await getSpaceList({ limit: tableState.pageSize, offset: tableState.currentPage - 1 });
+      const res = await getSpaceList({
+        limit: tableState.pageSize,
+        offset: tableState.currentPage - 1,
+        kw: searchState.value.kw,
+      });
       tableState.tableData = res.data.rows;
       tableState.total = res.data.count;
     } catch (error) {

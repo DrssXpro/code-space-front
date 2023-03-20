@@ -10,8 +10,6 @@ import { reactive, ref, type Ref } from "vue";
 export default function useAdminRole(formRef?: Ref<FormInstance | undefined>, treeRef?: Ref<any>) {
   // modal验证规则
   const { roleValidator } = validator;
-  // 搜索loading
-  const searchLoading = ref(false);
 
   // 表单loading
   const formLoading = ref(false);
@@ -34,7 +32,7 @@ export default function useAdminRole(formRef?: Ref<FormInstance | undefined>, tr
   });
 
   // 搜索条件 form
-  const searchForm = ref({ kw: "", status: 1 });
+  const searchState = ref({ kw: "", status: 1 as 0 | 1 });
 
   // 菜单列表
   const allMenus = ref<IMenuItem[]>();
@@ -126,7 +124,12 @@ export default function useAdminRole(formRef?: Ref<FormInstance | undefined>, tr
   async function getRoleListData() {
     tableState.loading = true;
     try {
-      const res = await getRoleList({ limit: tableState.pageSize, offset: tableState.currentPage - 1 });
+      const res = await getRoleList({
+        limit: tableState.pageSize,
+        offset: tableState.currentPage - 1,
+        kw: searchState.value.kw,
+        status: searchState.value.status,
+      });
       tableState.tableData = res.data.rows;
       tableState.total = res.data.count;
     } catch (error) {
@@ -138,8 +141,7 @@ export default function useAdminRole(formRef?: Ref<FormInstance | undefined>, tr
   return {
     formState,
     tableState,
-    searchForm,
-    searchLoading,
+    searchState,
     formLoading,
     showModal,
     roleRules,

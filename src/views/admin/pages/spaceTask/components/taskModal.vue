@@ -7,14 +7,6 @@
       <el-form-item label="任务详情" label-width="100" prop="introduce">
         <el-input type="textarea" v-model="formState.introduce" placeholder="请输入任务详情"></el-input>
       </el-form-item>
-      <el-form-item label="过期时间" label-width="100" prop="extime">
-        <el-date-picker
-          v-model="formState.extime"
-          type="datetime"
-          placeholder="请选择过期时间"
-          :disabled-date="disabledDate"
-        />
-      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="controllModal(false)">取消</el-button>
@@ -24,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from "vue";
+import { ref } from "vue";
 
 import type { FormInstance } from "element-plus";
 
@@ -56,7 +48,6 @@ const controllModal = (show: boolean, row?: any) => {
   currentId.value = row ? row.id : 0;
   formState.name = row ? row.name : "";
   formState.introduce = row ? row.introduce : "";
-  formState.extime = row ? row.extime : "";
 };
 
 // 提交表单逻辑
@@ -70,11 +61,6 @@ const handleSubmit = async () => {
         controllModal(false);
         emit("refreshTable");
       });
-};
-
-// 禁止选择之前的日期
-const disabledDate = (time: Date) => {
-  return time.getTime() < Date.now();
 };
 
 defineExpose({

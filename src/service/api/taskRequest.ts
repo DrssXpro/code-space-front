@@ -3,7 +3,7 @@ import type { ITaskItem, ITaskPayload } from "@/types/taskType";
 import { myRequest } from "..";
 
 // 获取任务列表
-function getTaskList(payload: { limit: number; offset: number; spaceId: number }, loading = false) {
+function getTaskList(payload: { limit: number; offset: number; spaceId: number; kw: string }, loading = false) {
   return myRequest.get<IResponseData<IList<ITaskItem>>>(
     {
       url: "/task/list",

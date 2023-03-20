@@ -1,23 +1,19 @@
 <template>
   <div class="content-user-container">
     <div class="content-user-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
+      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchState">
         <template #operator>
-          <el-button type="danger" class="btn" @click="searchDataList"
-            ><i class="fa fa-search"></i><span>查询</span></el-button
-          >
-          <el-button type="info" class="btn" @click="resetForm"
-            ><i class="fa fa-refresh"></i><span>重置</span></el-button
-          >
+          <el-button type="danger" @click="searchDataList">查询</el-button>
+          <el-button type="info" @click="resetForm">重置</el-button>
         </template>
       </fs-form>
     </div>
     <div class="content-user-table gap-item">
       <fs-table
-        :list-data="tableState.tableList"
-        :list-count="tableState.total"
-        :loading="tableState.loading"
-        :page-size="tableState.pageSize"
+        :list-data="userState.userList"
+        :list-count="userState.total"
+        :loading="userState.loading"
+        :page-size="userState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
         :show-index-column="false"
@@ -28,17 +24,20 @@
             <el-button type="primary" @click="showModal(true)">添加用户</el-button>
           </div>
         </template>
+        <template #id="{ row }">
+          <div class="one-line" :title="row.id">{{ row.id }}</div>
+        </template>
         <template #avatar="{ row }">
           <el-image :src="row.avatar" style="width: 50px"></el-image>
         </template>
         <template #roleName="{ row }">
-          <el-tag type="success">{{ row.role.roleName }}</el-tag>
+          <el-tag type="success">{{ row["role.roleName"] }}</el-tag>
         </template>
         <template #status="{ row }">
           <el-tag :type="row.status ? '' : 'danger'">{{ row.status ? "正常" : "禁用" }}</el-tag>
         </template>
-        <template #spaceName="{ row }">
-          {{ row.spaceName || "未加入空间" }}
+        <template #spaceId="{ row }">
+          {{ row.spaceId ? `《${row.spaceName}》` : "未加入空间" }}
         </template>
         <template #createdAt="{ row }">
           {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }}
@@ -52,11 +51,7 @@
         </template>
       </fs-table>
 
-      <user-modal
-        ref="userModalRef"
-        :is-edit="isEdit"
-        @refresh-table="getUserListData(tableState.pageSize, tableState.current - 1)"
-      />
+      <user-modal ref="userModalRef" :is-edit="isEdit" @refresh-table="getAdminUserListData" />
     </div>
   </div>
 </template>
@@ -69,54 +64,31 @@ import userModal from "./components/userModal.vue";
 import type { IUserItem } from "@/types/userType";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { ElMessage, ElMessageBox } from "element-plus";
+import useAdminUser from "@/hooks/useAdminUser";
 import { formatTime } from "@/utils/formatTime";
-import { deleteUserByAdmin, getUserListByAdmin } from "@/service/api/userRequest";
+import { __debounce } from "@/utils/tools";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const userModalRef = ref<InstanceType<typeof userModal>>();
-const formConfigReactive = ref(formConfig);
-
-const formData = ref({
-  title: "1",
-  lan: "1",
-});
+const { userState, searchState, getAdminUserListData, deleteUserData } = useAdminUser();
 
 const isEdit = ref(false);
 
-const tableState = reactive({
-  tableList: [] as IUserItem[],
-  current: 1,
-  pageSize: 10,
-  total: 0,
-  loading: false,
-});
 onMounted(() => {
-  getUserListData(tableState.pageSize, tableState.current - 1);
+  getAdminUserListData();
 });
-
-// 获取用户列表
-const getUserListData = (limit: number, offset: number) => {
-  getUserListByAdmin({ limit, offset }).then((res) => {
-    tableState.total = res.data.count;
-    tableState.tableList = res.data.rows;
-  });
-};
 
 // 删除用户
-const handleDeleteUser = async (row: any) => {
-  ElMessageBox.confirm(`确定要删除id为 ${row.id} 的这个用户吗？`, {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(async () => {
-    const res = await deleteUserByAdmin(row.id);
-    res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
-    getUserListData(tableState.pageSize, tableState.current - 1);
-  });
+const handleDeleteUser = async (row: IUserItem) => {
+  deleteUserData(row.id, () => getAdminUserListData());
 };
 
+// 搜索表格
+const searchDataList = __debounce(() => {
+  getAdminUserListData();
+}, 500);
+
 // 打开模态框
-const showModal = (isShow: boolean, row?: any) => {
+const showModal = (isShow: boolean, row?: IUserItem) => {
   isEdit.value = row ? true : false;
   userModalRef.value?.controllModal(isShow, row);
 };
@@ -125,13 +97,11 @@ const handlePageChange = (current: number) => {
   console.log(current);
 };
 
-const resetForm = () => {
+// 重置表单
+const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
-};
-
-const searchDataList = () => {
-  console.log("check:", formData.value);
-};
+  getAdminUserListData();
+}, 500);
 </script>
 
 <style scoped lang="less">
@@ -144,14 +114,6 @@ const searchDataList = () => {
     width: 100%;
     .public-container();
     .form-container();
-
-    .btn {
-      display: flex;
-      align-items: center;
-      i {
-        margin-right: 5px;
-      }
-    }
   }
 
   .content-user-table {

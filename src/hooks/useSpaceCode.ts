@@ -6,6 +6,15 @@ import { reactive, ref, type Ref } from "vue";
 
 export default function useSpaceCode(formRef?: Ref<FormInstance | undefined>) {
   const { spaceCodeValidator } = validator;
+
+  // 条件搜索
+  const searchState = ref({
+    kw: "",
+    lan: "",
+    taskId: "",
+  });
+
+  // 代码表单
   const codeForm: ISpaceCodeUpdatePayload = reactive({
     title: "",
     content: "",
@@ -13,8 +22,10 @@ export default function useSpaceCode(formRef?: Ref<FormInstance | undefined>) {
     lan: "JavaScript",
   });
 
+  // 表单loading
   const formLoading = ref(false);
 
+  // 表格
   const codeState = reactive({
     codeList: [] as ISpaceMasterCodeItem[],
     page: 1,
@@ -23,6 +34,7 @@ export default function useSpaceCode(formRef?: Ref<FormInstance | undefined>) {
     loading: false,
   });
 
+  // 代码规则
   const codeRules: FormRules = {
     title: [{ validator: spaceCodeValidator.title, trigger: "blur" }],
     content: [{ validator: spaceCodeValidator.content, trigger: "blur" }],
@@ -33,9 +45,16 @@ export default function useSpaceCode(formRef?: Ref<FormInstance | undefined>) {
   async function getSpaceListData() {
     try {
       codeState.loading = true;
-      const res = await getCodeListBySpaceMaster({ limit: codeState.pageSize, offset: codeState.page - 1 });
-      codeState.codeList = res.data.rows;
-      codeState.total = res.data.count;
+      const res = await getCodeListBySpaceMaster({
+        limit: codeState.pageSize,
+        offset: codeState.page - 1,
+        kw: searchState.value.kw,
+        lan: searchState.value.lan,
+        task: searchState.value.taskId,
+      });
+      codeState.codeList = res.code === 1000 ? res.data.rows : [];
+      codeState.total = res.code === 1000 ? res.data.count : 0;
+      res.code !== 1000 && ElMessage.warning(res.message);
     } catch (error) {
       ElMessage.error("获取数据列表失败");
     }
@@ -75,6 +94,7 @@ export default function useSpaceCode(formRef?: Ref<FormInstance | undefined>) {
     });
   }
   return {
+    searchState,
     codeForm,
     codeState,
     formLoading,
