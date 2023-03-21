@@ -10,6 +10,7 @@ import type {
   ISpaceMasterCodeItem,
   ISquareCodeItem,
   ISquareCodePayload,
+  ISquareNewCodeItem,
   TLanguage,
 } from "@/types/codeType";
 import type { IList, IResponseData } from "@/types/responseType";
@@ -38,11 +39,21 @@ function addCodeBySpace(payload: ISpaceCodePayload, loading = false) {
 }
 
 // 获取广场代码列表
-function getCodeListBySquare(payload: { limit: number; offset: number }, loading = false) {
+function getCodeListBySquare(payload: { limit: number; offset: number; lan: string; sort: number }, loading = false) {
   return myRequest.get<IResponseData<IList<ISquareCodeItem>>>(
     {
       url: "/square_code/list",
       params: payload,
+    },
+    loading
+  );
+}
+
+// 获取广场的最新分享
+function getNewCodeListBySquare(loading = false) {
+  return myRequest.get<IResponseData<IList<ISquareNewCodeItem>>>(
+    {
+      url: "/square_code/new_list",
     },
     loading
   );
@@ -276,6 +287,7 @@ export {
   addCodeBySpace,
   getCodeListByAdmin,
   getCodeListBySquare,
+  getNewCodeListBySquare,
   getCodeListBySpaceMaster,
   getCurrentCode,
   getSpaceCurrentCode,

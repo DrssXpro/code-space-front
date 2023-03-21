@@ -46,4 +46,35 @@ function getDisDay(time1: number, time2: number) {
   return diff;
 }
 
-export { formatTime, getDisDay };
+// 时间距离转换
+function getTimeDis(date: string) {
+  const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
+  console.log(seconds);
+  let intervalType, intervalValue;
+  if (seconds < 60) {
+    intervalType = "秒";
+    intervalValue = seconds;
+  } else if (seconds < 3600) {
+    intervalType = "分";
+    intervalValue = Math.floor(seconds / 60);
+  } else if (seconds < 86400) {
+    intervalType = "小时";
+    intervalValue = Math.floor(seconds / 3600);
+  } else if (seconds < 604800) {
+    intervalType = "天";
+    intervalValue = Math.floor(seconds / 86400);
+  } else if (seconds < 2629800) {
+    intervalType = "周";
+    intervalValue = Math.floor(seconds / 604800);
+  } else if (seconds < 31557600) {
+    intervalType = "月";
+    intervalValue = Math.floor(seconds / 2629800);
+  } else {
+    intervalType = "年";
+    intervalValue = Math.floor(seconds / 31557600);
+  }
+
+  return `${intervalValue}${intervalType}前`;
+}
+
+export { formatTime, getDisDay, getTimeDis };

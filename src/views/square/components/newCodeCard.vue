@@ -1,23 +1,32 @@
 <template>
   <el-card shadow="never">
     <template #header>最新分享</template>
-    <div class="code-item" v-for="i in 5">
+    <div class="code-item" v-for="i in props.newCodeList" :key="i.id">
       <i class="fa fa-code"></i>
       <div class="code-info">
-        <div class="code-name">二分排序</div>
+        <div class="code-name">{{ i.title }}</div>
         <div>
-          <span>python</span>
+          <span>{{ i.lan }}</span>
           <span>|</span>
-          <span>2月前</span>
+          <span>{{ getTimeDis(i.createdAt) }}</span>
           <span>|</span>
-          <span>7.13KB</span>
+          <span>{{ i.line }} lines</span>
         </div>
       </div>
     </div>
+    <fs-empty-box v-if="!props.newCodeList.length" />
   </el-card>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { ISquareNewCodeItem } from "@/types/codeType";
+import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
+import { getTimeDis } from "@/utils/formatTime";
+
+const props = defineProps<{
+  newCodeList: ISquareNewCodeItem[];
+}>();
+</script>
 
 <style scoped lang="less">
 .code-item {

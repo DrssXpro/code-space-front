@@ -3,61 +3,62 @@
     <div class="tab-title">
       <span class="title-content">语言分类</span>
       <div class="title-choose">
-        <el-select v-model="value" placeholder="选择排序规则" size="small">
+        <el-select v-model="searchState.sort" placeholder="选择排序规则" size="small">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </div>
     </div>
     <div class="code-tab-list">
       <div
-        :class="['code-tab-item', currentIndex === index ? 'tab-item__active' : '']"
-        v-for="(item, index) in codes"
+        :class="['code-tab-item', currentLan === index ? 'tab-item__active' : '']"
+        v-for="(item, index) in lanOptions"
         :key="index"
-        @click="handleChooseTab(index)"
+        @click="handleChooseTab(item, index)"
       >
-        {{ item.text }}
+        {{ item }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-const currentIndex = ref(0);
-const value = ref(1);
+import { ref, watch } from "vue";
+import { LANGUAGE } from "@/config/config";
+import { __debounce } from "@/utils/tools";
+import type { ISquareSearchPayload } from "@/types/squareType";
 
-const handleChooseTab = (index: number) => {
-  currentIndex.value = index;
+const props = defineProps<{
+  search: ISquareSearchPayload;
+}>();
+
+const emit = defineEmits<{
+  (e: "update:search", searchRules: { lan: string; sort: number }): void;
+}>();
+
+const lanOptions = ["All", ...LANGUAGE];
+
+// 搜索条件
+const searchState = ref({ ...props.search });
+// 当前选择语言
+const currentLan = ref(0);
+
+// 选择语言
+const handleChooseTab = (item: string, index: number) => {
+  currentLan.value = index;
+  searchState.value.lan = item;
 };
 
-const codes = [
-  {
-    text: "cpp",
+watch(
+  () => searchState.value,
+  (newValue: ISquareSearchPayload) => {
+    emit("update:search", newValue);
   },
   {
-    text: "Java",
-  },
-  {
-    text: "JavaScript",
-  },
-  {
-    text: "Python",
-  },
-  {
-    text: "PHP",
-  },
+    deep: true,
+  }
+);
 
-  {
-    text: "CSS",
-  },
-  {
-    text: "SQL",
-  },
-  {
-    text: "Vue",
-  },
-];
-
+// 排序选项
 const options = [
   {
     value: 1,

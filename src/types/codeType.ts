@@ -53,6 +53,20 @@ export interface ISquareCodeItem {
   };
 }
 
+// 广场最新代码
+export interface ISquareNewCodeItem {
+  id: string;
+  title: string;
+  preview: string;
+  lan: TLanguage;
+  liked: number;
+  status: number;
+  line: number;
+  views: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // 我的代码列表项
 export interface IMyCodeItem {
   id: string;

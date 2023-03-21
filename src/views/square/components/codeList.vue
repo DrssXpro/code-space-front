@@ -1,36 +1,34 @@
 <template>
   <div class="code-list">
-    <a class="code-item" :href="`/#/code/${item.id}`" v-for="item in codeState.codeList" :key="item.id" target="_blank">
+    <a class="code-item" :href="`/#/code/${item.id}`" v-for="item in props.codeList" :key="item.id" target="_blank">
       <fs-code-card :code-detail="item" />
     </a>
     <div class="code-more">
-      <el-button class="more-btn" @click="handleGetMore" type="info">点击查看更多</el-button>
+      <el-button class="more-btn" @click="emit('getMoreData')" type="info" v-if="!props.isFinish"
+        >点击加载更多</el-button
+      >
     </div>
+    <fs-empty-box v-if="props.isFinish" />
   </div>
 </template>
 
 <script setup lang="ts">
 import FsCodeCard from "@/components/FsCodeCard/FsCodeCard.vue";
-import { getCodeListBySquare } from "@/service/api/codeRequest";
+import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
 import type { ISquareCodeItem } from "@/types/codeType";
-import { onMounted, reactive } from "vue";
+import { __debounce } from "@/utils/tools";
+const props = defineProps<{
+  codeList: ISquareCodeItem[];
+  isFinish: boolean;
+}>();
 
-const codeState = reactive({
-  codeList: [] as ISquareCodeItem[],
-  page: 1,
-  pageSize: 10,
-});
+// 分页获取更多数据
+const emit = defineEmits<{
+  (e: "getMoreData"): void;
+}>();
 
-onMounted(() => {
-  handleGetCodeList();
-});
 
-const handleGetCodeList = async () => {
-  const res = await getCodeListBySquare({ limit: codeState.pageSize, offset: codeState.page - 1 }, true);
-  codeState.codeList = [...codeState.codeList, ...res.data.rows];
-};
 
-const handleGetMore = () => {};
 </script>
 
 <style scoped lang="less">
