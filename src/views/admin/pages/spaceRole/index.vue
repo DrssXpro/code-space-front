@@ -56,7 +56,7 @@ import FsTable from "@/components/FsTable/FsTable.vue";
 import roleModal from "./components/roleModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import useAdminRole from "@/hooks/useAdminRole";
+import usePowerRole from "@/hooks/usePowerRole";
 import useSpaceRole from "@/hooks/useSpaceRole";
 import { getRoleMenu, updateRoleStatus } from "@/service/api/roleRequest";
 import { ElMessage, ElMessageBox } from "element-plus";

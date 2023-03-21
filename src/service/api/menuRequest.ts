@@ -3,10 +3,11 @@ import type { IResponseData, IList } from "@/types/responseType";
 import { myRequest } from "../";
 
 // 获取菜单所有权限列表
-function getMenuList(loading = false) {
+function getMenuList(payload: { kw: string; type?: "M" | "D" | "B" }, loading = false) {
   return myRequest.get<IResponseData<IList<IMenuItem>>>(
     {
       url: "/menu/list",
+      params: payload,
     },
     loading
   );

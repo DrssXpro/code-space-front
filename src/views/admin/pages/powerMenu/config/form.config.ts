@@ -4,26 +4,26 @@ const formConfig: IFormConfigItem[] = [
   {
     label: "关键词查询",
     placeholder: "请输入菜单标题",
-    field: "title",
+    field: "kw",
     type: "input",
   },
   {
-    label: "关键词查询",
-    placeholder: "请选择编程语言",
-    field: "lan",
+    label: "菜单类别",
+    placeholder: "请选择菜单类别",
+    field: "type",
     type: "select",
     options: [
       {
-        value: "1",
-        text: "cpp",
+        value: "M",
+        text: "二级目录",
       },
       {
-        value: "2",
-        text: "java",
+        value: "D",
+        text: "一级菜单",
       },
       {
-        value: "3",
-        text: "JavaScript",
+        value: "B",
+        text: "按钮权限",
       },
     ],
   },

@@ -56,7 +56,7 @@
 import type { IMenuPayload } from "@/types/menuType";
 import type { FormInstance } from "element-plus";
 import { onMounted, ref } from "vue";
-import useMenu from "@/hooks/useMenu";
+import usePowerMenu from "@/hooks/usePowerMenu";
 interface IMenuDataBack extends IMenuPayload {
   id: number;
 }
@@ -87,7 +87,7 @@ const menuType = [
 const formRef = ref<FormInstance>();
 
 const { formState, formLoading, showModal, menus, menuRules, getMenuListByOptions, updateMenuData, addMenuData } =
-  useMenu(formRef);
+  usePowerMenu(formRef);
 
 // 当前菜单id：编辑使用
 const currentId = ref<number>();

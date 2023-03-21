@@ -1,23 +1,19 @@
 <template>
   <div class="content-comment-container">
     <div class="content-comment-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfigReactive" v-model="formData">
+      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchState">
         <template #operator>
-          <el-button type="danger" class="btn" @click="searchDataList"
-            ><i class="fa fa-search"></i><span>查询</span></el-button
-          >
-          <el-button type="info" class="btn" @click="resetForm"
-            ><i class="fa fa-refresh"></i><span>重置</span></el-button
-          >
+          <el-button type="danger" @click="searchDataList">查询</el-button>
+          <el-button type="info" @click="resetForm">重置</el-button>
         </template>
       </fs-form>
     </div>
     <div class="content-comment-table gap-item">
       <fs-table
-        :list-data="tableData"
-        :list-count="50"
-        :loading="loading"
-        :page-size="page.pageSize"
+        :list-data="commentState.commentList"
+        :list-count="commentState.total"
+        :loading="commentState.loading"
+        :page-size="commentState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
         :show-index-column="false"
@@ -27,155 +23,68 @@
             <span>评论列表</span>
           </div>
         </template>
+        <template #content="{ row }">
+          <div class="one-line" :title="row.content">{{ row.content }}</div>
+        </template>
+        <template #codeTitle="{ row }">
+          <el-tag type="danger" style="cursor: pointer" @click="skipToDetail(row['code.codeId'])">{{
+            row["code.codeTitle"]
+          }}</el-tag>
+        </template>
+        <template #rootId="{ row }">
+          <el-tag :type="row.rootId ? 'info' : 'success'">{{ row.rootId ? "回复" : "评论" }}</el-tag>
+        </template>
         <template #createdAt="{ row }">
-          <el-tag type="danger">{{ row.createdAt }}</el-tag>
+          {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="success" link>编辑</el-button>
-          <el-button type="danger" link>删除</el-button>
+          <el-button type="danger" link @click="deleteComment(row.id)">删除</el-button>
         </template>
       </fs-table>
-
-      <fs-modal
-        v-model="modalData"
-        ref="fsModalRef"
-        title="添加角色"
-        :modal-config="modalConfig"
-        :mobal-rules="modalValid"
-      >
-        <template #footer>
-          <el-button @click="closeModal">取消</el-button>
-          <el-button type="primary" @click="handleAdd">添加</el-button>
-        </template>
-      </fs-modal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import useAdminComment from "@/hooks/useAdminComment";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
-import FsModal from "@/components/FsModal/FsModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import { modalConfig, modalValid } from "./config/modal.config";
-import { ElMessage } from "element-plus";
+import { __debounce } from "@/utils/tools";
+import { formatTime } from "@/utils/formatTime";
+
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
-const fsModalRef = ref<InstanceType<typeof FsModal>>();
-const formConfigReactive = ref(formConfig);
-const loading = ref(false);
 
-const formData = ref({
-  title: "12",
-  lan: "1",
-});
+const { commentState, searchState, getCommentListByAdminData, deleteCurrentCommentByAdmin } = useAdminComment();
 
-const modalData = ref({
-  title: "1",
-  lan: "2",
-});
+// 搜索
+const searchDataList = __debounce(() => {
+  getCommentListByAdminData();
+}, 500);
 
-const page = ref({
-  current: 1,
-  pageSize: 10,
-});
+const handlePageChange = __debounce((current: number) => {
+  commentState.page = current;
+  getCommentListByAdminData();
+}, 500);
 
-const searchDataList = () => {
-  console.log("check:", formData.value);
+// 跳转至代码详情
+const skipToDetail = (codeId: string) => {
+  window.open(`/#/code/${codeId}`);
 };
 
-const handlePageChange = (current: number) => {
-  console.log(current);
+// 删除
+const deleteComment = (id: number) => {
+  deleteCurrentCommentByAdmin(id, () => getCommentListByAdminData);
 };
 
-const showAddModal = () => {
-  fsModalRef.value?.controllModal(true);
-};
-
-const closeModal = () => {
-  fsModalRef.value?.controllModal(false);
-};
-
-const resetForm = () => {
+// 重置
+const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
-};
-
-const handleAdd = async () => {
-  if (fsModalRef.value && fsModalRef.value.formRef) {
-    await fsModalRef.value.formRef.validate((valid, fields) => {
-      if (valid) {
-        ElMessage.success("验证通过");
-      } else {
-        ElMessage.error("验证失败");
-      }
-    });
-  }
-};
-fsModalRef.value && fsModalRef.value.formRef?.resetFields();
-
-const resetModal = () => {
-  console.log(fsModalRef.value && fsModalRef.value.treeRef[0].getCheckedKeys(false));
-  // fsModalRef.value && fsModalRef.value.formRef?.resetFields();
-};
-const tableData = [
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-  {
-    test1: "2016-05-03",
-    test2: "Tom",
-    test3: "abc",
-    createdAt: "No. 189, Grove St",
-    updatedAt: "No. 189, Grove St",
-  },
-];
+  commentState.page = 1;
+  getCommentListByAdminData();
+}, 500);
 </script>
 
 <style scoped lang="less">
@@ -188,14 +97,6 @@ const tableData = [
     width: 100%;
     .public-container();
     .form-container();
-
-    .btn {
-      display: flex;
-      align-items: center;
-      i {
-        margin-right: 5px;
-      }
-    }
   }
 
   .content-comment-table {

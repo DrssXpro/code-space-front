@@ -1,5 +1,7 @@
 import type {
   CodePart,
+  IAdminCodeItem,
+  IAdminCodePayload,
   ICodeDetail,
   IMyCodeItem,
   ISpaceCodeDetail,
@@ -46,6 +48,17 @@ function getCodeListBySquare(payload: { limit: number; offset: number }, loading
   );
 }
 
+// 管理员：获取代码列表
+function getCodeListByAdmin(payload: { limit: number; offset: number; kw: string; lan: string }, loading = false) {
+  return myRequest.get<IResponseData<IList<IAdminCodeItem>>>(
+    {
+      url: "/admin_code/list",
+      params: payload,
+    },
+    loading
+  );
+}
+
 // 空间主：获取空间代码列表
 function getCodeListBySpaceMaster(
   payload: { limit: number; offset: number; kw: string; lan: string; task: number | string },
@@ -71,6 +84,16 @@ function getMyCodeList(payload: { limit: number; offset: number; kw: string; lan
   );
 }
 
+// 管理员：删除代码
+function deleteCodeByAdmin(codeId: string, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/admin_code/update/${codeId}`,
+    },
+    loading
+  );
+}
+
 // 删除我的代码
 function deleteMyCode(codeId: string, loading = false) {
   return myRequest.post<IResponseData>(
@@ -86,6 +109,17 @@ function deleteSpaceCode(codeId: string, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/space_code/delete/${codeId}`,
+    },
+    loading
+  );
+}
+
+// 管理员：更新代码
+function updateAdminCode(codeId: string, payload: IAdminCodePayload, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/admin_code/update/${codeId}`,
+      data: payload,
     },
     loading
   );
@@ -240,11 +274,14 @@ function getCollectList(payload: { limit: number; offset: number }, loading = fa
 export {
   addCodeBySquare,
   addCodeBySpace,
+  getCodeListByAdmin,
   getCodeListBySquare,
   getCodeListBySpaceMaster,
   getCurrentCode,
   getSpaceCurrentCode,
   updateSpaceCode,
+  deleteCodeByAdmin,
+  updateAdminCode,
   getMyCodeList,
   updateMyCode,
   deleteMyCode,

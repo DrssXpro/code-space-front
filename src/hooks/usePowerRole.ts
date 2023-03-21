@@ -7,7 +7,7 @@ import validator from "@/utils/validator";
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
 import { reactive, ref, type Ref } from "vue";
 
-export default function useAdminRole(formRef?: Ref<FormInstance | undefined>, treeRef?: Ref<any>) {
+export default function usePowerRole(formRef?: Ref<FormInstance | undefined>, treeRef?: Ref<any>) {
   // modal验证规则
   const { roleValidator } = validator;
 
@@ -116,7 +116,7 @@ export default function useAdminRole(formRef?: Ref<FormInstance | undefined>, tr
 
   // 获取所有菜单权限列表
   async function getMenuListData() {
-    const res = await getMenuList();
+    const res = await getMenuList({ kw: "" });
     allMenus.value = handleMenuToTree(res.data.rows) as IMenuItem[];
   }
 

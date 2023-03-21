@@ -70,6 +70,13 @@ const validator = {
     password: validateUserPassword,
     roleId: validRoleId,
   },
+  // 管理员更新代码校验
+  updateAdminCodeValidator: {
+    title: validCodeTitle,
+    content: validCodeContent,
+    lan: validCodeLan,
+    pwd: validCodePwd,
+  },
 };
 
 // code选项

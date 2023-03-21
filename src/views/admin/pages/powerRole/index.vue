@@ -3,8 +3,8 @@
     <div class="content-role-form gap-item">
       <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchState">
         <template #operator>
-          <el-button type="danger" class="btn" @click="searchDataList">查询</el-button>
-          <el-button type="info" class="btn" @click="resetForm">重置</el-button>
+          <el-button type="danger" @click="searchDataList">查询</el-button>
+          <el-button type="info" @click="resetForm">重置</el-button>
         </template>
       </fs-form>
     </div>
@@ -56,15 +56,16 @@ import FsTable from "@/components/FsTable/FsTable.vue";
 import roleModal from "./components/roleModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import useAdminRole from "@/hooks/useAdminRole";
+import usePowerRole from "@/hooks/usePowerRole";
 import { getRoleMenu, updateRoleStatus } from "@/service/api/roleRequest";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { formatTime } from "@/utils/formatTime";
+import { __debounce } from "@/utils/tools";
 
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const roleModalRef = ref<InstanceType<typeof roleModal>>();
 
-const { tableState, searchState, getRoleListData, deleteRoleByAdmin } = useAdminRole();
+const { tableState, searchState, getRoleListData, deleteRoleByAdmin } = usePowerRole();
 
 const isEdit = ref(false);
 const currentPower = ref<number[]>([]);
@@ -114,17 +115,19 @@ const showModal = async (show: boolean, row?: any) => {
     roleModalRef.value?.controllModal(show);
   }
 };
-const searchDataList = () => {
-  console.log("check:", searchState.value);
-};
+const searchDataList = __debounce(() => {
+  getRoleListData();
+}, 500);
 
 const handlePageChange = (current: number) => {
   console.log(current);
 };
 
-const resetForm = () => {
+const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
-};
+  tableState.currentPage = 1;
+  getRoleListData();
+}, 500);
 </script>
 
 <style scoped lang="less">
@@ -137,14 +140,6 @@ const resetForm = () => {
     width: 100%;
     .public-container();
     .form-container();
-
-    .btn {
-      display: flex;
-      align-items: center;
-      i {
-        margin-right: 5px;
-      }
-    }
   }
 
   .content-role-table {

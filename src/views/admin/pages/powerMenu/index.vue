@@ -1,14 +1,10 @@
 <template>
   <div class="content-menu-container">
     <div class="content-menu-form gap-item">
-      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="formData">
+      <fs-form ref="fsFormRef" :form-config="formConfig" v-model="searchState">
         <template #operator>
-          <el-button type="danger" class="btn" @click="searchDataList"
-            ><i class="fa fa-search"></i><span>查询</span></el-button
-          >
-          <el-button type="info" class="btn" @click="resetForm"
-            ><i class="fa fa-refresh"></i><span>重置</span></el-button
-          >
+          <el-button type="danger" @click="searchDataList">查询</el-button>
+          <el-button type="info" @click="resetForm">重置</el-button>
         </template>
       </fs-form>
     </div>
@@ -46,22 +42,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
 import menuModal from "./components/menuModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
 import { formatTime } from "@/utils/formatTime";
-import useMenu from "@/hooks/useMenu";
+import usePowerMenu from "@/hooks/usePowerMenu";
+import { __debounce } from "@/utils/tools";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const menuModalRef = ref<InstanceType<typeof menuModal>>();
-const formData = ref({
-  title: "12312321",
-  lan: "1",
-});
 
-const { tableState, getMenuListData, deleteMenuData } = useMenu();
+const { tableState, searchState, getMenuListData, deleteMenuData } = usePowerMenu();
 
 const isEdit = ref(false);
 
@@ -74,18 +67,19 @@ const handleDeleteMenu = (row: any) => {
   deleteMenuData(row.id!, () => getMenuListData());
 };
 
-const searchDataList = () => {
-  console.log("check:", formData.value);
-};
+const searchDataList = __debounce(() => {
+  getMenuListData();
+}, 500);
 
 const controllModal = (isShow: boolean, row?: any) => {
   isEdit.value = row ? true : false;
   menuModalRef.value?.controllModal(isShow, row);
 };
 
-const resetForm = () => {
+const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
-};
+  getMenuListData();
+}, 500);
 </script>
 
 <style scoped lang="less">
@@ -98,14 +92,6 @@ const resetForm = () => {
     width: 100%;
     .public-container();
     .form-container();
-
-    .btn {
-      display: flex;
-      align-items: center;
-      i {
-        margin-right: 5px;
-      }
-    }
   }
 
   .content-menu-table {

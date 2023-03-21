@@ -23,6 +23,14 @@ export interface ISpaceCodeUpdatePayload {
   status: 1 | 2;
 }
 
+export interface IAdminCodePayload {
+  title: string;
+  content: string;
+  lan: TLanguage;
+  isPwd: boolean;
+  pwd: string;
+}
+
 // 广场代码列表项
 export interface ISquareCodeItem {
   id: string;
@@ -57,9 +65,6 @@ export interface IMyCodeItem {
   views: number;
   liked: number;
   line: number;
-  commentCount: number;
-  collectCount: number;
-  link: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -125,6 +130,13 @@ export interface ISpaceMasterCodeItem {
   "user.authorId": string;
   "task.taskId": number;
   "task.taskName": string;
+}
+
+// 管理员代码项
+export interface IAdminCodeItem extends IMyCodeItem {
+  "user.authorName": string;
+  "user.authorAvatar": string;
+  "user.authorId": string;
 }
 
 // 部分代码信息

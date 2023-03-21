@@ -38,7 +38,7 @@
 import { ref, onMounted, nextTick, watch } from "vue";
 import { ElTree, type FormInstance } from "element-plus";
 import type { IRoleFormPayload } from "@/types/roleType";
-import useAdminRole from "@/hooks/useAdminRole";
+import usePowerRole from "@/hooks/usePowerRole";
 interface IRoleDataBack extends IRoleFormPayload {
   id: number;
 }
@@ -66,7 +66,7 @@ const {
   getMenuListData,
   updateRoleDataByAdmin,
   addRoleDataByAdmin,
-} = useAdminRole(formRef, treeRef);
+} = usePowerRole(formRef, treeRef);
 // 模态框展示
 
 // 编辑状态：当前id

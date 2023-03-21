@@ -5,7 +5,7 @@ import validator from "@/utils/validator";
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
 import { reactive, ref, type Ref } from "vue";
 
-export default function useMenu(formRef?: Ref<FormInstance | undefined>) {
+export default function usePowerMenu(formRef?: Ref<FormInstance | undefined>) {
   // modal验证规则
   const { menuValidator } = validator;
 
@@ -32,7 +32,7 @@ export default function useMenu(formRef?: Ref<FormInstance | undefined>) {
   });
 
   // 搜索参数
-  const searchState = ref({ kw: "", type: "M" });
+  const searchState = ref({ kw: "", type: "" });
 
   // 表格数据
   const tableState = reactive({
@@ -103,18 +103,17 @@ export default function useMenu(formRef?: Ref<FormInstance | undefined>) {
   }
 
   async function getMenuListByOptions() {
-    const res = getMenuList();
+    const res = getMenuList({ kw: "" });
     menus.value = handleMenuToTree(
       (await res).data.rows.map((item) => ({ label: item.name, value: item.id, parentId: item.parentId, id: item.id }))
     );
-    console.log("checkmenu:", menus.value);
   }
 
   // 获取菜单列表数据
   async function getMenuListData() {
     tableState.loading = true;
     try {
-      const res = await getMenuList();
+      const res = await getMenuList({ kw: searchState.value.kw, type: searchState.value.type as "M" | "D" | "B" });
       tableState.tableData = handleMenuToTree(res.data.rows) as IMenuItem[];
       tableState.total = res.data.count;
     } catch (error) {

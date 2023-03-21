@@ -2,6 +2,27 @@ import type { ICommentItem, ICommentPayload, IMyCommentItem } from "@/types/comm
 import type { IList, IResponseData } from "@/types/responseType";
 import { myRequest } from "..";
 
+// 管理员获取评论列表
+function getCommentListByAdmin(payload: { limit: number; offset: number; kw: string; code: string }, loading = false) {
+  return myRequest.get<IResponseData>(
+    {
+      url: "/admin_comment_list",
+      params: payload,
+    },
+    loading
+  );
+}
+
+// 管理员删除评论列表
+function deleteCommentByAdmin(commentId: number, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/admin_comment/delete/${commentId}`,
+    },
+    loading
+  );
+}
+
 // 获取当前代码下的评论列表
 function getCurrentCodeCommentList(
   codeId: string,
@@ -85,6 +106,8 @@ function deleteComment(commentId: number, loading = false) {
 }
 
 export {
+  getCommentListByAdmin,
+  deleteCommentByAdmin,
   getCurrentCodeCommentList,
   getChildCodeCommentList,
   getMyCommentList,
