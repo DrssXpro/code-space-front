@@ -101,7 +101,7 @@ export default function useSpace(formRef?: Ref<FormInstance | undefined>) {
     try {
       const res = await getSpaceList({
         limit: tableState.pageSize,
-        offset: tableState.currentPage - 1,
+        offset: (tableState.currentPage - 1) * tableState.pageSize,
         kw: searchState.value.kw,
       });
       tableState.tableData = res.data.rows;

@@ -13,6 +13,7 @@
         :list-data="codeState.codeList"
         :list-count="codeState.total"
         :loading="codeState.loading"
+        :page="codeState.page"
         :page-size="codeState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
@@ -85,18 +86,19 @@ const handleEditCode = (row: ISpaceMasterCodeItem) => {
 
 // 搜索列表
 const searchDataList = __debounce(() => {
-  console.log(searchState.value);
   getSpaceListData();
 }, 500);
 
 // 分页展示
-const handlePageChange = (current: number) => {
-  console.log(current);
-};
+const handlePageChange = __debounce((current: number) => {
+  codeState.page = current;
+  getSpaceListData();
+}, 500);
 
 // 重置表单
 const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
+  codeState.page = 1;
   getSpaceListData();
 }, 500);
 </script>

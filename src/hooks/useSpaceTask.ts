@@ -3,7 +3,7 @@ import validator from "@/utils/validator";
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
 import { addTask, deleteTask, getTaskList, updateTask } from "@/service/api/taskRequest";
 import type { ITaskItem, ITaskPayload } from "@/types/taskType";
-export default function useTask(spaceId: number, formRef?: Ref<FormInstance | undefined>) {
+export default function useSpaceTask(spaceId: number, formRef?: Ref<FormInstance | undefined>) {
   // modal验证规则
   const { taskValidator } = validator;
 

@@ -24,7 +24,7 @@
     <div class="fs-table-footer" v-if="props.showFooter">
       <slot>
         <el-pagination
-          @size-change="handleSizeChange"
+          v-model:current-page="currentPage"
           @current-change="handleCurrentChange"
           :page-size="pageSize"
           :total="listCount"
@@ -37,11 +37,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from "vue";
 import type { ITableConifg } from "./type";
-const emit = defineEmits<{
-  (e: "pageChange", current: number): void;
-  (e: "pageSizeChange", pageSize: number): void;
-}>();
 
 interface PropsType {
   listData: any[];
@@ -51,15 +48,27 @@ interface PropsType {
   showIndexColumn?: boolean; // 展示index列
   showFooter?: boolean;
   loading: boolean;
+  page: number;
 }
 const props = withDefaults(defineProps<PropsType>(), {
   showFooter: true,
   showIndexColumn: false,
 });
 
-const handleSizeChange = (pageSize: number) => {
-  emit("pageSizeChange", pageSize);
-};
+const emit = defineEmits<{
+  (e: "pageChange", current: number): void;
+  (e: "update:page", page: number): void;
+}>();
+
+const currentPage = ref(props.page); // 接收传递的页数
+
+// 监听传来的page，重置用，回显为第一页
+watch(
+  () => props.page,
+  (newValue) => {
+    currentPage.value = newValue;
+  }
+);
 
 const handleCurrentChange = (current: number) => {
   emit("pageChange", current);

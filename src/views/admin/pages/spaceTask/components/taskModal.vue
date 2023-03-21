@@ -17,10 +17,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-
 import type { FormInstance } from "element-plus";
-
-import useTask from "@/hooks/useTask";
+import useSpaceTask from "@/hooks/useSpaceTask";
 import useUserStore from "@/stores/userStore";
 
 const props = defineProps<{
@@ -37,7 +35,7 @@ const currentId = ref(0); // 编辑：当前任务id
 const formRef = ref<FormInstance>();
 
 // hooks:封装增删改查操作
-const { showModal, formRules, formState, formLoading, updateTaskData, addTaskData } = useTask(
+const { showModal, formRules, formState, formLoading, updateTaskData, addTaskData } = useSpaceTask(
   userInfo?.space?.spaceId!,
   formRef
 );

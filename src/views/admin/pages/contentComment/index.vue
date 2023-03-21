@@ -14,6 +14,7 @@
         :list-count="commentState.total"
         :loading="commentState.loading"
         :page-size="commentState.pageSize"
+        :page="commentState.page"
         @page-change="handlePageChange"
         :table-config="tableConfig"
         :show-index-column="false"
@@ -46,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import useAdminComment from "@/hooks/useAdminComment";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
@@ -58,6 +59,10 @@ import { formatTime } from "@/utils/formatTime";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 
 const { commentState, searchState, getCommentListByAdminData, deleteCurrentCommentByAdmin } = useAdminComment();
+
+onMounted(() => {
+  getCommentListByAdminData();
+});
 
 // 搜索
 const searchDataList = __debounce(() => {

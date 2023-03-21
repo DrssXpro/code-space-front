@@ -13,6 +13,7 @@
         :list-data="tableState.tableData"
         :list-count="tableState.total"
         :loading="tableState.loading"
+        :page="tableState.currentPage"
         :page-size="tableState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
@@ -51,7 +52,7 @@ import FsTable from "@/components/FsTable/FsTable.vue";
 import taskModal from "./components/taskModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import useTask from "@/hooks/useTask";
+import useSpaceTask from "@/hooks/useSpaceTask";
 import useUserStore from "@/stores/userStore";
 import { formatTime } from "@/utils/formatTime";
 import { __debounce } from "@/utils/tools";
@@ -61,7 +62,7 @@ const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const { userInfo } = useUserStore();
 
 // 封装基本操作hook
-const { tableState, searchState,  getTaskListData, deleteTaskData } = useTask(userInfo?.space?.spaceId!);
+const { tableState, searchState, getTaskListData, deleteTaskData } = useSpaceTask(userInfo?.space?.spaceId!);
 
 // 编辑 or 添加
 const isEdit = ref(false);
@@ -89,13 +90,14 @@ const handleDeleteTask = (id: number) => {
 };
 
 // 分页获取数据
-const handlePageChange = (current: number) => {
+const handlePageChange = __debounce((current: number) => {
   tableState.currentPage = current;
   getTaskListData();
-};
+}, 500);
 
 const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
+  tableState.currentPage = 1;
   getTaskListData();
 }, 500);
 </script>

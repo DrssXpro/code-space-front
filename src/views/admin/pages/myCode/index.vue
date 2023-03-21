@@ -13,6 +13,7 @@
         :list-data="codeState.codeList"
         :list-count="codeState.total"
         :loading="codeState.loading"
+        :page="codeState.page"
         :page-size="codeState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
@@ -68,10 +69,6 @@ const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const codeDrawerRef = ref<InstanceType<typeof codeDrawer>>();
 
 const { codeState, searchState, getMyCodeListData, deleteMyCodeData } = useMyCode();
-const formData = ref({
-  title: "1",
-  lan: "1",
-});
 
 onMounted(() => {
   getMyCodeListData();
@@ -79,9 +76,7 @@ onMounted(() => {
 
 // 跳转至代码详情
 const handleSkipToDetail = (id: string) => {
-  const location = window.location;
-  const url = `${location.protocol}://${location.host}/#/code/${id}`;
-  window.open(url);
+  window.open(`/#/code/${id}`);
 };
 
 // 打开编辑抽屉：传递代码详情
@@ -94,16 +89,21 @@ const handleDeleteCode = (id: string) => {
   deleteMyCodeData(id, () => getMyCodeListData());
 };
 
+// 搜索
 const searchDataList = __debounce(() => {
   getMyCodeListData();
 }, 500);
 
-const handlePageChange = (current: number) => {
-  console.log(current);
-};
+// 分页
+const handlePageChange = __debounce((current: number) => {
+  codeState.page = current;
+  getMyCodeListData();
+}, 500);
 
+// 重置
 const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
+  codeState.page = 1;
   getMyCodeListData();
 }, 500);
 </script>

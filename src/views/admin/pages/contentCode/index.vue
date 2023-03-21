@@ -13,6 +13,7 @@
         :list-data="codeState.codeList"
         :list-count="codeState.total"
         :loading="codeState.loading"
+        :page="codeState.page"
         :page-size="codeState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
@@ -58,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import useAdminCode from "@/hooks/useAdminCode";
 import codeDrawer from "./components/codeDrawer.vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
@@ -73,11 +74,16 @@ const codeDrawerRef = ref<InstanceType<typeof codeDrawer>>();
 
 const { searchState, codeState, getCodeListByAdminData } = useAdminCode();
 
+onMounted(() => {
+  getCodeListByAdminData();
+});
+
 // 查询
 const searchDataList = __debounce(() => {
   getCodeListByAdminData();
 }, 500);
 
+// 分页
 const handlePageChange = __debounce((current: number) => {
   codeState.page = current;
   getCodeListByAdminData();

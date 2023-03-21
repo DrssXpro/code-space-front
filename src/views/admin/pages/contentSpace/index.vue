@@ -13,6 +13,7 @@
         :list-data="tableState.tableData"
         :list-count="tableState.total"
         :loading="tableState.loading"
+        :page="tableState.currentPage"
         :page-size="tableState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
@@ -68,9 +69,11 @@ const searchDataList = __debounce(() => {
   getSpaceListByAdmin();
 }, 500);
 
-const handlePageChange = (current: number) => {
-  console.log(current);
-};
+// 分页
+const handlePageChange = __debounce((current: number) => {
+  tableState.currentPage = current;
+  getSpaceListByAdmin();
+}, 500);
 
 // 删除指定空间
 const handleDeleteSpace = (spaceId: number) => {
@@ -82,6 +85,7 @@ const handleDeleteSpace = (spaceId: number) => {
 // 重置搜索条件
 const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
+  tableState.currentPage = 1;
   getSpaceListByAdmin();
 }, 500);
 </script>

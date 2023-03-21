@@ -1,6 +1,6 @@
 import { deleteCommentByAdmin, getCommentListByAdmin } from "@/service/api/commentRequest";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onMounted, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 
 export default function useAdminComment() {
   const searchState = ref({
@@ -14,11 +14,6 @@ export default function useAdminComment() {
     pageSize: 10,
     total: 0,
     loading: false,
-  });
-
-  // 首次获取列表信息
-  onMounted(() => {
-    getCommentListByAdminData();
   });
 
   // 删除指定的评论

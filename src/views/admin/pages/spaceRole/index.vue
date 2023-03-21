@@ -13,6 +13,7 @@
         :list-data="tableState.tableData"
         :list-count="tableState.total"
         :loading="tableState.loading"
+        :page="tableState.currentPage"
         :page-size="tableState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
@@ -56,7 +57,6 @@ import FsTable from "@/components/FsTable/FsTable.vue";
 import roleModal from "./components/roleModal.vue";
 import tableConfig from "./config/table.config";
 import formConfig from "./config/form.config";
-import usePowerRole from "@/hooks/usePowerRole";
 import useSpaceRole from "@/hooks/useSpaceRole";
 import { getRoleMenu, updateRoleStatus } from "@/service/api/roleRequest";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -103,6 +103,7 @@ const handleDeleteRole = (row: any) => {
   });
 };
 
+// 打开模态框
 const showModal = async (show: boolean, row?: any) => {
   isEdit.value = row ? true : false;
   if (isEdit.value) {
@@ -120,12 +121,16 @@ const searchDataList = __debounce(() => {
   getRoleListData();
 }, 500);
 
-const handlePageChange = (current: number) => {
-  console.log(current);
-};
+// 分页
+const handlePageChange = __debounce((current: number) => {
+  tableState.currentPage = current;
+  getRoleListData();
+}, 500);
 
+// 重置
 const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
+  tableState.currentPage = 1;
   getRoleListData();
 }, 500);
 </script>

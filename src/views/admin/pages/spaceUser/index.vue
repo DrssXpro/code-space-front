@@ -13,6 +13,7 @@
         :list-data="userState.userList"
         :list-count="userState.total"
         :loading="userState.loading"
+        :page="userState.page"
         :page-size="userState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
@@ -99,16 +100,18 @@ const kickUserOut = (userId: string) => {
 };
 
 const searchDataList = __debounce(() => {
-  getSpaceUserListData()
+  getSpaceUserListData();
 }, 500);
 
-const handlePageChange = (current: number) => {
-  console.log(current);
-};
+const handlePageChange = __debounce((current: number) => {
+  userState.page = current;
+  getSpaceUserListData();
+}, 500);
 
 const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
-  getSpaceUserListData()
+  userState.page = 1;
+  getSpaceUserListData();
 }, 500);
 </script>
 

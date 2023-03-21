@@ -126,7 +126,7 @@ export default function usePowerRole(formRef?: Ref<FormInstance | undefined>, tr
     try {
       const res = await getRoleList({
         limit: tableState.pageSize,
-        offset: tableState.currentPage - 1,
+        offset: (tableState.currentPage - 1) * tableState.pageSize,
         kw: searchState.value.kw,
         status: searchState.value.status,
       });

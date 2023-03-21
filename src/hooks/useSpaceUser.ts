@@ -45,7 +45,7 @@ export default function useSpaceUser(formRef?: Ref<FormInstance | undefined>) {
     try {
       const res = await getSpaceUserList({
         limit: userState.pageSize,
-        offset: userState.page - 1,
+        offset: (userState.page - 1) * userState.pageSize,
         nameKw: searchState.value.nameKw,
         nickKw: searchState.value.nickKw,
       });

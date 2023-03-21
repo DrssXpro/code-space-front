@@ -1,5 +1,5 @@
 import { getMenuListBySpace } from "@/service/api/menuRequest";
-import { addRole, addRoleBySpace, deleteRole, getRoleListBySpace, updateRole } from "@/service/api/roleRequest";
+import { addRoleBySpace, deleteRole, getRoleListBySpace, updateRole } from "@/service/api/roleRequest";
 import type { IMenuItem } from "@/types/menuType";
 import type { IRoleFormPayload, IRoleItem } from "@/types/roleType";
 import { handleMenuToTree } from "@/utils/tools";
@@ -16,7 +16,6 @@ export default function useSpaceRole(formRef?: Ref<FormInstance | undefined>, tr
     kw: "",
     status: 1,
   });
-
 
   // 表单loading
   const formLoading = ref(false);
@@ -130,7 +129,7 @@ export default function useSpaceRole(formRef?: Ref<FormInstance | undefined>, tr
     try {
       const res = await getRoleListBySpace({
         limit: tableState.pageSize,
-        offset: tableState.currentPage - 1,
+        offset: (tableState.currentPage - 1) * tableState.pageSize,
         kw: searchState.value.kw,
         status: searchState.value.status,
       });

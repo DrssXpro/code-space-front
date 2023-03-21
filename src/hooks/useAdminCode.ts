@@ -2,7 +2,7 @@ import { deleteCodeByAdmin, getCodeListByAdmin, updateAdminCode } from "@/servic
 import type { IAdminCodeItem, IAdminCodePayload } from "@/types/codeType";
 import validator from "@/utils/validator";
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
-import { onMounted, reactive, ref, type Ref } from "vue";
+import { reactive, ref, type Ref } from "vue";
 
 export default function useAdminCode(formRef?: Ref<FormInstance | undefined>) {
   const { updateAdminCodeValidator } = validator;
@@ -39,11 +39,6 @@ export default function useAdminCode(formRef?: Ref<FormInstance | undefined>) {
     content: [{ validator: updateAdminCodeValidator.content, trigger: "blur" }],
     pwd: [{ validator: updateAdminCodeValidator.pwd, trigger: "blur" }],
   };
-
-  // 初始化获取数据列表
-  onMounted(() => {
-    getCodeListByAdminData();
-  });
 
   // 更新代码信息
   function updateCodeByAdminData(codeId: string, cb?: Function) {
@@ -84,7 +79,7 @@ export default function useAdminCode(formRef?: Ref<FormInstance | undefined>) {
       codeState.loading = true;
       const res = await getCodeListByAdmin({
         limit: codeState.pageSize,
-        offset: codeState.page - 1,
+        offset: (codeState.page - 1) * codeState.page,
         kw: searchState.value.kw,
         lan: searchState.value.lan,
       });

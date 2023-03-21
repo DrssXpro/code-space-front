@@ -114,7 +114,7 @@ export default function useAdminUser(formRef?: Ref<FormInstance | undefined>) {
       userState.loading = true;
       const res = await getUserListByAdmin({
         limit: userState.pageSize,
-        offset: userState.page - 1,
+        offset: (userState.page - 1) * userState.pageSize,
         kw: searchState.value.kw,
         email: searchState.value.email,
       });

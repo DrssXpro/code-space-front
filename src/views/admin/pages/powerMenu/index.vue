@@ -13,6 +13,7 @@
         :list-data="tableState.tableData"
         :loading="tableState.loading"
         :show-footer="false"
+        :page="tableState.currentPage"
         :table-config="tableConfig"
         :show-index-column="false"
       >

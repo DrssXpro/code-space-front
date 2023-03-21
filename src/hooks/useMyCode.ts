@@ -37,7 +37,7 @@ export default function useMyCode(formRef?: Ref<FormInstance | undefined>) {
     try {
       const res = await getMyCodeList({
         limit: codeState.pageSize,
-        offset: codeState.page - 1,
+        offset: (codeState.page - 1) * codeState.pageSize,
         kw: searchState.value.kw,
         lan: searchState.value.lan,
       });

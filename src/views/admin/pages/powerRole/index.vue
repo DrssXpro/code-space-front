@@ -13,6 +13,7 @@
         :list-data="tableState.tableData"
         :list-count="tableState.total"
         :loading="tableState.loading"
+        :page="tableState.currentPage"
         :page-size="tableState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
@@ -102,11 +103,11 @@ const handleDeleteRole = (row: any) => {
   });
 };
 
+// 打开modal
 const showModal = async (show: boolean, row?: any) => {
   isEdit.value = row ? true : false;
   if (isEdit.value) {
     const res = await getRoleMenu(row.id);
-    console.log(res.data);
     currentPower.value = res.data.map((item) => item.id);
     row.menuList = [];
     roleModalRef.value?.controllModal(show, row);
@@ -115,14 +116,19 @@ const showModal = async (show: boolean, row?: any) => {
     roleModalRef.value?.controllModal(show);
   }
 };
+
+// 搜索
 const searchDataList = __debounce(() => {
   getRoleListData();
 }, 500);
 
-const handlePageChange = (current: number) => {
-  console.log(current);
-};
+// 分页
+const handlePageChange = __debounce((current: number) => {
+  tableState.currentPage = current;
+  getRoleListData();
+}, 500);
 
+// 重置
 const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
   tableState.currentPage = 1;

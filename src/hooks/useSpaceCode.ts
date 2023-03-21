@@ -47,7 +47,7 @@ export default function useSpaceCode(formRef?: Ref<FormInstance | undefined>) {
       codeState.loading = true;
       const res = await getCodeListBySpaceMaster({
         limit: codeState.pageSize,
-        offset: codeState.page - 1,
+        offset: (codeState.page - 1) * codeState.pageSize,
         kw: searchState.value.kw,
         lan: searchState.value.lan,
         task: searchState.value.taskId,

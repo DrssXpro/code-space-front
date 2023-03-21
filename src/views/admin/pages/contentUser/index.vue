@@ -13,6 +13,7 @@
         :list-data="userState.userList"
         :list-count="userState.total"
         :loading="userState.loading"
+        :page="userState.page"
         :page-size="userState.pageSize"
         @page-change="handlePageChange"
         :table-config="tableConfig"
@@ -57,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, ref } from "vue";
 import FsForm from "@/components/FsForm/FsForm.vue";
 import FsTable from "@/components/FsTable/FsTable.vue";
 import userModal from "./components/userModal.vue";
@@ -93,13 +94,16 @@ const showModal = (isShow: boolean, row?: IUserItem) => {
   userModalRef.value?.controllModal(isShow, row);
 };
 
-const handlePageChange = (current: number) => {
-  console.log(current);
-};
+// 分页
+const handlePageChange = __debounce((current: number) => {
+  userState.page = current;
+  getAdminUserListData();
+}, 500);
 
 // 重置表单
 const resetForm = __debounce(() => {
   fsFormRef.value && fsFormRef.value.formRef?.resetFields();
+  userState.page = 1;
   getAdminUserListData();
 }, 500);
 </script>
