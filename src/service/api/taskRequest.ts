@@ -13,6 +13,13 @@ function getTaskList(payload: { limit: number; offset: number; spaceId: number; 
   );
 }
 
+// 获取一条最新的任务
+function getNewTask(loading = false) {
+  return myRequest.get<IResponseData<ITaskItem[]>>({
+    url: "/task/new",
+  });
+}
+
 // 添加任务列表
 function addTask(payload: ITaskPayload, loading = false) {
   return myRequest.post<IResponseData>(
@@ -45,4 +52,4 @@ function deleteTask(id: number, loading = false) {
   );
 }
 
-export { getTaskList, addTask, updateTask, deleteTask };
+export { getTaskList, addTask, updateTask, deleteTask, getNewTask };

@@ -22,11 +22,11 @@
 import codeTab from "./components/codeTab.vue";
 import codeList from "./components/codeList.vue";
 import newCodeCard from "./components/newCodeCard.vue";
-import type { ISquareSearchPayload } from "@/types/squareType";
+import type { ISquareSearchPayload } from "@/types/searchType";
 import { ref, reactive, onMounted, watch } from "vue";
 import { getCodeListBySquare, getNewCodeListBySquare } from "@/service/api/codeRequest";
 import { ElMessage } from "element-plus";
-import type { ICodeItem, ISquareNewCodeItem } from "@/types/codeType";
+import type { ICodeItem, ISpecialCodeItem } from "@/types/codeType";
 import { __debounce } from "@/utils/tools";
 
 // 搜索条件
@@ -42,7 +42,7 @@ const pageState = reactive({
   page: 1,
   total: 0,
   isFinish: false,
-  newCodeList: [] as ISquareNewCodeItem[],
+  newCodeList: [] as ISpecialCodeItem[],
   userList: [],
 });
 

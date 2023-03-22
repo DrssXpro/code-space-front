@@ -3,18 +3,22 @@
     <el-card shadow="never">
       <div class="fs-code-content">
         <div class="fs-code-card_header">
-          <fs-image :src="props.codeDetail.user.authorAvatar"></fs-image>
-          <div class="person-info">
-            <span>{{ props.codeDetail.user.authorName }}</span>
-          </div>
+          <span>{{ props.codeDetail.user.nickName }}</span>
         </div>
         <div class="fs-code-card_content">
-          <div class="content-title line-one">{{ props.codeDetail.title }}</div>
+          <div class="content-title line-one">
+            {{ props.codeDetail.title }}
+            <el-tag type="danger" style="margin-left: 8px">{{ props.codeDetail.task.taskName }}</el-tag>
+          </div>
           <div class="content-preview line-one">{{ props.codeDetail.preview }}...</div>
+          <div class="content-detail" v-show="fold">
+            <fs-code-mirror ref="codeRef" :code="props.codeDetail.content" :disabled="true" />
+          </div>
           <div class="content-info">
-            <img :src="`/src/assets/icon/${props.codeDetail.lan}.svg`" class="lan-img" alt="" />
+            <img :src="`/src/assets/icon/${props.codeDetail.lan}.svg`" class="lan-img" alt="语言" />
             <div>{{ props.codeDetail.lan }}</div>
             <div><i class="fa fa-eye"></i> {{ props.codeDetail.views }} 浏览</div>
+            <div><i class="fa fa-thumbs-o-up"></i> {{ props.codeDetail.liked }}</div>
             <div>{{ props.codeDetail.line }} lines</div>
           </div>
         </div>
@@ -23,39 +27,41 @@
             <li>
               <span>{{ formatTime(codeDetail.createdAt, "YYYY-MM-DD hh:ss:mm") }}</span>
             </li>
-            <li>
-              <div class="operator-btn">
-                <i class="fa fa-thumbs-o-up"></i>
-                <span style="margin-left: 10px">{{ props.codeDetail.liked }}</span>
-              </div>
-            </li>
-            <li>
-              <div class="operator-btn">
-                <i class="fa fa-star-o"></i>
-                <span style="margin-left: 10px">{{ props.codeDetail.collectCount }}</span>
-              </div>
-            </li>
-            <li>
-              <div class="operator-btn">
-                <i class="fa fa-commenting-o"></i>
-                <span style="margin-left: 10px">{{ props.codeDetail.commentCount }}</span>
-              </div>
-            </li>
           </ul>
         </div>
-        <div class="fs-code-card_tag" v-if="props.codeDetail.isPwd">加密</div>
+        <div class="fold-controll" @click.prevent="fold = !fold">
+          <i :class="['fa', !fold ? 'fa-angle-down' : 'fa-angle-up']"></i> {{ !fold ? "展开" : "收起" }}
+        </div>
+        <div class="fs-code-card_tag" v-if="props.codeDetail.status == 2">优秀</div>
       </div>
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { ICodeItem } from "@/types/codeType";
+import { ref, watch } from "vue";
 import { formatTime } from "@/utils/formatTime";
+import FsCodeMirror from "../FsCodeMirror/FsCodeMirror.vue";
+import type { ISpaceCodeItem } from "@/types/codeType";
+
+const codeRef = ref<InstanceType<typeof FsCodeMirror>>();
 
 const props = defineProps<{
-  codeDetail: ICodeItem;
+  codeDetail: ISpaceCodeItem;
 }>();
+
+// 需要设置语言
+watch(
+  () => props.codeDetail,
+  (newValue) => {
+    codeRef.value?.configCodeMirror(newValue.lan);
+  },
+  {
+    immediate: true,
+  }
+);
+
+const fold = ref(false);
 </script>
 
 <style scoped lang="less">
@@ -71,30 +77,24 @@ const props = defineProps<{
   &_header {
     display: flex;
     align-items: center;
-    cursor: pointer;
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-    .person-info {
-      margin-left: 10px;
-    }
   }
   &_content {
     width: 600px;
     cursor: pointer;
     .content-title {
-      font-size: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 18px;
       margin: 10px 0;
-      // color: var(--font-main-color);
       font-weight: 700;
     }
 
     .content-preview {
       margin: 10px 0;
-      font-size: 18px;
-      // color: var(--font-main-color);
+      font-size: 14px;
+    }
+    .content-detail {
+      margin: 10px 0;
     }
     .content-info {
       display: flex;
@@ -113,6 +113,10 @@ const props = defineProps<{
         padding-right: 10px;
         border-right: 1px solid var(--el-border-color-light);
       }
+      :nth-child(4) {
+        padding-right: 10px;
+        border-right: 1px solid var(--el-border-color-light);
+      }
     }
   }
   &_footer {
@@ -126,30 +130,6 @@ const props = defineProps<{
         position: relative;
         color: var(--el-text-color-secondary);
       }
-      .line-gap {
-        position: absolute;
-        content: "";
-        width: 1px;
-        height: 70%;
-        right: -2px;
-        top: 5px;
-        // background-color: var(--font-color);
-      }
-      & > li:nth-child(2)::after {
-        .line-gap();
-      }
-      & > li:nth-child(3)::after {
-        .line-gap();
-      }
-    }
-    .operator-btn {
-      padding: 4px 12px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: all 0.3s;
-      color: var(--el-text-color-primary);
     }
   }
   &_tag {
@@ -164,6 +144,14 @@ const props = defineProps<{
     transform: rotate(40deg);
     background-color: #dd6161;
     color: #fff;
+  }
+  .fold-controll {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    font-size: 14px;
+    color: var(--el-color-primary);
+    z-index: 10;
   }
 
   .line-one {

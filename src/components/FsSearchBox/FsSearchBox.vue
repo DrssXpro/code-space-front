@@ -19,7 +19,7 @@
       >
         <div class="history-title">
           搜索记录
-          <i class="fa fa-trash-o" style="cursor: pointer" @click="('clearHistory')"></i>
+          <i class="fa fa-trash-o" style="cursor: pointer" @click="emit('clearHistory')"></i>
         </div>
         <div class="history-container">
           <ul class="history-list">
@@ -120,7 +120,7 @@ const activeSearch = (status: boolean) => {
       font-size: 14px;
     }
     &:focus-within {
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
   }
   .my-icon {
@@ -145,6 +145,7 @@ const activeSearch = (status: boolean) => {
     max-height: 0;
     overflow: hidden;
     background-color: var(--el-bg-color-page);
+
     border-radius: 12px;
     transition: all 0.3s;
     .history-container {
@@ -159,9 +160,10 @@ const activeSearch = (status: boolean) => {
           transition: all 0.3s;
           border-radius: 5px;
           cursor: pointer;
+          background-color: var(--el-bg-color-overlay);
           .delete-icon {
             position: absolute;
-            top: -7px;
+            top: -5px;
             right: -7px;
             font-size: 20px;
             z-index: 2;

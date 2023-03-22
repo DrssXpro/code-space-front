@@ -25,7 +25,7 @@
 import { ref, watch } from "vue";
 import { LANGUAGE } from "@/config/config";
 import { __debounce } from "@/utils/tools";
-import type { ISquareSearchPayload } from "@/types/squareType";
+import type { ISquareSearchPayload } from "@/types/searchType";
 
 const props = defineProps<{
   search: ISquareSearchPayload;

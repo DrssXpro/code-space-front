@@ -11,3 +11,12 @@ export interface ISearchPayload {
   sort: 1 | 2 | 3;
   isPwd: false;
 }
+
+// 空间搜索
+export interface ISpaceSearchPayload {
+  kw: string;
+  task: number | undefined;
+  lan: string[];
+  sort: 1 | 2 | 3;
+  status: 1 | 2;
+}

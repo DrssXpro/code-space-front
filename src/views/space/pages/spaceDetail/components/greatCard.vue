@@ -1,23 +1,34 @@
 <template>
   <el-card shadow="never">
     <template #header>优秀代码</template>
-    <div class="code-item" v-for="i in 5">
-      <i class="fa fa-code"></i>
-      <div class="code-info">
-        <div class="code-name">二分排序</div>
-        <div>
-          <span>python</span>
-          <span>|</span>
-          <span>2月前</span>
-          <span>|</span>
-          <span>7.13KB</span>
+    <template v-if="props.greatList.length">
+      <div class="code-item" v-for="i in props.greatList" :key="i.id">
+        <i class="fa fa-code"></i>
+        <div class="code-info">
+          <div class="code-name">{{ i.title }}</div>
+          <div>
+            <span>{{ i.lan }}</span>
+            <span>|</span>
+            <span>{{ getTimeDis(i.createdAt) }}</span>
+            <span>|</span>
+            <span>{{ i.line }} lines</span>
+          </div>
         </div>
-      </div>
-    </div>
+      </div></template
+    >
+    <fs-empty-box v-else />
   </el-card>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
+import type { ISpecialCodeItem } from "@/types/codeType";
+import { getTimeDis } from "@/utils/formatTime";
+
+const props = defineProps<{
+  greatList: ISpecialCodeItem[];
+}>();
+</script>
 
 <style scoped lang="less">
 .code-item {

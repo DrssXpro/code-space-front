@@ -6,8 +6,8 @@
         <span>搜素</span>
       </div>
       <div class="rules-content">
-        <el-input v-model="searchContent" placeholder="请输入搜索内容"></el-input>
-        <el-button type="success" text>搜索</el-button>
+        <el-input v-model="currentSearch" placeholder="请输入搜索内容" clearable></el-input>
+        <el-button type="success" text @click="searchContent">搜索</el-button>
       </div>
     </div>
     <div class="rules-item">
@@ -16,8 +16,8 @@
         <span>语言</span>
       </div>
       <div class="rules-content">
-        <el-select v-model="select" multiple placeholder="选择语言分类" style="width: 260px">
-          <el-option v-for="(item, index) in codes" :key="index" :label="item.text" :value="index" />
+        <el-select v-model="searchState.lan" multiple placeholder="选择语言分类" style="width: 260px">
+          <el-option v-for="(item, index) in LANGUAGE" :key="index" :label="item" :value="item" />
         </el-select>
       </div>
     </div>
@@ -27,8 +27,8 @@
         <span>任务</span>
       </div>
       <div class="rules-content">
-        <el-select v-model="select" placeholder="选择已有任务" clearable style="width: 260px">
-          <el-option v-for="(item, index) in codes" :key="index" :label="item.text" :value="index" />
+        <el-select v-model="searchState.task" placeholder="选择已有任务" clearable style="width: 260px">
+          <el-option v-for="(item, index) in props.taskOptions" :key="index" :label="item.name" :value="item.id" />
         </el-select>
       </div>
     </div>
@@ -38,10 +38,10 @@
         <span>排序</span>
       </div>
       <div class="rules-content">
-        <el-radio-group v-model="radio">
-          <el-radio-button label="综合" />
-          <el-radio-button label="最新" />
-          <el-radio-button label="最热" />
+        <el-radio-group v-model="searchState.sort">
+          <el-radio-button :label="1">综合</el-radio-button>
+          <el-radio-button :label="2">最新</el-radio-button>
+          <el-radio-button :label="3">最热</el-radio-button>
         </el-radio-group>
       </div>
     </div>
@@ -51,9 +51,9 @@
         <span>状态</span>
       </div>
       <div class="rules-content">
-        <el-radio-group v-model="radio">
-          <el-radio :label="3">优秀</el-radio>
-          <el-radio :label="6">纠错</el-radio>
+        <el-radio-group v-model="searchState.status">
+          <el-radio :label="1">综合</el-radio>
+          <el-radio :label="2">优秀</el-radio>
         </el-radio-group>
       </div>
     </div>
@@ -61,28 +61,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-const searchContent = ref("");
-const radio = ref("");
-const select = ref(0);
+import type { ISpaceSearchPayload } from "@/types/searchType";
+import { reactive, ref, watch } from "vue";
+import { LANGUAGE } from "@/config/config";
+import type { ITaskItem } from "@/types/taskType";
+const props = defineProps<{
+  searchRules: ISpaceSearchPayload;
+  taskOptions: ITaskItem[];
+}>();
 
-const codes = [
-  {
-    text: "C",
+const emit = defineEmits<{
+  (e: "update:searchRules", searchRule: ISpaceSearchPayload): void;
+}>();
+
+// 内部维护搜索内容
+const searchState = reactive({ ...props.searchRules });
+
+// 单独维护搜索内容，只有点击搜索再改变条件
+const currentSearch = ref("");
+
+const searchContent = () => {
+  searchState.kw = currentSearch.value;
+};
+
+watch(
+  () => searchState,
+  (newValue) => {
+    emit("update:searchRules", newValue);
   },
   {
-    text: "C++",
-  },
-  {
-    text: "Java",
-  },
-  {
-    text: "JavaScript",
-  },
-  {
-    text: "Python",
-  },
-];
+    deep: true,
+  }
+);
 </script>
 
 <style scoped lang="less">

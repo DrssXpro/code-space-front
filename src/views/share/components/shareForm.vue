@@ -136,6 +136,7 @@ async function getTaskListData() {
       limit: 100,
       offset: 0,
       spaceId: userInfo.space.spaceId,
+      kw: "",
     });
     taskList.value = res.data.rows.map((item) => ({ id: item.id, name: item.name }));
   }

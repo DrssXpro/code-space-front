@@ -1,18 +1,44 @@
 <template>
-  <div class="code-list">
-    <a class="code-item" href="/code/123" target="_blank" v-for="i in 10">
-      <!-- <fs-code-card /> -->
+  <div class="code-list" v-if="props.codeList.length">
+    <a class="code-item" :href="`#/spaceCode/${i.id}`" target="_blank" v-for="i in props.codeList" :key="i.id">
+      <fs-space-code-card :code-detail="i" />
     </a>
-    <div class="code-more">
-      <el-button class="more-btn" @click="handleGetMore" type="info">点击查看更多</el-button>
+    <div class="pagination">
+      <el-pagination
+        background
+        :current-page="currentPage"
+        layout="prev, pager, next"
+        :page-size="props.pageSize"
+        :total="props.total"
+        @current-change="handleChangePage"
+      />
     </div>
   </div>
+  <fs-empty-box v-else />
 </template>
 
 <script setup lang="ts">
-import FsCodeCard from "@/components/FsCodeCard/FsCodeCard.vue";
+import FsSpaceCodeCard from "@/components/FsSpaceCodeCard/FsSpaceCodeCard.vue";
+import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
+import type { ISpaceCodeItem } from "@/types/codeType";
+import { ref } from "vue";
+const props = defineProps<{
+  codeList: ISpaceCodeItem[];
+  pageSize: number;
+  page: number;
+  total: number;
+}>();
 
-const handleGetMore = () => {};
+const emit = defineEmits<{
+  (e: "pageChange", page: number): void;
+}>();
+
+const currentPage = ref(props.page);
+
+// 分页
+const handleChangePage = (page: number) => {
+  emit("pageChange", page);
+};
 </script>
 
 <style scoped lang="less">
@@ -21,16 +47,10 @@ const handleGetMore = () => {};
     display: block;
     margin-bottom: 20px;
   }
-  .code-more {
+  .pagination {
     width: 100%;
-    .more-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 120px;
-      padding: 5px 8px;
-      margin: 20px auto;
-    }
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

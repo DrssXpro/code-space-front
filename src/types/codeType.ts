@@ -53,8 +53,8 @@ export interface ICodeItem {
   };
 }
 
-// 广场最新代码
-export interface ISquareNewCodeItem {
+// 广场最新 + 空间优秀 + 作者个人代码
+export interface ISpecialCodeItem {
   id: string;
   title: string;
   preview: string;
@@ -65,6 +65,20 @@ export interface ISquareNewCodeItem {
   views: number;
   createdAt: string;
   updatedAt: string;
+}
+
+// 空间代码项
+export interface ISpaceCodeItem extends ISpecialCodeItem {
+  content: string;
+  user: {
+    nickName: string;
+    authorAvatar: string;
+    authorId: string;
+  };
+  task: {
+    taskId: number;
+    taskName: string;
+  };
 }
 
 // 我的代码列表项

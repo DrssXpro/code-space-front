@@ -10,7 +10,8 @@ import type {
   ISpaceMasterCodeItem,
   ICodeItem,
   ISquareCodePayload,
-  ISquareNewCodeItem,
+  ISpaceCodeItem,
+  ISpecialCodeItem,
 } from "@/types/codeType";
 import type { IList, IResponseData } from "@/types/responseType";
 import { myRequest } from "..";
@@ -50,7 +51,7 @@ function getCodeListBySquare(payload: { limit: number; offset: number; lan: stri
 
 // 获取广场的最新分享
 function getNewCodeListBySquare(loading = false) {
-  return myRequest.get<IResponseData<IList<ISquareNewCodeItem>>>(
+  return myRequest.get<IResponseData<IList<ISpecialCodeItem>>>(
     {
       url: "/square_code/new_list",
     },
@@ -72,12 +73,54 @@ function getCodeListBySearch(
   );
 }
 
+// 获取作者分享代码列表
+function getAuthorCodeList(userId: string, loading = false) {
+  return myRequest.get(
+    {
+      url: `/author_code/list/${userId}`,
+    },
+    loading
+  );
+}
+
 // 管理员：获取代码列表
 function getCodeListByAdmin(payload: { limit: number; offset: number; kw: string; lan: string }, loading = false) {
   return myRequest.get<IResponseData<IList<IAdminCodeItem>>>(
     {
       url: "/admin_code/list",
       params: payload,
+    },
+    loading
+  );
+}
+
+// 空间获取代码列表
+function getCodeListBySpace(
+  payload: {
+    limit: number;
+    offset: number;
+    sort: 1 | 2 | 3;
+    lan: string[];
+    status: 1 | 2;
+    task: number | undefined;
+    kw: string;
+  },
+  loading = false
+) {
+  return myRequest.get<IResponseData<IList<ISpaceCodeItem>>>(
+    {
+      url: "/space_code/list",
+      params: payload,
+    },
+    loading
+  );
+}
+
+// 空间获取优秀代码列表
+function getGreatListBySpace(loading = false) {
+  return myRequest.get<IResponseData<IList<ISpaceCodeItem>>>(
+    {
+      url: "/space_code/great_list",
     },
     loading
   );
@@ -300,8 +343,11 @@ export {
   addCodeBySpace,
   getCodeListByAdmin,
   getCodeListBySquare,
+  getAuthorCodeList,
   getNewCodeListBySquare,
   getCodeListBySearch,
+  getCodeListBySpace,
+  getGreatListBySpace,
   getCodeListBySpaceMaster,
   getCurrentCode,
   getSpaceCurrentCode,

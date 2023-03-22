@@ -4,7 +4,10 @@
       place-holder="请输入关键字"
       v-model="currentKw"
       @search="handleSearch"
+      :history="searchHistory"
       @clear-search-value="handleSearch"
+      @clear-history="clearSearchHistory"
+      @delete-history="removeSearchHistory"
     />
   </div>
   <div class="rules-content-container">
@@ -45,10 +48,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, toRefs, watch } from "vue";
 import FsSearchBox from "@/components/FsSearchBox/FsSearchBox.vue";
+import useHistoryStore from "@/stores/historyStore";
 import { LANGUAGE } from "@/config/config";
-import type { ISearchPayload } from "@/types/squareType";
+import type { ISearchPayload } from "@/types/searchType";
+
+// 保存搜索历史记录
+const { searchHistory, addSearchHistory, clearSearchHistory, removeSearchHistory } = toRefs(useHistoryStore());
 
 const props = defineProps<{
   searchRules: ISearchPayload;
@@ -67,6 +74,7 @@ const currentKw = ref("");
 
 // 确认搜索 / 清除搜索 再更新payload
 const handleSearch = () => {
+  addSearchHistory.value(currentKw.value);
   searchState.kw = currentKw.value;
 };
 

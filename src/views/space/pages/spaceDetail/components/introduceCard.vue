@@ -2,29 +2,38 @@
   <el-card shadow="never">
     <div class="introduce-container">
       <div class="introduce-cover">
-        <img src="@/assets/image/avatar.jpg" alt="" />
+        <img :src="props.spaceDetail?.spaceDetail.avatar" alt="空间头像" />
         <div class="shadow"></div>
         <div class="space-info">
           <div class="user-info">
-            <div style="color: #fff">空间主</div>
-            <div style="color: var(--el-text-color-secondary); font-size: 14px">创建65天</div>
+            <div style="color: #fff">{{ props.spaceDetail?.spaceDetail.user.authorName }}</div>
+            <div style="color: var(--el-text-color-secondary); font-size: 14px">
+              创建{{ getDisDay(new Date(props.spaceDetail?.spaceDetail.createdAt || "").getTime(), Date.now()) }}天
+            </div>
           </div>
           <div class="user-avatar">
-            <img src="@/assets/image/avatar.jpg" alt="" />
+            <img :src="props.spaceDetail?.spaceDetail.user.authorAvatar" alt="用户头像" />
           </div>
         </div>
       </div>
       <div class="space-introduce">
-        <div class="space-title">我的空间</div>
+        <div class="space-title">{{ props.spaceDetail?.spaceDetail.name }}</div>
         <div class="introduce-content">
-          帮你学编程、做项目、找工作少走弯路的交流圈，进步从此开始！（请加入后的同学先阅读置顶帖）
+          {{ props.spaceDetail?.spaceDetail.introduce }}
         </div>
       </div>
     </div>
   </el-card>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { ISpaceDetail } from "@/types/spaceType";
+import { getDisDay } from "@/utils/formatTime";
+
+const props = defineProps<{
+  spaceDetail?: ISpaceDetail;
+}>();
+</script>
 
 <style scoped lang="less">
 .introduce-container {

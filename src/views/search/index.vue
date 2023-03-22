@@ -20,7 +20,7 @@ import { onMounted, reactive, ref, watch } from "vue";
 import rulesContent from "./components/rulesContent.vue";
 import searchList from "./components/searchList.vue";
 import { getCodeListBySearch } from "@/service/api/codeRequest";
-import type { ISearchPayload } from "@/types/squareType";
+import type { ISearchPayload } from "@/types/searchType";
 import type { ICodeItem } from "@/types/codeType";
 import { ElMessage } from "element-plus";
 import { __debounce } from "@/utils/tools";
@@ -58,7 +58,6 @@ watch(
 // 搜索
 const searchCode = () => {
   pageState.page = 1;
-  pageState.codeList = [];
   getCodeList();
 };
 

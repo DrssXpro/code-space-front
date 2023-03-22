@@ -56,11 +56,11 @@
 </template>
 
 <script setup lang="ts">
-import type { ISquareCodeItem } from "@/types/codeType";
+import type { ICodeItem } from "@/types/codeType";
 import { formatTime } from "@/utils/formatTime";
 
 const props = defineProps<{
-  codeDetail: ISquareCodeItem;
+  codeDetail: ICodeItem;
 }>();
 
 const emit = defineEmits<{

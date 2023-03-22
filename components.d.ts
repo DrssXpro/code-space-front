@@ -65,6 +65,7 @@ declare module '@vue/runtime-core' {
     FsSearchBox: typeof import('./src/components/FsSearchBox/FsSearchBox.vue')['default']
     FsSideCard: typeof import('./src/components/FsSideCard/FsSideCard.vue')['default']
     FsSpaceCard: typeof import('./src/components/FsSpaceCard/FsSpaceCard.vue')['default']
+    FsSpaceCodeCard: typeof import('./src/components/FsSpaceCodeCard/FsSpaceCodeCard.vue')['default']
     FsSwitch: typeof import('./src/components/FsSwitch/FsSwitch.vue')['default']
     FsTable: typeof import('./src/components/FsTable/FsTable.vue')['default']
     FsTextEditor: typeof import('./src/components/FsTextEditor/FsTextEditor.vue')['default']

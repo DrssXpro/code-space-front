@@ -1,5 +1,5 @@
 <template>
-  <div class="search-list-container">
+  <div class="search-list-container" v-if="props.codeList.length">
     <div class="search-item" v-for="i in props.codeList" :key="i.id">
       <fs-code-card :code-detail="i" />
     </div>
@@ -14,11 +14,13 @@
       />
     </div>
   </div>
+  <fs-empty-box v-else />
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import FsCodeCard from "@/components/FsCodeCard/FsCodeCard.vue";
+import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
 import type { ICodeItem } from "@/types/codeType";
 
 const props = defineProps<{

@@ -1,6 +1,6 @@
 type TimeType = "YYYY-MM-DD hh:ss:mm" | "YYYY-MM-DD";
 
-function formatTime(date: string, type: TimeType) {
+function formatTime(date: string | number, type: TimeType) {
   switch (type) {
     case "YYYY-MM-DD hh:ss:mm":
       return timeTypeOne(date);
@@ -10,7 +10,7 @@ function formatTime(date: string, type: TimeType) {
 }
 
 // 格式化时间：YYYY-MM-DD hh:ss:mm
-function timeTypeOne(date: string): string {
+function timeTypeOne(date: string | number): string {
   const year = new Date(date).getFullYear();
   let month: number | string = new Date(date).getMonth() + 1;
   let day: number | string = new Date(date).getDate();
@@ -27,7 +27,7 @@ function timeTypeOne(date: string): string {
 }
 
 // 格式化时间：YYYY-MM-DD
-function timeTypeTwo(date: string): string {
+function timeTypeTwo(date: string | number): string {
   const year = new Date(date).getFullYear();
   let month: number | string = new Date(date).getMonth() + 1;
   let day: number | string = new Date(date).getDate();
