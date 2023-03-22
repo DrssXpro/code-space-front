@@ -26,7 +26,7 @@ import type { ISquareSearchPayload } from "@/types/squareType";
 import { ref, reactive, onMounted, watch } from "vue";
 import { getCodeListBySquare, getNewCodeListBySquare } from "@/service/api/codeRequest";
 import { ElMessage } from "element-plus";
-import type { ISquareCodeItem, ISquareNewCodeItem } from "@/types/codeType";
+import type { ICodeItem, ISquareNewCodeItem } from "@/types/codeType";
 import { __debounce } from "@/utils/tools";
 
 // 搜索条件
@@ -37,7 +37,7 @@ const searchState = ref<ISquareSearchPayload>({
 
 // 页面总数据
 const pageState = reactive({
-  codeList: [] as ISquareCodeItem[],
+  codeList: [] as ICodeItem[],
   pageSize: 10,
   page: 1,
   total: 0,

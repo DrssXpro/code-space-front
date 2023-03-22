@@ -15,10 +15,10 @@
 <script setup lang="ts">
 import FsCodeCard from "@/components/FsCodeCard/FsCodeCard.vue";
 import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
-import type { ISquareCodeItem } from "@/types/codeType";
+import type { ICodeItem } from "@/types/codeType";
 import { __debounce } from "@/utils/tools";
 const props = defineProps<{
-  codeList: ISquareCodeItem[];
+  codeList: ICodeItem[];
   isFinish: boolean;
 }>();
 

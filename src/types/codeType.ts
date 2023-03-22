@@ -31,8 +31,8 @@ export interface IAdminCodePayload {
   pwd: string;
 }
 
-// 广场代码列表项
-export interface ISquareCodeItem {
+// 广场、搜索代码列表项
+export interface ICodeItem {
   id: string;
   title: string;
   preview: string;

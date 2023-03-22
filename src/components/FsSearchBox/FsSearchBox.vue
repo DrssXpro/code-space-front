@@ -50,6 +50,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: "update:modelValue", value: string): void;
+  (event: "clearSearchValue"): void;
   (event: "search", value: string): void;
   (event: "deleteHistory", value: string): void;
   (event: "clearHistory"): void;
@@ -63,7 +64,12 @@ const updateInputValue = (e: any) => {
 
 // 搜索icon事件
 const handleSearchIcon = () => {
-  props.modelValue.length ? emit("update:modelValue", "") : emit("search", props.modelValue);
+  if (props.modelValue.length) {
+    emit("update:modelValue", "");
+    emit("clearSearchValue");
+  } else {
+    emit("search", props.modelValue);
+  }
 };
 
 const handleClickHistory = (content: string) => {

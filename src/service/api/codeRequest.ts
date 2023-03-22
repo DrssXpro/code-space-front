@@ -8,10 +8,9 @@ import type {
   ISpaceCodePayload,
   ISpaceCodeUpdatePayload,
   ISpaceMasterCodeItem,
-  ISquareCodeItem,
+  ICodeItem,
   ISquareCodePayload,
   ISquareNewCodeItem,
-  TLanguage,
 } from "@/types/codeType";
 import type { IList, IResponseData } from "@/types/responseType";
 import { myRequest } from "..";
@@ -40,7 +39,7 @@ function addCodeBySpace(payload: ISpaceCodePayload, loading = false) {
 
 // 获取广场代码列表
 function getCodeListBySquare(payload: { limit: number; offset: number; lan: string; sort: number }, loading = false) {
-  return myRequest.get<IResponseData<IList<ISquareCodeItem>>>(
+  return myRequest.get<IResponseData<IList<ICodeItem>>>(
     {
       url: "/square_code/list",
       params: payload,
@@ -54,6 +53,20 @@ function getNewCodeListBySquare(loading = false) {
   return myRequest.get<IResponseData<IList<ISquareNewCodeItem>>>(
     {
       url: "/square_code/new_list",
+    },
+    loading
+  );
+}
+
+// 搜索页获取代码列表
+function getCodeListBySearch(
+  payload: { limit: number; offset: number; lan: string[]; sort: 1 | 2 | 3; isPwd: boolean; kw: string },
+  loading = false
+) {
+  return myRequest.get<IResponseData<IList<ICodeItem>>>(
+    {
+      url: "/search_code/list",
+      params: payload,
     },
     loading
   );
@@ -273,7 +286,7 @@ function collectCode(codeId: string, loading = false) {
 
 // 获取个人收藏代码
 function getCollectList(payload: { limit: number; offset: number }, loading = false) {
-  return myRequest.get<IResponseData<IList<ISquareCodeItem>>>(
+  return myRequest.get<IResponseData<IList<ICodeItem>>>(
     {
       url: "/code/collect/list",
       params: payload,
@@ -288,6 +301,7 @@ export {
   getCodeListByAdmin,
   getCodeListBySquare,
   getNewCodeListBySquare,
+  getCodeListBySearch,
   getCodeListBySpaceMaster,
   getCurrentCode,
   getSpaceCurrentCode,

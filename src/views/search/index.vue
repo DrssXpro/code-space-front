@@ -1,24 +1,89 @@
 <template>
   <div class="search-container">
     <div class="gap-item">
-      <fs-search-box place-holder="请输入关键字" v-model="searchContent" />
+      <rules-content v-model:search-rules="searchRules" />
     </div>
     <div class="gap-item">
-      <rules-content />
-    </div>
-    <div class="gap-item">
-      <search-list />
+      <search-list
+        :total="pageState.total"
+        :page="pageState.page"
+        :page-size="pageState.pageSize"
+        :code-list="pageState.codeList"
+        @page-change="handlePageChange"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import FsSearchBox from "@/components/FsSearchBox/FsSearchBox.vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import rulesContent from "./components/rulesContent.vue";
 import searchList from "./components/searchList.vue";
-import { ref } from "vue";
+import { getCodeListBySearch } from "@/service/api/codeRequest";
+import type { ISearchPayload } from "@/types/squareType";
+import type { ICodeItem } from "@/types/codeType";
+import { ElMessage } from "element-plus";
+import { __debounce } from "@/utils/tools";
 
-const searchContent = ref("");
+// 搜索payload
+const searchRules = ref<ISearchPayload>({
+  kw: "",
+  lan: [],
+  sort: 1,
+  isPwd: false,
+});
+
+// 搜索列表
+const pageState = reactive({
+  codeList: [] as ICodeItem[],
+  page: 1,
+  pageSize: 10,
+  total: 0,
+});
+
+onMounted(() => {
+  getCodeList();
+});
+
+watch(
+  () => searchRules.value,
+  __debounce(() => {
+    searchCode();
+  }, 500),
+  {
+    deep: true,
+  }
+);
+
+// 搜索
+const searchCode = () => {
+  pageState.page = 1;
+  pageState.codeList = [];
+  getCodeList();
+};
+
+// 分页
+const handlePageChange = (page: number) => {
+  pageState.page = page;
+  getCodeList();
+};
+
+async function getCodeList() {
+  try {
+    const res = await getCodeListBySearch(
+      {
+        limit: pageState.pageSize,
+        offset: (pageState.page - 1) * pageState.pageSize,
+        ...searchRules.value,
+      },
+      true
+    );
+    pageState.codeList = res.data.rows;
+    pageState.total = res.data.count;
+  } catch (error) {
+    ElMessage.error("获取数据列表失败");
+  }
+}
 </script>
 
 <style scoped lang="less">
