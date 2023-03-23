@@ -1,7 +1,7 @@
 import { collectCode, getCollectList } from "@/service/api/codeRequest";
 import { deleteMyComment, getMyCommentList } from "@/service/api/commentRequest";
 import { exitSpaceByOwn, updateUserInfoByMe, userUploadAvatar } from "@/service/api/userRequest";
-import type { ISquareCodeItem } from "@/types/codeType";
+import type { ICodeItem } from "@/types/codeType";
 import type { IMyCommentItem } from "@/types/commentType";
 import validator from "@/utils/validator";
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
@@ -20,7 +20,7 @@ export default function useInfo(formRef?: Ref<FormInstance | undefined>) {
 
   // 我的收藏
   const collectState = reactive({
-    collectList: [] as ISquareCodeItem[],
+    collectList: [] as ICodeItem[],
     total: 0,
     page: 1,
     pageSize: 10,

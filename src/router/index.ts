@@ -17,6 +17,9 @@ const router = createRouter({
           path: "square",
           name: "square",
           component: () => import("@/views/square/index.vue"),
+          meta: {
+            title: "广场",
+          },
         },
         {
           path: "space",
@@ -29,19 +32,17 @@ const router = createRouter({
               path: "list",
               name: "spaceList",
               component: () => import("@/views/space/pages/spaceList/index.vue"),
-              beforeEnter: (to, from) => {
-                const { userInfo } = useUserStore();
-                if (userInfo && userInfo.space) {
-                  return `/space/detail/${userInfo.space.spaceId}`;
-                } else {
-                  return true;
-                }
+              meta: {
+                title: "空间列表",
               },
             },
             {
               path: "detail/:id",
               name: "spaceDetail",
               component: () => import("@/views/space/pages/spaceDetail/index.vue"),
+              meta: {
+                title: "我的空间",
+              },
             },
           ],
         },
@@ -49,21 +50,31 @@ const router = createRouter({
           path: "search",
           name: "search",
           component: () => import("@/views/search/index.vue"),
+          meta: {
+            title: "搜索",
+          },
         },
         {
           path: "share",
           name: "share",
           component: () => import("@/views/share/index.vue"),
+          meta: {
+            title: "分享",
+          },
         },
         {
           path: "login",
           name: "login",
           component: () => import("@/views/login/index.vue"),
+          meta: {
+            title: "登录",
+          },
         },
         {
           path: "code/:id",
           name: "code",
           component: () => import("@/views/code/index.vue"),
+
           // 拦截判断是否加密
           beforeEnter: async (to, from) => {
             const codeId = to.params.id as string;
@@ -83,32 +94,30 @@ const router = createRouter({
               return `/encrypt/${codeId}`;
             }
           },
+          meta: {
+            title: "代码详情",
+          },
         },
         {
           path: "encrypt/:id",
           name: "encryptCode",
           component: () => import("@/views/encryptCode/index.vue"),
+          meta: {
+            title: "代码详情",
+          },
         },
         {
           path: "spaceCode/:id",
           name: "spaceCode",
           component: () => import("@/views/spaceCode/index.vue"),
+          meta: {
+            title: "代码详情",
+          },
         },
         {
           path: "admin",
           name: "admin",
           component: () => import("@/views/admin/index.vue"),
-          // 拦截未登录用户进入admin
-          beforeEnter: (to, form) => {
-            const { userInfo } = useUserStore();
-
-            if (!userInfo) {
-              ElMessage.warning("请先进行登录");
-              return "/login";
-            } else {
-              return true;
-            }
-          },
         },
       ],
     },
@@ -119,13 +128,13 @@ router.beforeEach((to, from) => {
   const token = localStorage.getItem("token");
   const userInfo = localStorage.getItem("userInfo");
   const whiteList = ["/login", "/square", "/search", "/space", "/share", "/code", "/encrypt"];
+  const { addDynamicRoutes, mapRoutes } = useUserStore();
   if (token && userInfo) {
     // 已经有登录态则不能再访问login页面，强制访问跳转至个人页面
     if (to.path === "/login") {
-      return "/admin";
+      return mapRoutes ? mapRoutes[0].path : "/admin";
     } else if (!whiteList.filter((item) => to.path.indexOf(item) === 0).length) {
-      const { addDynamicRoutes, mapRoutes } = useUserStore();
-      !mapRoutes &&
+      if (!mapRoutes) {
         addDynamicRoutes()
           .then((res) => {
             router.replace(to); // 踩坑(刷新页面路由丢失)，动态添加路由之后需要强行刷新
@@ -134,6 +143,9 @@ router.beforeEach((to, from) => {
             ElMessage.warning("获取权限失败");
             return "/login";
           });
+      }
+
+      // return mapRoutes ? mapRoutes[0].path : "/square";
     } else {
       return true;
     }

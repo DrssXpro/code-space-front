@@ -10,7 +10,7 @@
           :class="['menu-item', index === activeIndex ? 'menu-item__active' : '']"
           v-for="(item, index) in menus"
           :key="index"
-          @click="$router.push(item.path)"
+          @click="handleSkipToRoute(item)"
         >
           {{ item.text }}
         </li>
@@ -35,6 +35,7 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
+                <el-dropdown-item @click="skipToSpace">我的空间</el-dropdown-item>
                 <el-dropdown-item @click="cancelLogin">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -49,22 +50,56 @@
 import { ref, computed, toRefs } from "vue";
 import FsSwitch from "@/components/FsSwitch/FsSwitch.vue";
 import { useDark, useToggle } from "@vueuse/core";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/stores/userStore";
 import { __debounce } from "@/utils/tools";
+import { ElMessage } from "element-plus";
 const $route = useRoute();
+const $router = useRouter();
 
 const isDark = useDark();
 const themeFlag = ref(!isDark.value);
 const toggleDark = useToggle(isDark);
 
-const { userInfo, cancelLogin } = toRefs(useUserStore());
+const { userInfo, mapRoutes, cancelLogin, addDynamicRoutes } = toRefs(useUserStore());
 
 const activeIndex = computed(() => menus.findIndex((item) => $route.fullPath.split("/")[1] === item.path.slice(1)));
 
+// 改变主题
 const handleChangeTheme = __debounce(() => {
   toggleDark();
 }, 500);
+
+const skipToSpace = () => {
+  if (userInfo.value && userInfo.value.space) {
+    const spaceId = userInfo.value.space.spaceId;
+    $router.push(`/space/detail/${spaceId}`);
+  } else {
+    ElMessage.warning("您还没有加入空间");
+  }
+};
+
+// 路由跳转
+const handleSkipToRoute = (item: { path: string; text: string }) => {
+  // 判断是否是访问的管理端
+  if (item.path !== "/admin") {
+    $router.push(item.path);
+  } else {
+    // 是管理端，需要判断是否已有路由权限表
+    if (mapRoutes.value) {
+      $router.push(mapRoutes.value[0].path);
+    } else {
+      addDynamicRoutes.value().then(
+        () => {
+          $router.push(mapRoutes.value![0].path);
+        },
+        () => {
+          cancelLogin.value();
+        }
+      );
+    }
+  }
+};
 
 const menus = [
   {

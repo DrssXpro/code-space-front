@@ -22,6 +22,21 @@
           {{ props.spaceDetail?.spaceDetail.introduce }}
         </div>
       </div>
+
+      <div class="space-count">
+        <div>
+          <div class="desc">成员数</div>
+          <div class="count">{{ props.spaceDetail?.userCount }}</div>
+        </div>
+        <div>
+          <div class="desc">代码量</div>
+          <div class="count">{{ props.spaceDetail?.codeCount }}</div>
+        </div>
+        <div>
+          <div class="desc">任务数</div>
+          <div class="count">{{ props.spaceDetail?.taskCount }}</div>
+        </div>
+      </div>
     </div>
   </el-card>
 </template>
@@ -85,6 +100,46 @@ const props = defineProps<{
       margin-top: 10px;
       letter-spacing: 0.1em;
       line-height: 1.5em;
+    }
+  }
+  .space-count {
+    display: flex;
+    margin-bottom: 10px;
+    border-top: 1px solid var(--el-card-border-color);
+    padding-top: 10px;
+    div {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .desc {
+        margin-bottom: 5px;
+      }
+      .count {
+        font-weight: 700;
+      }
+    }
+
+    .line {
+      position: absolute;
+      content: "";
+      width: 1px;
+      height: 110%;
+      top: 0;
+      right: 0;
+      background-color: var(--el-card-border-color);
+    }
+    :nth-child(1) {
+      &::after {
+        .line();
+      }
+    }
+    :nth-child(2) {
+      &::after {
+        .line();
+      }
     }
   }
 }

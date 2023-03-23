@@ -31,6 +31,10 @@
         </div>
       </div>
     </div>
+
+    <div class="back-list" title="回到空间列表" @click="$router.push('/space/list')">
+      <i class="fa fa-angle-left"></i>
+    </div>
   </div>
 </template>
 
@@ -196,6 +200,30 @@ async function getSpaceDetailData() {
   }
   .gap-item {
     margin-bottom: 20px;
+  }
+  .back-list {
+    font-size: 30px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: fixed;
+    width: 100px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: var(--el-bg-color-overlay);
+    box-shadow: 0 2px 10px #00000040;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s;
+    z-index: 99;
+    i {
+      margin-left: 20px;
+    }
+    &:hover {
+      right: -30px;
+    }
   }
 }
 </style>

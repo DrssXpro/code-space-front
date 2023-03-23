@@ -1,5 +1,13 @@
 <template>
-  <div class="space-content-container">
+  <div class="space-search">
+    <fs-search-box
+      v-model="searchState.kw"
+      place-holder="请输入关键字"
+      @search="getSpaceListByAdmin"
+      @clear-search-value="getSpaceListByAdmin"
+    />
+  </div>
+  <div class="space-content-container" v-if="tableState.tableData.length">
     <div class="space-item" v-for="item in tableState.tableData" :key="item.id" @click="handleJoinSpace(item.id)">
       <fs-space-card :space-detail="item" />
     </div>
@@ -7,13 +15,16 @@
       <el-pagination background layout="prev, pager, next" :total="tableState.total" />
     </div>
   </div>
+  <fs-empty-box v-else />
 </template>
 
 <script setup lang="ts">
+import FsSearchBox from "@/components/FsSearchBox/FsSearchBox.vue";
+import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
 import FsSpaceCard from "@/components/FsSpaceCard/FsSpaceCard.vue";
 import useSpace from "@/hooks/useSpace";
 import { onMounted } from "vue";
-const { tableState, getSpaceListByAdmin } = useSpace();
+const { tableState, searchState, getSpaceListByAdmin } = useSpace();
 
 const emit = defineEmits<{
   (e: "joinSpace", spaceId: number): void;
@@ -29,6 +40,9 @@ const handleJoinSpace = (spaceId: number) => {
 </script>
 
 <style scoped lang="less">
+.space-search {
+  margin-bottom: 20px;
+}
 .space-content-container {
   display: flex;
   flex-wrap: wrap;

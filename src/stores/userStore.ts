@@ -28,7 +28,7 @@ const useUserStore = defineStore("user", () => {
   const addDynamicRoutes = async () => {
     console.log(userInfo.value);
     if (!userInfo.value) {
-      ElMessage.warning("该用户未登录，无法拿到对应权限");
+      ElMessage.warning("用户未登录");
       throw new Error("no info");
     }
     const rid = userInfo.value?.role.roleId;
