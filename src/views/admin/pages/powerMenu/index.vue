@@ -20,7 +20,9 @@
         <template #header>
           <div class="header-config">
             <span>菜单列表</span>
-            <el-button type="primary" @click="controllModal(true)">添加菜单</el-button>
+            <el-button type="primary" v-permissions="['power:menu:add']" @click="controllModal(true)"
+              >添加菜单</el-button
+            >
           </div>
         </template>
         <template #menuIcon="{ row }">
@@ -33,8 +35,12 @@
           {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="success" link @click="controllModal(true, row)">编辑</el-button>
-          <el-button type="danger" link @click="handleDeleteMenu(row)">删除</el-button>
+          <el-button type="success" v-permissions="['power:menu:edit']" link @click="controllModal(true, row)"
+            >编辑</el-button
+          >
+          <el-button type="danger" v-permissions="['power:menu:delete']" link @click="handleDeleteMenu(row)"
+            >删除</el-button
+          >
         </template>
       </fs-table>
       <menu-modal ref="menuModalRef" :is-edit="isEdit" @refresh-table="getMenuListData"></menu-modal>

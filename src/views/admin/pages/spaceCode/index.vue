@@ -36,8 +36,12 @@
         <template #createdAt="{ row }"> {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }} </template>
         <template #updatedAt="{ row }"> {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }} </template>
         <template #operator="{ row }">
-          <el-button type="success" link @click="handleEditCode(row)">编辑</el-button>
-          <el-button type="danger" link>删除</el-button>
+          <el-button type="success" v-permissions="['space:code:edit']" link @click="handleEditCode(row)"
+            >编辑</el-button
+          >
+          <el-button type="danger" v-permissions="['space:code:delete']" link @click="handleDeleteCode(row.id)"
+            >删除</el-button
+          >
         </template>
       </fs-table>
 
@@ -63,7 +67,7 @@ import { ElMessage } from "element-plus";
 const fsFormRef = ref<InstanceType<typeof FsForm>>();
 const codeDrawerRef = ref<InstanceType<typeof codeDrawer>>();
 const formConfigReactive = ref(formConfig);
-const { codeState, searchState, getSpaceListData } = useSpaceCode();
+const { codeState, searchState, getSpaceListData, deleteSpaceCodeData } = useSpaceCode();
 const { userInfo } = useUserStore();
 
 onMounted(() => {
@@ -94,6 +98,13 @@ const handlePageChange = __debounce((current: number) => {
   codeState.page = current;
   getSpaceListData();
 }, 500);
+
+// 删除
+const handleDeleteCode = (id: string) => {
+  deleteSpaceCodeData(id, () => {
+    getSpaceListData();
+  });
+};
 
 // 重置表单
 const resetForm = __debounce(() => {

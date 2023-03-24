@@ -22,7 +22,7 @@
         <template #header>
           <div class="header-config">
             <span>人员列表</span>
-            <el-button type="primary" @click="inviteUser">邀请人员</el-button>
+            <el-button type="primary" v-permissions="['space:user:add']" @click="inviteUser">邀请人员</el-button>
           </div>
         </template>
         <template #id="{ row }">
@@ -41,8 +41,12 @@
           {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="success" link @click="showEditModal(row)">编辑</el-button>
-          <el-button type="danger" link @click="kickUserOut(row.id)">踢出</el-button>
+          <el-button type="success" v-permissions="['space:user:edit']" link @click="showEditModal(row)"
+            >编辑</el-button
+          >
+          <el-button type="danger" v-permissions="['space:user:delete']" link @click="kickUserOut(row.id)"
+            >踢出</el-button
+          >
         </template>
       </fs-table>
       <invite-modal ref="modalRef" @refresh-table="getSpaceUserListData" />

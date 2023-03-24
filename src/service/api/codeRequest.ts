@@ -156,6 +156,7 @@ function deleteCodeByAdmin(codeId: string, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/admin_code/update/${codeId}`,
+      params: { perm: "content:code:delete" },
     },
     loading
   );
@@ -176,6 +177,7 @@ function deleteSpaceCode(codeId: string, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/space_code/delete/${codeId}`,
+      params: { perm: "space:code:delete" },
     },
     loading
   );
@@ -187,6 +189,7 @@ function updateAdminCode(codeId: string, payload: IAdminCodePayload, loading = f
     {
       url: `/admin_code/update/${codeId}`,
       data: payload,
+      params: { perm: "content:code:edit" },
     },
     loading
   );
@@ -198,6 +201,7 @@ function updateSpaceCode(codeId: string, payload: ISpaceCodeUpdatePayload, loadi
     {
       url: `/space_code/update/${codeId}`,
       data: payload,
+      params: { perm: "space:code:edit" },
     },
     loading
   );

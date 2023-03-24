@@ -9,6 +9,7 @@ function addSpace(id: string, payload: ISpacePayload, loading = false) {
     {
       url: `/space/add/${id}`,
       data: payload,
+      params: { perm: "space:space:add" },
     },
     loading
   );
@@ -20,6 +21,7 @@ function updateSpace(spaceId: number, payload: ISpacePayload, loading = false) {
     {
       url: `/space/update/${spaceId}`,
       data: payload,
+      params: { perm: "space:space:edit" },
     },
     loading
   );
@@ -52,6 +54,7 @@ function kickUserOut(userId: string, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/space/kick/${userId}`,
+      params: { perm: "space:user:delete" },
     },
     loading
   );
@@ -63,6 +66,7 @@ function editSpaceUser(userId: string, payload: { nickName: string; roleId: numb
     {
       url: `/space/user/edit/${userId}`,
       data: payload,
+      params: { perm: "space:user:edit" },
     },
     loading
   );
@@ -74,6 +78,7 @@ function inviteUser(payload: { name: string }, loading = false) {
     {
       url: "/space/invite_user",
       data: payload,
+      params: { perm: "space:user:add" },
     },
     loading
   );
@@ -94,6 +99,7 @@ function deleteSpace(spaceId: number, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/space/delete/${spaceId}`,
+      params: { perm: "content:space:delete" },
     },
     loading
   );

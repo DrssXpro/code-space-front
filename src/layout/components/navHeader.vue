@@ -86,12 +86,12 @@ const handleSkipToRoute = (item: { path: string; text: string }) => {
     $router.push(item.path);
   } else {
     // 是管理端，需要判断是否已有路由权限表
-    if (mapRoutes.value) {
+    if (mapRoutes.value.length) {
       $router.push(mapRoutes.value[0].path);
     } else {
       addDynamicRoutes.value().then(
         () => {
-          $router.push(mapRoutes.value![0].path);
+          $router.push(mapRoutes.value[0].path);
         },
         () => {
           cancelLogin.value();

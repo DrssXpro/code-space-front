@@ -57,7 +57,6 @@ export default function useLogin(formRef: Ref<FormInstance | undefined>) {
             saveUserInfo.value();
             res2.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
             // 注意需要先缓存再跳转
-            console.log("check:", !!mapRoutes.value);
             res2.code === 1000 && $router.push({ path: mapRoutes.value ? mapRoutes.value[0].path : "/admin" });
           }
         } catch (err) {

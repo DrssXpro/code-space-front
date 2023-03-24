@@ -18,6 +18,7 @@ function deleteCommentByAdmin(commentId: number, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/admin_comment/delete/${commentId}`,
+      params: { perm: "content:comment:delete" },
     },
     loading
   );

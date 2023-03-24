@@ -50,8 +50,21 @@ function addRole(payload: IRoleFormPayload, loading = false) {
 function addRoleBySpace(payload: IRoleFormPayload, loading = false) {
   return myRequest.post<IResponseData>(
     {
-      url: "/role_space/add",
+      url: "/space_role/add",
       data: payload,
+      params: { perm: "space:role:add" },
+    },
+    loading
+  );
+}
+
+// 空间主：更新角色
+function updateRoleInSpace(id: number, payload: IRoleFormPayload, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space_role/update/${id}`,
+      data: payload,
+      params: { perm: "space:role:edit" },
     },
     loading
   );
@@ -63,6 +76,7 @@ function updateRole(id: number, payload: IRoleFormPayload, loading = false) {
     {
       url: `/role/update/${id}`,
       data: payload,
+      params: { perm: "power:role:edit" },
     },
     loading
   );
@@ -74,6 +88,7 @@ function updateRoleStatus(id: number, status: 0 | 1, loading = false) {
     {
       url: `/role_status/update/${id}`,
       data: { status },
+      params: { perm: "power:role:edit" },
     },
     loading
   );
@@ -84,6 +99,17 @@ function deleteRole(id: number, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/role/delete/${id}`,
+      params: { perm: "power:role:delete" },
+    },
+    loading
+  );
+}
+// 空间主：删除对应角色
+function deleteRoleInSpace(id: number, loading = false) {
+  return myRequest.post<IResponseData>(
+    {
+      url: `/space_role/delete/${id}`,
+      params: { perm: "space:role:delete" },
     },
     loading
   );
@@ -94,8 +120,10 @@ export {
   getRoleListBySpace,
   addRole,
   addRoleBySpace,
+  updateRoleInSpace,
   updateRole,
   updateRoleStatus,
   getRoleMenu,
   deleteRole,
+  deleteRoleInSpace,
 };

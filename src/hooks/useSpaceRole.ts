@@ -1,5 +1,5 @@
 import { getMenuListBySpace } from "@/service/api/menuRequest";
-import { addRoleBySpace, deleteRole, getRoleListBySpace, updateRole } from "@/service/api/roleRequest";
+import { addRoleBySpace, deleteRoleInSpace, getRoleListBySpace, updateRoleInSpace } from "@/service/api/roleRequest";
 import type { IMenuItem } from "@/types/menuType";
 import type { IRoleFormPayload, IRoleItem } from "@/types/roleType";
 import { handleMenuToTree } from "@/utils/tools";
@@ -61,7 +61,13 @@ export default function useSpaceRole(formRef?: Ref<FormInstance | undefined>, tr
   // 添加 role
   async function addRoleDataBySpace(cb?: Function) {
     if (!formRef?.value) return;
-    formState.menuList = treeRef?.value.getCheckedKeys(false) as number[]; // 注意：需要在校验之前进行赋值，不然会造成校验不通过
+    // 注意：需要在校验之前进行赋值，不然会造成校验不通过
+    // 获取节点时同时也需要获取到半选的内容
+    formState.menuList = [
+      ...(treeRef?.value.getCheckedKeys(false) as number[]),
+      ...(treeRef?.value.getHalfCheckedKeys() as number[]),
+    ];
+
     formRef.value.validate(async (valid) => {
       if (valid) {
         try {
@@ -84,12 +90,17 @@ export default function useSpaceRole(formRef?: Ref<FormInstance | undefined>, tr
   // 更新role
   async function updateRoleDataBySpace(roleId: number, cb?: Function) {
     if (!formRef?.value) return;
-    formState.menuList = treeRef?.value.getCheckedKeys(false) as number[]; // 注意：需要在校验之前进行赋值，不然会造成校验不通过
+    // 注意：需要在校验之前进行赋值，不然会造成校验不通过
+    // 获取节点时同时也需要获取到半选的内容
+    formState.menuList = [
+      ...(treeRef?.value.getCheckedKeys(false) as number[]),
+      ...(treeRef?.value.getHalfCheckedKeys() as number[]),
+    ];
     formRef.value.validate(async (valid) => {
       if (valid) {
         try {
           formLoading.value = true;
-          const res = await updateRole(roleId, {
+          const res = await updateRoleInSpace(roleId, {
             ...formState,
           });
           res.code === 1000 ? ElMessage.success("编辑成功") : ElMessage.warning(res.message);
@@ -111,7 +122,7 @@ export default function useSpaceRole(formRef?: Ref<FormInstance | undefined>, tr
       cancelButtonText: "取消",
       type: "warning",
     }).then(async () => {
-      const res = await deleteRole(roleId);
+      const res = await deleteRoleInSpace(roleId);
       res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
       res.code === 1000 && cb && cb();
     });

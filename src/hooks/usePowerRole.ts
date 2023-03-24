@@ -58,7 +58,12 @@ export default function usePowerRole(formRef?: Ref<FormInstance | undefined>, tr
   // 添加 role
   async function addRoleDataByAdmin(cb?: Function) {
     if (!formRef?.value) return;
-    formState.menuList = treeRef?.value.getCheckedKeys(false) as number[]; // 注意：需要在校验之前进行赋值，不然会造成校验不通过
+    // 注意：需要在校验之前进行赋值，不然会造成校验不通过
+    // 获取节点时同时也需要获取到半选的内容
+    formState.menuList = [
+      ...(treeRef?.value.getCheckedKeys(false) as number[]),
+      ...(treeRef?.value.getHalfCheckedKeys() as number[]),
+    ];
     formRef.value.validate(async (valid) => {
       if (valid) {
         try {
@@ -81,7 +86,12 @@ export default function usePowerRole(formRef?: Ref<FormInstance | undefined>, tr
   // 更新role
   async function updateRoleDataByAdmin(roleId: number, cb?: Function) {
     if (!formRef?.value) return;
-    formState.menuList = treeRef?.value.getCheckedKeys(false) as number[]; // 注意：需要在校验之前进行赋值，不然会造成校验不通过
+    // 注意：需要在校验之前进行赋值，不然会造成校验不通过
+    // 获取节点时同时也需要获取到半选的内容
+    formState.menuList = [
+      ...(treeRef?.value.getCheckedKeys(false) as number[]),
+      ...(treeRef?.value.getHalfCheckedKeys() as number[]),
+    ];
     formRef.value.validate(async (valid) => {
       if (valid) {
         try {

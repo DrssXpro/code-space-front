@@ -106,6 +106,7 @@ function addUserByAdmin(payload: IUserAddByAdmin, loading = false) {
     {
       url: "/admin/user/add",
       data: payload,
+      params: { perm: "content:user:add" },
     },
     loading
   );
@@ -117,6 +118,7 @@ function updateUserByAdmin(id: string, payload: IUserUpdateByAdmin, loading = fa
     {
       url: `/admin/user/update/${id}`,
       data: payload,
+      params: { perm: "content:user:edit" },
     },
     loading
   );
@@ -127,6 +129,7 @@ function deleteUserByAdmin(id: string, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/admin/user/delete/${id}`,
+      params: { perm: "content:user:delete" },
     },
     loading
   );

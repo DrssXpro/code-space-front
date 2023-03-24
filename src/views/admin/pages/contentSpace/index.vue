@@ -40,7 +40,9 @@
           {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="danger" link @click="handleDeleteSpace(row.id)">删除</el-button>
+          <el-button type="danger" v-permissions="['content:space:delete']" link @click="handleDeleteSpace(row.id)"
+            >删除</el-button
+          >
         </template>
       </fs-table>
     </div>

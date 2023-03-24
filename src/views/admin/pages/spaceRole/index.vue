@@ -22,7 +22,7 @@
         <template #header>
           <div class="header-config">
             <span>角色列表</span>
-            <el-button type="primary" @click="showModal(true)">创建角色</el-button>
+            <el-button type="primary" v-permissions="['space:role:add']" @click="showModal(true)">创建角色</el-button>
           </div>
         </template>
         <template #status="{ row }">
@@ -40,8 +40,12 @@
           {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="success" link @click="showModal(true, row)">编辑</el-button>
-          <el-button type="danger" link @click="handleDeleteRole(row)">删除</el-button>
+          <el-button type="success" v-permissions="['space:role:edit']" link @click="showModal(true, row)"
+            >编辑</el-button
+          >
+          <el-button type="danger" v-permissions="['space:role:delete']" link @click="handleDeleteRole(row)"
+            >删除</el-button
+          >
         </template>
       </fs-table>
     </div>

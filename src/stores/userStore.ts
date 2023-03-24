@@ -11,9 +11,14 @@ import { getUserInfo } from "@/service/api/userRequest";
 import usePwdStore from "./usePwdStore";
 
 const useUserStore = defineStore("user", () => {
+  // 个人信息
   const userInfo = ref<IUserLoginInfo | undefined>(JSON.parse(localStorage.getItem("userInfo") as string));
+  // 菜单信息
   const menus = ref<IMenuItem[]>(JSON.parse(localStorage.getItem("menus") as string));
-  const mapRoutes = ref<IRouteItem[]>();
+  // 菜单 -> 路由映射
+  const mapRoutes = ref<IRouteItem[]>([]);
+  // 操作权限标识
+  const powerPerms = ref<string[]>([]);
 
   // 缓存个人信息 + 权限列表
   const saveUserInfo = () => {
@@ -26,13 +31,14 @@ const useUserStore = defineStore("user", () => {
 
   // 动态添加路由
   const addDynamicRoutes = async () => {
-    console.log(userInfo.value);
     if (!userInfo.value) {
       ElMessage.warning("用户未登录");
       throw new Error("no info");
     }
     const rid = userInfo.value?.role.roleId;
     const res = await getRoleMenu(rid!);
+    powerPerms.value = res.data.filter((item) => item.menuType === "B").map((item) => item.perms as string);
+    console.log(powerPerms.value);
     mapRoutes.value = handleMenuMapRoutes(res.data);
     mapRoutes.value?.forEach((item) => {
       $router.addRoute("admin", item);
@@ -64,6 +70,7 @@ const useUserStore = defineStore("user", () => {
     userInfo,
     menus,
     mapRoutes,
+    powerPerms,
     saveUserInfo,
     cancelLogin,
     addDynamicRoutes,

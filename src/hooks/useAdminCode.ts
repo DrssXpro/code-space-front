@@ -83,7 +83,6 @@ export default function useAdminCode(formRef?: Ref<FormInstance | undefined>) {
         kw: searchState.value.kw,
         lan: searchState.value.lan,
       });
-      console.log("check:", res.data);
       codeState.codeList = res.code === 1000 ? res.data.rows : [];
       codeState.total = res.code === 1000 ? res.data.count : 0;
       res.code !== 1000 && ElMessage.warning(res.message);

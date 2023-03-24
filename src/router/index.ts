@@ -132,9 +132,9 @@ router.beforeEach((to, from) => {
   if (token && userInfo) {
     // 已经有登录态则不能再访问login页面，强制访问跳转至个人页面
     if (to.path === "/login") {
-      return mapRoutes ? mapRoutes[0].path : "/admin";
+      return mapRoutes.length ? mapRoutes[0].path : "/admin";
     } else if (!whiteList.filter((item) => to.path.indexOf(item) === 0).length) {
-      if (!mapRoutes) {
+      if (!mapRoutes.length) {
         addDynamicRoutes()
           .then((res) => {
             router.replace(to); // 踩坑(刷新页面路由丢失)，动态添加路由之后需要强行刷新

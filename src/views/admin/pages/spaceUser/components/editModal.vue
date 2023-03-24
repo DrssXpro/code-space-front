@@ -50,7 +50,7 @@ const roleList = ref<IRoleName[]>([{ id: 3, name: "普通用户" }]);
 const { userForm, formLoading, spaceUserRules, editSpaceUserData } = useSpaceUser(formRef);
 
 onMounted(async () => {
-  const res = await getRoleListBySpace({ limit: 100, offset: 0 });
+  const res = await getRoleListBySpace({ limit: 100, offset: 0, kw: "", status: 1 });
   roleList.value.push(...res.data.rows.map((item) => ({ id: item.id, name: item.name })));
 });
 

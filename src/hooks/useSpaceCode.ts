@@ -68,7 +68,7 @@ export default function useSpaceCode(formRef?: Ref<FormInstance | undefined>) {
       if (valid) {
         formLoading.value = true;
         try {
-          const res = await updateSpaceCode(codeId, { ...codeForm });
+          const res = await updateSpaceCode(codeId,  { ...codeForm });
           res.code === 1000 ? ElMessage.success(res.message) : ElMessage.warning(res.message);
           res.code === 1000 && cb && cb();
         } catch (error) {

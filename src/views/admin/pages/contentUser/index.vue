@@ -22,7 +22,7 @@
         <template #header>
           <div class="header-config">
             <span>用户列表</span>
-            <el-button type="primary" @click="showModal(true)">添加用户</el-button>
+            <el-button type="primary" v-permissions="['content:user:add']" @click="showModal(true)">添加用户</el-button>
           </div>
         </template>
         <template #id="{ row }">
@@ -47,8 +47,12 @@
           {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="success" link @click="showModal(true, row)">编辑</el-button>
-          <el-button type="danger" link @click="handleDeleteUser(row)">删除</el-button>
+          <el-button type="success" v-permissions="['content:user:edit']" link @click="showModal(true, row)"
+            >编辑</el-button
+          >
+          <el-button type="danger" v-permissions="['content:user:delete']" link @click="handleDeleteUser(row)"
+            >删除</el-button
+          >
         </template>
       </fs-table>
 

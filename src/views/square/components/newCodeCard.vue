@@ -19,12 +19,12 @@
 </template>
 
 <script setup lang="ts">
-import type { ISquareNewCodeItem } from "@/types/codeType";
+import type { ISpecialCodeItem } from "@/types/codeType";
 import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
 import { getTimeDis } from "@/utils/formatTime";
 
 const props = defineProps<{
-  newCodeList: ISquareNewCodeItem[];
+  newCodeList: ISpecialCodeItem[];
 }>();
 </script>
 

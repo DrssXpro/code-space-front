@@ -29,6 +29,7 @@ function addMenu(payload: IMenuPayload, loading = false) {
     {
       url: "/menu/add",
       data: payload,
+      params: { perm: "power:menu:add" },
     },
     loading
   );
@@ -40,6 +41,7 @@ function updateMenu(id: number, payload: IMenuPayload, loading = false) {
     {
       url: `/menu/update/${id}`,
       data: payload,
+      params: { perm: "power:menu:edit" },
     },
     loading
   );
@@ -50,6 +52,7 @@ function deleteMenu(id: number, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/menu/delete/${id}`,
+      params: { perm: "power:menu:delete" },
     },
     loading
   );

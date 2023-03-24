@@ -48,8 +48,10 @@
         </template>
         <template #operator="{ row }">
           <el-button type="success" link @click="skipToDetail(row.id)">详情</el-button>
-          <el-button type="success" link @click="handleEditCode(row)">编辑</el-button>
-          <el-button type="danger" link>删除</el-button>
+          <el-button type="success" v-permissions="['content:code:edit']" link @click="handleEditCode(row)"
+            >编辑</el-button
+          >
+          <el-button type="danger" v-permissions="['content:code:delete']" link>删除</el-button>
         </template>
       </fs-table>
 

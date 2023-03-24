@@ -26,6 +26,7 @@ function addTask(payload: ITaskPayload, loading = false) {
     {
       url: "/task/add",
       data: payload,
+      params: { perm: "space:task:add" },
     },
     loading
   );
@@ -37,6 +38,7 @@ function updateTask(id: number, payload: ITaskPayload, loading = false) {
     {
       url: `/task/update/${id}`,
       data: payload,
+      params: { perm: "space:task:edit" },
     },
     loading
   );
@@ -47,6 +49,7 @@ function deleteTask(id: number, loading = false) {
   return myRequest.post<IResponseData>(
     {
       url: `/task/delete/${id}`,
+      params: { perm: "space:task:delete" },
     },
     loading
   );

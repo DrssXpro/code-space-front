@@ -22,7 +22,7 @@
         <template #header>
           <div class="header-config">
             <span>任务列表</span>
-            <el-button type="primary" @click="handleTask(false)">发布任务</el-button>
+            <el-button type="primary" v-permissions="['space:task:add']" @click="handleTask(false)">发布任务</el-button>
           </div>
         </template>
 
@@ -36,8 +36,12 @@
           {{ formatTime(row.updatedAt, "YYYY-MM-DD hh:ss:mm") }}
         </template>
         <template #operator="{ row }">
-          <el-button type="success" link @click="handleTask(true, row)">编辑</el-button>
-          <el-button type="danger" link @click="handleDeleteTask(row.id)">删除</el-button>
+          <el-button type="success" v-permissions="['space:task:edit']" link @click="handleTask(true, row)"
+            >编辑</el-button
+          >
+          <el-button type="danger" v-permissions="['space:task:delete']" link @click="handleDeleteTask(row.id)"
+            >删除</el-button
+          >
         </template>
       </fs-table>
     </div>
