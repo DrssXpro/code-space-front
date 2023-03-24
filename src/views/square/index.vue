@@ -2,11 +2,7 @@
   <div class="square-container">
     <div class="square-container__left">
       <code-tab v-model:search="searchState" />
-      <code-list
-        :is-finish="pageState.isFinish"
-        :code-list="pageState.codeList"
-        @get-more-data="handleGetMoreData"
-      />
+      <code-list :is-finish="pageState.isFinish" :code-list="pageState.codeList" @get-more-data="handleGetMoreData" />
     </div>
     <div class="square-container__right">
       <div class="sticky">
