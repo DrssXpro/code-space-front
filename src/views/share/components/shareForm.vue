@@ -107,6 +107,8 @@ const handleShareCode = async () => {
     });
     res.code === 1000 ? ElMessage.success("发布成功") : ElMessage.warning(res.message);
     res.code === 1000 && clearForm();
+    res.code === 1000 && skipToDetail(true, res.data.id);
+    console.log("check:", res.data);
   } else {
     const res = await addCodeBySpace({
       title: formState.title,
@@ -116,7 +118,13 @@ const handleShareCode = async () => {
     });
     res.code === 1000 ? ElMessage.success("发布成功") : ElMessage.warning(res.message);
     res.code === 1000 && clearForm();
+    res.code === 1000 && skipToDetail(false, res.data.id);
   }
+};
+
+// 添加成功后进行跳转
+const skipToDetail = (isSquare: boolean, codeId: string) => {
+  isSquare ? window.open(`#/code/${codeId}`) : window.open(`#/spaceCode/${codeId}`);
 };
 
 // 获取代码内容

@@ -2,7 +2,7 @@ import type { IMenuItem } from "@/types/menuType";
 import type { IUserLoginInfo } from "@/types/userType";
 import { handleMenuMapRoutes, type IRouteItem } from "@/utils/tools";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import $router from "@/router/index";
 import { getRoleMenu } from "@/service/api/roleRequest";
 import router from "@/router/index";
@@ -19,6 +19,9 @@ const useUserStore = defineStore("user", () => {
   const mapRoutes = ref<IRouteItem[]>([]);
   // 操作权限标识
   const powerPerms = ref<string[]>([]);
+
+  // 判断用户是否是管理员
+  const isAdmin = computed(() => !mapRoutes.value.filter((item) => item.path === "/admin/personal").length);
 
   // 缓存个人信息 + 权限列表
   const saveUserInfo = () => {
@@ -71,6 +74,7 @@ const useUserStore = defineStore("user", () => {
     menus,
     mapRoutes,
     powerPerms,
+    isAdmin,
     saveUserInfo,
     cancelLogin,
     addDynamicRoutes,

@@ -1,23 +1,32 @@
 <template>
-  <el-card shadow="never">
+  <el-card shadow="never" v-if="props.authorList.length">
     <template #header>作者分享</template>
-    <div class="code-item" v-for="i in 3">
-      <i class="fa fa-code"></i>
-      <div class="code-info">
-        <div class="code-name">二分排序</div>
-        <div>
-          <span>python</span>
-          <span>|</span>
-          <span>2月前</span>
-          <span>|</span>
-          <span>7.13KB</span>
+    <a :href="`#/code/${i.id}`" target="_blank" v-for="i in props.authorList" :key="i.id">
+      <div class="code-item">
+        <i class="fa fa-code"></i>
+        <div class="code-info">
+          <div class="code-name one-line">{{ i.title }}</div>
+          <div>
+            <span>{{ i.lan }}</span>
+            <span>|</span>
+            <span>{{ getTimeDis(i.createdAt) }}</span>
+            <span>|</span>
+            <span>{{ i.line }} lines</span>
+          </div>
         </div>
       </div>
-    </div>
+    </a>
   </el-card>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { ISpecialCodeItem } from "@/types/codeType";
+import { getTimeDis } from "@/utils/formatTime";
+
+const props = defineProps<{
+  authorList: ISpecialCodeItem[];
+}>();
+</script>
 
 <style scoped lang="less">
 .code-item {
@@ -36,6 +45,12 @@
   }
   &:hover {
     background-color: var(--el-bg-color-page);
+  }
+  .one-line {
+    width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>

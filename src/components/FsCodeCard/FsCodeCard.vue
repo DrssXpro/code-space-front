@@ -85,16 +85,14 @@ const props = defineProps<{
     width: 600px;
     cursor: pointer;
     .content-title {
-      font-size: 20px;
+      font-size: 18px;
       margin: 10px 0;
-      // color: var(--font-main-color);
       font-weight: 700;
     }
 
     .content-preview {
       margin: 10px 0;
-      font-size: 18px;
-      // color: var(--font-main-color);
+      font-size: 14px;
     }
     .content-info {
       display: flex;
@@ -133,7 +131,6 @@ const props = defineProps<{
         height: 70%;
         right: -2px;
         top: 5px;
-        // background-color: var(--font-color);
       }
       & > li:nth-child(2)::after {
         .line-gap();

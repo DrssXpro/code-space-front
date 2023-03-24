@@ -1,6 +1,5 @@
 <template>
   <div class="space-list-container">
-
     <div class="space-content content-gap">
       <space-content @joinSpace="handleJoinSpace" />
     </div>
@@ -17,8 +16,9 @@ import spaceContent from "./components/spaceContent.vue";
 import spaceModal from "./components/spaceModal.vue";
 import useUserStore from "@/stores/userStore";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 const $router = useRouter();
-const { userInfo } = useUserStore();
+const { userInfo, isAdmin } = useUserStore();
 const spaceModalRef = ref<InstanceType<typeof spaceModal>>();
 
 // 判断是否加入空间
@@ -33,6 +33,7 @@ const skipToSpace = () => {
 };
 
 const handleJoinSpace = (id: number) => {
+  if (isAdmin) return ElMessage.warning("管理员无法加入空间");
   spaceModalRef.value?.controllModal(true, id);
 };
 </script>

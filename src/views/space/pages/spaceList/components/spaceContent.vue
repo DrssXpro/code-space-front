@@ -2,9 +2,12 @@
   <div class="space-search">
     <fs-search-box
       v-model="searchState.kw"
+      :history="spaceSearchHistory"
       place-holder="请输入关键字"
-      @search="getSpaceListByAdmin"
+      @search="handleSearch"
       @clear-search-value="getSpaceListByAdmin"
+      @clear-history="clearSpaceSearchHistory"
+      @delete-history="removeSpaceSearchHistory"
     />
   </div>
   <div class="space-content-container" v-if="tableState.tableData.length">
@@ -23,8 +26,12 @@ import FsSearchBox from "@/components/FsSearchBox/FsSearchBox.vue";
 import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
 import FsSpaceCard from "@/components/FsSpaceCard/FsSpaceCard.vue";
 import useSpace from "@/hooks/useSpace";
-import { onMounted } from "vue";
+import { onMounted, toRefs } from "vue";
+import useHistoryStore from "@/stores/historyStore";
 const { tableState, searchState, getSpaceListByAdmin } = useSpace();
+const { spaceSearchHistory, removeSpaceSearchHistory, addSpaceSearchHistory, clearSpaceSearchHistory } = toRefs(
+  useHistoryStore()
+);
 
 const emit = defineEmits<{
   (e: "joinSpace", spaceId: number): void;
@@ -33,6 +40,11 @@ const emit = defineEmits<{
 onMounted(() => {
   getSpaceListByAdmin();
 });
+
+const handleSearch = () => {
+  addSpaceSearchHistory.value(searchState.value.kw);
+  getSpaceListByAdmin();
+};
 
 const handleJoinSpace = (spaceId: number) => {
   emit("joinSpace", spaceId);

@@ -81,6 +81,10 @@ import { useRoute } from "vue-router";
 import useFrontCode from "@/hooks/useFrontCode";
 import useCodeTool from "@/hooks/useCodeTool";
 
+const emit = defineEmits<{
+  (e: "detailReady", authorId: string): void;
+}>();
+
 const { spaceCodeDetail, addCodeLikeBySpace, addCodeViewBySpace, getSpaceCodeDetail } = useFrontCode();
 const { downloadCode, copyCode, codeExportImage, copyCodeLink } = useCodeTool();
 
@@ -94,6 +98,7 @@ onMounted(async () => {
   await addCodeViewBySpace(codeId);
   await getSpaceCodeDetail(codeId);
   codeMirrorRef.value?.configCodeMirror(spaceCodeDetail.value?.lan!); // 设置codeMirror语言
+  emit("detailReady", spaceCodeDetail.value!.user.authorId);
 });
 </script>
 

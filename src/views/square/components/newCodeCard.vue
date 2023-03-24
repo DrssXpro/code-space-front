@@ -1,19 +1,22 @@
 <template>
   <el-card shadow="never">
     <template #header>最新分享</template>
-    <div class="code-item" v-for="i in props.newCodeList" :key="i.id">
-      <i class="fa fa-code"></i>
-      <div class="code-info">
-        <div class="code-name">{{ i.title }}</div>
-        <div>
-          <span>{{ i.lan }}</span>
-          <span>|</span>
-          <span>{{ getTimeDis(i.createdAt) }}</span>
-          <span>|</span>
-          <span>{{ i.line }} lines</span>
+    <a :href="`#/code/${i.id}`" target="_blank" v-for="i in props.newCodeList" :key="i.id">
+      <div class="code-item">
+        <i class="fa fa-code"></i>
+        <div class="code-info">
+          <div class="code-name one-line">{{ i.title }}</div>
+          <div>
+            <span>{{ i.lan }}</span>
+            <span>|</span>
+            <span>{{ getTimeDis(i.createdAt) }}</span>
+            <span>|</span>
+            <span>{{ i.line }} lines</span>
+          </div>
         </div>
       </div>
-    </div>
+    </a>
+
     <fs-empty-box v-if="!props.newCodeList.length" />
   </el-card>
 </template>
@@ -45,6 +48,12 @@ const props = defineProps<{
   }
   &:hover {
     background-color: var(--el-bg-color-page);
+  }
+  .one-line {
+    width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>

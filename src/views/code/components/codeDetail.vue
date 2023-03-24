@@ -80,6 +80,10 @@ import { useRoute } from "vue-router";
 import useFrontCode from "@/hooks/useFrontCode";
 import useCodeTool from "@/hooks/useCodeTool";
 
+const emit = defineEmits<{
+  (e: "detailReady", authorId: string): void;
+}>();
+
 const { squareCodeDetail, addCodeLikeBySquare, addCodeViewBySquare, getSquareCodeDetail, collectOrCancelCollect } =
   useFrontCode();
 const { downloadCode, copyCode, codeExportImage, copyCodeLink } = useCodeTool();
@@ -94,6 +98,7 @@ onMounted(async () => {
   await addCodeViewBySquare(codeId);
   await getSquareCodeDetail(codeId);
   codeMirrorRef.value?.configCodeMirror(squareCodeDetail.value?.lan!); // 设置codeMirror语言
+  emit("detailReady", squareCodeDetail.value!.user.authorId);
 });
 </script>
 

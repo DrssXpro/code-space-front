@@ -75,7 +75,7 @@ function getCodeListBySearch(
 
 // 获取作者分享代码列表
 function getAuthorCodeList(userId: string, loading = false) {
-  return myRequest.get(
+  return myRequest.get<IResponseData<IList<ISpecialCodeItem>>>(
     {
       url: `/author_code/list/${userId}`,
     },
