@@ -19,14 +19,13 @@ import type { ISpaceDetail } from "@/types/spaceType";
 const { userInfo } = useUserStore();
 
 const modalRef = ref<InstanceType<typeof spaceModal>>();
-const isCreate = ref(!!userInfo?.space?.spaceId);
+const isCreate = ref(!!(userInfo?.space?.spaceId && userInfo.space.spaceName));
 
 const handleEditSpace = (item: ISpaceDetail) => {
   modalRef.value?.controllModal(true, item);
 };
 
 onMounted(() => {
-  console.log(userInfo);
   if (!userInfo?.space?.spaceId) {
     ElMessage.warning("请先设置空间信息哦");
   }

@@ -22,16 +22,17 @@
           <el-upload
             class="avatar-uploader"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess"
+            :on-change="getAvatarFile"
             :before-upload="beforeAvatarUpload"
+            :auto-upload="false"
             v-if="!formState.isDefault"
           >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <img v-if="formState.avatar" :src="formState.avatar" class="avatar" />
             <div v-else class="upload-icon">+</div>
           </el-upload>
         </div>
       </el-form-item>
-      <el-button type="info" class="btn" @click="handleSubmitEdit">提交</el-button>
+      <el-button type="info" class="btn" :loading="formLoading" @click="handleSubmitEdit">提交</el-button>
     </el-form>
   </el-dialog>
 </template>
@@ -39,35 +40,38 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import useSpace from "@/hooks/useSpace";
-import { ElMessage, type FormInstance, type UploadProps } from "element-plus";
+import { ElMessage, type FormInstance, type UploadFile, type UploadProps } from "element-plus";
 import type { ISpaceDetail } from "@/types/spaceType";
 import mitter from "@/utils/mitter";
 const formRef = ref<FormInstance>();
 
 const isShow = ref(false);
 
-const { formState, imageUrl, spaceRules, submitToSpace, generateInviteCode } = useSpace(formRef);
+const { formState, formLoading, spaceRules, submitToSpace, generateInviteCode } = useSpace(formRef);
+
+// 获取选择的头像
+const currentFile = ref<File>();
 
 // 提交修改表单
 const handleSubmitEdit = () => {
   // 成功后关闭弹窗
-  submitToSpace(true, () => {
+  submitToSpace(true, currentFile.value, () => {
     isShow.value = false;
     mitter.emit("refreshInfo");
   });
 };
 
-const handleAvatarSuccess: UploadProps["onSuccess"] = (response, uploadFile) => {
-  // state.imageUrl = URL.createObjectURL(uploadFile.raw!);
-  imageUrl.value = URL.createObjectURL(uploadFile.raw!);
+const getAvatarFile = (uploadFile: UploadFile) => {
+  formState.avatar = URL.createObjectURL(uploadFile.raw!);
+  currentFile.value = uploadFile.raw;
 };
 
 const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
-  if (rawFile.type !== "image/jpeg") {
-    ElMessage.error("Avatar picture must be JPG format!");
+  if (rawFile.type !== "image/jpeg" && rawFile.type !== "image/png") {
+    ElMessage.error("头像必须是jpg、png格式");
     return false;
   } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error("Avatar picture size can not exceed 2MB!");
+    ElMessage.error("头像大小不能超过2MB");
     return false;
   }
 
@@ -80,7 +84,7 @@ const controllModal = (show: boolean, detail?: ISpaceDetail) => {
   formState.spacename = detail?.spaceDetail.name || "";
   formState.spaceintroduce = detail?.spaceDetail.introduce || "";
   formState.inviteCode = detail?.spaceDetail.inviteCode || "";
-  imageUrl.value = detail?.spaceDetail.avatar || "";
+  formState.avatar = detail?.spaceDetail.avatar || "";
 };
 
 defineExpose({

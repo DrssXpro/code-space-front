@@ -35,27 +35,40 @@
           <div class="desc">所有成员</div>
         </div>
         <div class="count-item">
-          <i class="count-icon fa fa-user"></i>
+          <i class="count-icon fa fa-tasks"></i>
           <div class="count">{{ spaceDetail?.taskCount }}</div>
           <div class="desc">所有任务</div>
         </div>
         <div class="count-item">
-          <i class="count-icon fa fa-user"></i>
+          <i class="count-icon fa fa-code"></i>
           <div class="count">{{ spaceDetail?.codeCount }}</div>
           <div class="desc">所有代码</div>
-        </div>
-        <div class="count-item">
-          <i class="count-icon fa fa-user"></i>
-          <div class="count">100</div>
-          <div class="desc">所有成员</div>
         </div>
       </div>
       <div class="code-table">
         <div class="code-title">最新代码</div>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="Date" width="180" />
-          <el-table-column prop="name" label="Name" width="180" />
-          <el-table-column prop="address" label="Address" />
+        <el-table :data="codeList" style="width: 100%">
+          <el-table-column prop="id" label="编号" width="120" align="center">
+            <template #default="scope">
+              <div class="one-line">{{ scope.row.id }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="title" label="代码名称" width="180" align="center" />
+          <el-table-column label="编程语言" align="center">
+            <template #default="scope">
+              <el-tag type="danger">{{ scope.row.lan }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="分享时间" align="center">
+            <template #default="scope">
+              {{ formatTime(scope.row.createdAt, "YYYY-MM-DD hh:ss:mm") }}
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template #default="scope">
+              <el-button type="success" link @click="handleSkip(scope.row.id)">查看详情</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </div>
@@ -68,81 +81,49 @@ import { getSpaceDetail } from "@/service/api/spaceRequest";
 import mitter from "@/utils/mitter";
 import useUserStore from "@/stores/userStore";
 import type { ISpaceDetail } from "@/types/spaceType";
-import { getDisDay } from "@/utils/formatTime";
+import { formatTime, getDisDay } from "@/utils/formatTime";
+import { getCodeListBySpace } from "@/service/api/codeRequest";
+import type { ISpaceCodeItem } from "@/types/codeType";
 const emit = defineEmits<{
   (e: "editSpaceInfo", detail: ISpaceDetail): void;
 }>();
 
 const { userInfo } = useUserStore();
 
+onMounted(() => {
+  getNewSpaceList();
+});
+
+//空间详情
 const spaceDetail = ref<ISpaceDetail>();
 
+// 邀请code
 const inviteCode = ref("");
 
+const codeList = ref<ISpaceCodeItem[]>([]);
+
+// 跳转
+const handleSkip = (id: string) => {
+  window.open(`#/spaceCode/${id}`);
+};
+
+// 获取空间详情数据
 const getSpaceDetailData = async () => {
   const res = await getSpaceDetail(userInfo?.space?.spaceId!);
-  console.log(res.data);
   spaceDetail.value = res.data;
   inviteCode.value = res.data.spaceDetail.inviteCode;
+};
+
+// 获取最新代码
+const getNewSpaceList = async () => {
+  const res = await getCodeListBySpace({ limit: 10, offset: 0, kw: "", sort: 2, status: 1, task: undefined, lan: [] });
+  codeList.value = res.data.rows;
 };
 
 // 监听编辑表单，修改完成后刷新信息
 mitter.on("refreshInfo", () => {
   getSpaceDetailData();
 });
-
-const tableData = [
-  {
-    date: "2016-05-03",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-02",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-04",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-];
 
 onMounted(() => {
   getSpaceDetailData();
@@ -237,6 +218,12 @@ const handleEdit = () => {
     flex: 1;
     height: calc(100vh - 110px);
     margin-right: 20px;
+    .one-line {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .space-count {
       display: flex;
       align-items: center;

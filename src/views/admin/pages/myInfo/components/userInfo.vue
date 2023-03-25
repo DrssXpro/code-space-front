@@ -14,10 +14,15 @@
           <span style="color: var(--el-text-color-secondary)">暂未加入空间</span>
         </div>
         <div class="space-info-content" v-else @click="$router.push(`/space/detail/${userInfo?.space?.spaceId}`)">
-          <el-tag size="large" type="success">{{ userInfo?.space?.spaceName }}</el-tag>
+          <el-tag size="large" type="success" v-if="userInfo?.space && userInfo.space.spaceName">{{
+            userInfo?.space?.spaceName
+          }}</el-tag>
+          <el-tag size="large" type="danger" v-else>暂未创建空间</el-tag>
           <div class="space-operator"></div>
         </div>
-        <el-button type="danger" text v-if="userInfo?.space" @click="exitSpaceByOwn">退出</el-button>
+        <el-button type="danger" text v-if="userInfo?.space && userInfo.space.spaceName" @click="exitSpaceByOwn"
+          >退出</el-button
+        >
       </div>
     </div>
 

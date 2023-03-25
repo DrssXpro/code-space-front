@@ -8,13 +8,11 @@
         >点击加载更多</el-button
       >
     </div>
-    <fs-empty-box v-if="props.isFinish" />
   </div>
 </template>
 
 <script setup lang="ts">
 import FsCodeCard from "@/components/FsCodeCard/FsCodeCard.vue";
-import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
 import type { ICodeItem } from "@/types/codeType";
 import { __debounce } from "@/utils/tools";
 const props = defineProps<{

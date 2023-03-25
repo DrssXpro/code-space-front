@@ -1,7 +1,7 @@
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
 import validator from "@/utils/validator";
 import { reactive, ref, type Ref } from "vue";
-import { addSpace, deleteSpace, getSpaceList, updateSpace } from "@/service/api/spaceRequest";
+import { addSpace, deleteSpace, getSpaceList, updateSpace, spaceUploadAvatar } from "@/service/api/spaceRequest";
 import useUserStore from "@/stores/userStore";
 import type { ISpaceItem } from "@/types/spaceType";
 
@@ -18,13 +18,13 @@ export default function useSpace(formRef?: Ref<FormInstance | undefined>) {
     inviteCode: "",
 
     // 是否使用默认头像
-    isDefault: 1,
+    isDefault: 1 as 0 | 1,
 
     // 空间头像地址（不使用默认头像）
     avatar: "",
   });
-  // 生成空间头像
-  const imageUrl = ref("");
+
+  const formLoading = ref(false);
 
   // 搜索关键词
   const searchState = ref({
@@ -48,10 +48,18 @@ export default function useSpace(formRef?: Ref<FormInstance | undefined>) {
   };
 
   // 提交空间表单：设置空间信息
-  async function submitToSpace(isEdit: boolean, cb?: Function) {
+  async function submitToSpace(isEdit: boolean, file?: File, cb?: Function) {
     if (!formRef?.value) return;
     formRef?.value.validate(async (valid) => {
       if (valid) {
+        formLoading.value = true;
+        if (!formState.isDefault && !file) {
+          ElMessage.warning("未上传头像");
+          return;
+        }
+
+        // 上传空间头像
+        !formState.isDefault && file && (await uploadSpaceAvatar(file));
         if (!isEdit) {
           // 创建操作
           try {
@@ -60,29 +68,48 @@ export default function useSpace(formRef?: Ref<FormInstance | undefined>) {
               spaceintroduce: formState.spaceintroduce,
               spacename: formState.spacename,
               inviteCode: formState.inviteCode,
-              avatar: formState.avatar.length ? formState.avatar : undefined,
+              avatar: formState.avatar,
+              isDefault: formState.isDefault,
             });
-            res.code === 1000 ? ElMessage.success("设置成功") : ElMessage.warning(res.message);
+            res.code === 1000 ? ElMessage.success("创建成功") : ElMessage.warning(res.message);
             res.code === 1000 && cb && cb(); // 操作成功后执行回调
           } catch (err) {
-            ElMessage.warning("设置失败");
+            ElMessage.error("创建失败");
           }
         } else {
-          // 修改操作
-          const spaceId = userInfo?.space?.spaceId as number;
-          const res = await updateSpace(spaceId, {
-            spaceintroduce: formState.spaceintroduce,
-            spacename: formState.spacename,
-            inviteCode: formState.inviteCode,
-            avatar: formState.avatar.length ? formState.avatar : undefined,
-          });
-          res.code === 1000 ? ElMessage.success("修改成功") : ElMessage.warning(res.message);
-          res.code === 1000 && cb && cb(); // 操作成功后执行回调
+          try {
+            // 修改操作
+            const spaceId = userInfo?.space?.spaceId as number;
+            const res = await updateSpace(spaceId, {
+              spaceintroduce: formState.spaceintroduce,
+              spacename: formState.spacename,
+              inviteCode: formState.inviteCode,
+              avatar: formState.avatar,
+              isDefault: formState.isDefault,
+            });
+            res.code === 1000 ? ElMessage.success("修改成功") : ElMessage.warning(res.message);
+            res.code === 1000 && cb && cb(); // 操作成功后执行回调
+          } catch (error) {
+            ElMessage.error("修改失败");
+          }
         }
+        formLoading.value = false;
       } else {
         ElMessage.warning("输入内容不符合规范");
       }
     });
+  }
+
+  // 空间头像上传
+  async function uploadSpaceAvatar(file: File) {
+    const fd = new FormData();
+    fd.append("space", file);
+    try {
+      const res = await spaceUploadAvatar(fd);
+      formState.avatar = res.data;
+    } catch (error) {
+      ElMessage.error("头像上传失败");
+    }
   }
 
   // 随机生成六位邀请码
@@ -126,13 +153,14 @@ export default function useSpace(formRef?: Ref<FormInstance | undefined>) {
 
   return {
     formState,
-    imageUrl,
     spaceRules,
     tableState,
     searchState,
+    formLoading,
     submitToSpace,
     generateInviteCode,
     getSpaceListByAdmin,
     deleteSpaceByAdmin,
+    uploadSpaceAvatar,
   };
 }

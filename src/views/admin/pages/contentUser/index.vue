@@ -38,7 +38,7 @@
           <el-tag :type="row.status ? '' : 'danger'">{{ row.status ? "正常" : "禁用" }}</el-tag>
         </template>
         <template #spaceId="{ row }">
-          {{ row.spaceId ? `《${row.spaceName}》` : "未加入空间" }}
+          {{ row.spaceId ? `${row.spaceName ? `《${row.spaceName}》` : "还未创建空间"}` : "未加入空间" }}
         </template>
         <template #createdAt="{ row }">
           {{ formatTime(row.createdAt, "YYYY-MM-DD hh:ss:mm") }}

@@ -3,7 +3,8 @@ export interface ISpacePayload {
   spacename: string;
   spaceintroduce: string;
   inviteCode: string;
-  avatar?: string;
+  avatar: string;
+  isDefault: 0 | 1;
 }
 
 // 空间项

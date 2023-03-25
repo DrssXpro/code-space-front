@@ -59,7 +59,7 @@ function exitSpaceByOwn(loading = false) {
 
 // 获取指定用户信息
 function getUserInfo(id: string, loading = false) {
-  return myRequest.get<IResponseData<IUserLoginInfo>>(
+  return myRequest.get<IResponseData<{ userInfo: IUserLoginInfo; token: string }>>(
     {
       url: `/user/info/${id}`,
     },

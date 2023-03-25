@@ -20,8 +20,6 @@ const useUserStore = defineStore("user", () => {
   // 操作权限标识
   const powerPerms = ref<string[]>([]);
 
-  // 判断用户是否是管理员
-  const isAdmin = computed(() => !mapRoutes.value.filter((item) => item.path === "/admin/personal").length);
 
   // 缓存个人信息 + 权限列表
   const saveUserInfo = () => {
@@ -41,7 +39,6 @@ const useUserStore = defineStore("user", () => {
     const rid = userInfo.value?.role.roleId;
     const res = await getRoleMenu(rid!);
     powerPerms.value = res.data.filter((item) => item.menuType === "B").map((item) => item.perms as string);
-    console.log(powerPerms.value);
     mapRoutes.value = handleMenuMapRoutes(res.data);
     mapRoutes.value?.forEach((item) => {
       $router.addRoute("admin", item);
@@ -49,12 +46,14 @@ const useUserStore = defineStore("user", () => {
   };
 
   // 重新获取个人信息并保存(刷新存储)
-  const getUserInfoData = async () => {
+  const getUserInfoData = async (cb?: Function) => {
     const id = userInfo.value?.id;
     const res = await getUserInfo(id!);
-    userInfo.value = res.data;
+    userInfo.value = res.data.userInfo;
+    // 刷新token
     localStorage.setItem("token", res.data.token);
-    localStorage.setItem("userInfo", JSON.stringify(res.data));
+    localStorage.setItem("userInfo", JSON.stringify(userInfo.value));
+    res.code === 1000 && cb && cb();
   };
 
   // 注销登录
@@ -74,7 +73,6 @@ const useUserStore = defineStore("user", () => {
     menus,
     mapRoutes,
     powerPerms,
-    isAdmin,
     saveUserInfo,
     cancelLogin,
     addDynamicRoutes,

@@ -23,22 +23,23 @@
           <el-upload
             class="avatar-uploader"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess"
+            :on-change="getAvatarFile"
             :before-upload="beforeAvatarUpload"
+            :auto-upload="false"
             v-if="!formState.isDefault"
           >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <img v-if="formState.avatar" :src="formState.avatar" class="avatar" />
             <div v-else class="upload-icon">+</div>
           </el-upload>
         </div>
       </el-form-item>
-      <el-button type="info" class="btn" @click="handleCreateSpace">提交</el-button>
+      <el-button type="info" class="btn" :loading="formLoading" @click="handleCreateSpace">提交</el-button>
     </el-form>
   </el-card>
 </template>
 
 <script setup lang="ts">
-import { ElMessage, type FormInstance, type UploadProps } from "element-plus";
+import { ElMessage, type FormInstance, type UploadFile, type UploadProps } from "element-plus";
 import { ref } from "vue";
 import useSpace from "@/hooks/useSpace";
 import useUserStore from "@/stores/userStore";
@@ -48,28 +49,29 @@ const formRef = ref<FormInstance>();
 const emit = defineEmits<{
   (e: "createSuccess"): void;
 }>();
-const { spaceRules, formState, imageUrl, submitToSpace, generateInviteCode } = useSpace(formRef);
+const { spaceRules, formState, formLoading, submitToSpace, generateInviteCode } = useSpace(formRef);
 const { getUserInfoData } = useUserStore();
 
+const currentFile = ref<File>();
 const handleCreateSpace = () => {
-  submitToSpace(false, async () => {
-    await getUserInfoData();
-
-    emit("createSuccess");
+  submitToSpace(false, currentFile.value, () => {
+    getUserInfoData(() => {
+      emit("createSuccess");
+    });
   });
 };
 
-const handleAvatarSuccess: UploadProps["onSuccess"] = (response, uploadFile) => {
-  // state.imageUrl = URL.createObjectURL(uploadFile.raw!);
-  imageUrl.value = URL.createObjectURL(uploadFile.raw!);
+const getAvatarFile = (uploadFile: UploadFile) => {
+  formState.avatar = URL.createObjectURL(uploadFile.raw!);
+  currentFile.value = uploadFile.raw;
 };
 
 const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
-  if (rawFile.type !== "image/jpeg") {
-    ElMessage.error("Avatar picture must be JPG format!");
+  if (rawFile.type !== "image/jpeg" && rawFile.type !== "image/png") {
+    ElMessage.error("头像必须是jpg、png格式");
     return false;
   } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error("Avatar picture size can not exceed 2MB!");
+    ElMessage.error("头像大小不能超过2MB");
     return false;
   }
 
@@ -107,6 +109,10 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
   height: 100px;
   display: block;
   margin-top: 10px;
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
   .upload-icon {
     width: 100px;
     height: 100px;

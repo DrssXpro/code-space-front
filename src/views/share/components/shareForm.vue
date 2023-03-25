@@ -74,7 +74,7 @@ const formState: ISquareCodePayload = reactive({
   isPwd: false,
   pwd: "",
   status: 1,
-  taskId: 1,
+  taskId: undefined,
 });
 
 const taskList = ref<ITaskItem[]>([]);
@@ -108,7 +108,6 @@ const handleShareCode = async () => {
     res.code === 1000 ? ElMessage.success("发布成功") : ElMessage.warning(res.message);
     res.code === 1000 && clearForm();
     res.code === 1000 && skipToDetail(true, res.data.id);
-    console.log("check:", res.data);
   } else {
     const res = await addCodeBySpace({
       title: formState.title,

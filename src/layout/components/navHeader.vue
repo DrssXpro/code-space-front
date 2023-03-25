@@ -20,7 +20,7 @@
       <fs-switch v-model="themeFlag" @change-status="handleChangeTheme" active-color="#fff" un-active-color="#000">
         <i :class="[themeFlag ? 'fa fa-sun-o' : 'fa fa-moon-o']"></i>
       </fs-switch>
-      <el-button type="danger" v-if="!isAdmin"><a href="#/share" target="_blank">分享</a></el-button>
+      <el-button type="danger"><a href="#/share" target="_blank">分享</a></el-button>
       <div class="nav-menu_right__operator">
         <div class="login-operator" v-if="!userInfo" @click="$router.push('/login')">
           <span>登录</span>
@@ -61,7 +61,7 @@ const isDark = useDark();
 const themeFlag = ref(!isDark.value);
 const toggleDark = useToggle(isDark);
 
-const { userInfo, isAdmin, mapRoutes, cancelLogin, addDynamicRoutes } = toRefs(useUserStore());
+const { userInfo, mapRoutes, cancelLogin, addDynamicRoutes } = toRefs(useUserStore());
 
 const activeIndex = computed(() => menus.findIndex((item) => $route.fullPath.split("/")[1] === item.path.slice(1)));
 

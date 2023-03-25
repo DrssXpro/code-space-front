@@ -116,6 +116,17 @@ function joinSpaceByInviteCode(spaceId: number, inviteCode: string, loading = fa
   );
 }
 
+// 上传空间头像
+function spaceUploadAvatar(file: FormData, loading = false) {
+  return myRequest.uploadFilePost<IResponseData<string>>(
+    {
+      url: "/space/upload",
+      data: file,
+    },
+    loading
+  );
+}
+
 export {
   addSpace,
   updateSpace,
@@ -127,4 +138,5 @@ export {
   getSpaceDetail,
   deleteSpace,
   joinSpaceByInviteCode,
+  spaceUploadAvatar
 };

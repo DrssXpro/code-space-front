@@ -73,8 +73,8 @@ const getAvatarFile = (uploadFile: UploadFile) => {
 
 // 上传前检测
 const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
-  if (rawFile.type !== "image/jpeg") {
-    ElMessage.error("必须上传图片");
+  if (rawFile.type !== "image/jpeg" && rawFile.type !== "image/png") {
+    ElMessage.error("头像必须是jpg、png格式");
     return false;
   } else if (rawFile.size / 1024 / 1024 > 2) {
     ElMessage.error("头像大小不能超过 2MB!");

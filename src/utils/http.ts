@@ -15,7 +15,6 @@ function setRequestMap(config: InternalAxiosRequestConfig, map: Map<string, Abor
   const key = [url, method, JSON.stringify(params), JSON.stringify(data)].join("&");
   config.signal = controller.signal;
   map.set(key, controller);
-  console.log("add:", key, map);
 }
 
 // 清除map中的一个请求
@@ -61,6 +60,7 @@ class FsRequest {
     });
 
     this.instance.interceptors.response.use((config) => {
+      deleteRequestMap(config, this.abortControllerMap);
       if (config.data.code === 1100) {
         ElMessage.warning(config.data.message);
         const { cancelLogin } = useUserStore();
@@ -68,7 +68,7 @@ class FsRequest {
         cancelLogin();
         clearCodePwd();
       }
-      deleteRequestMap(config, this.abortControllerMap);
+
       return config.data;
     });
   }

@@ -5,7 +5,7 @@ export interface ISquareCodePayload {
   content: string;
   isPwd: boolean;
   pwd: string;
-  taskId?: number;
+  taskId?: number | undefined;
   status: 0 | 1;
 }
 
