@@ -39,6 +39,7 @@
         <el-button type="info" style="width: 120px" v-else @click="submitToLogin">登录</el-button>
         <el-button type="danger" v-show="isForget" @click="isForget = false" style="width: 80px">取消</el-button>
       </div>
+      <div class="alert" @click="emit('showAccount')">显示账号</div>
     </div>
   </el-card>
 </template>
@@ -53,6 +54,7 @@ const props = defineProps<{
 }>();
 const emit = defineEmits<{
   (e: "changeCard"): void;
+  (e: "showAccount"): void;
 }>();
 
 const formRef = ref<FormInstance>();
@@ -81,6 +83,17 @@ onDeactivated(() => {
     cursor: pointer;
     &:hover {
       color: var(--el-color-warning);
+    }
+  }
+
+  .alert {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #dd6161;
+    &:hover {
+      opacity: 0.5;
     }
   }
 
