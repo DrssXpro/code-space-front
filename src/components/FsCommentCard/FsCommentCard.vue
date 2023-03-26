@@ -120,7 +120,6 @@ const handleReplaySon = () => {
 
 // 子评论下的互相回复
 const handleSonReplay = (replay: number, replayName: string) => {
-  console.log("check:", replay, replayName);
   currentReplayObj.value = replayName;
   isSon.value = true;
   replayId.value = replay;

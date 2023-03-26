@@ -53,7 +53,6 @@ const useCommentStore = defineStore("comment", () => {
     commentState.total = res.data.count;
     commentState.commentList.forEach((item) => {
       item.children = handleCommentMapTree(item.children!); // 子评论树形结构化
-      console.log(item.children);
       sonCommentMap[item.id] = { commentList: [], total: 0, pageSize: 5, page: 1, sort: 0 }; // 初始化子评论map数据
     });
   }

@@ -3,7 +3,11 @@
     <div class="fs-my-comment_info">
       <div class="info-left">
         我在 {{ formatTime(props.commentDetail.createdAt, "YYYY-MM-DD hh:ss:mm") }} 评论了 代码
-        <span style="color: var(--el-color-primary); cursor: pointer">{{ props.commentDetail.code.codeTitle }}</span>
+        <span
+          style="color: var(--el-color-primary); cursor: pointer"
+          @click="emit('skipToCode', props.commentDetail.codeId)"
+          >{{ props.commentDetail.code.codeTitle }}</span
+        >
       </div>
       <div class="info-right">
         <el-button type="danger" text @click="emit('deleteComment', props.commentDetail.id)">删除</el-button>
@@ -19,6 +23,7 @@ import { formatTime } from "@/utils/formatTime";
 
 const emit = defineEmits<{
   (e: "deleteComment", commentId: number): void;
+  (e: "skipToCode", codeId: string): void;
 }>();
 
 const props = defineProps<{

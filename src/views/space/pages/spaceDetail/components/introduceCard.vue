@@ -53,7 +53,7 @@ const props = defineProps<{
 <style scoped lang="less">
 .introduce-container {
   width: 100%;
-  // height: 300px;
+  color: var(--el-text-color-primary);
   .introduce-cover {
     position: relative;
     width: 100%;

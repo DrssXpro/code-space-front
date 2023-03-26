@@ -3,7 +3,7 @@
     <template #header>优秀代码</template>
     <template>
       <div class="code-item" v-for="i in props.greatList" :key="i.id">
-        <i class="fa fa-code"></i>
+        <i class="fa fa-code" style="margin-top: 3px"></i>
         <div class="code-info">
           <div class="code-name">{{ i.title }}</div>
           <div>
@@ -33,7 +33,7 @@ const props = defineProps<{
   display: flex;
   cursor: pointer;
   padding: 10px 15px;
-
+  color: var(--el-text-color-primary);
   .code-info {
     margin-left: 5px;
 

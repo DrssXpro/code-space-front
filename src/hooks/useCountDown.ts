@@ -17,7 +17,6 @@ export default function useCountDown(time: number) {
   };
 
   const clearTimer = () => {
-    console.log("clear");
     timer && clearInterval(timer);
     timer = null;
     isStart.value = false;

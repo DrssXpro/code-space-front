@@ -36,7 +36,6 @@ export default function useCodeTool() {
 
   // 分享网站链接
   async function copyCodeLink(path?: string) {
-    console.log(window.location);
     const link = !path ? window.location.href : `${window.location.protocol}//${window.location.host}${path}`;
     await navigator.clipboard.writeText(link);
     ElMessage.success("链接复制成功");

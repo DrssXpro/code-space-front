@@ -34,6 +34,10 @@ const props = defineProps<{
   height?: string;
 }>();
 
+const emit = defineEmits<{
+  (e: "update:code", value: string): void;
+}>();
+
 const isDark = useDark();
 
 const darkTheme = theme.oneDark;
@@ -51,12 +55,6 @@ watch(
   }
 );
 
-const configCodeMirror = (lan: string) => {
-  extensions.value = [];
-  extensions.value.push(language[lan]);
-  isDark && extensions.value.push(darkTheme);
-};
-
 watch(
   () => props.code,
   (newValue) => {
@@ -67,9 +65,11 @@ watch(
   }
 );
 
-const emit = defineEmits<{
-  (e: "update:code", value: string): void;
-}>();
+const configCodeMirror = (lan: string) => {
+  extensions.value = [];
+  extensions.value.push(language[lan]);
+  isDark && extensions.value.push(darkTheme);
+};
 
 const handleReady = (payload: any) => {
   view.value = payload.view;
@@ -87,12 +87,8 @@ defineExpose({
 .fs-code-mirror {
   width: 100%;
   height: 100%;
-  // border: var(--el-border);
   :deep(.ͼo) {
     background-color: var(--el-bg-color-overlay) !important;
   }
-  // :deep(.ͼo .cm-gutters) {
-  //   background-color: var(--el-bg-color-overlay);
-  // }
 }
 </style>

@@ -6,7 +6,7 @@
           <fs-collection-code
             :code-detail="item"
             @cancel-collect="handleCancelCollectCode"
-            @check-collect-detail="handleCheckCollectCode"
+            @check-collect-detail="handleSkipToCode"
           />
         </div>
         <div class="pagination" v-if="collectState.total">
@@ -22,7 +22,7 @@
       </el-tab-pane>
       <el-tab-pane :label="`我的评论(${commentState.total})`" name="second">
         <div class="gap-item" v-for="i in commentState.commentList" :key="i.id">
-          <fs-my-comment :comment-detail="i" @delete-comment="handleDeleteComment" />
+          <fs-my-comment :comment-detail="i" @delete-comment="handleDeleteComment" @skip-to-code="handleSkipToCode" />
         </div>
         <div class="pagination" v-if="commentState.total">
           <el-pagination
@@ -72,10 +72,8 @@ const handleDeleteComment = (commentId: number) => {
   deleteMyCurrentComment(commentId, () => getMyCommentListData());
 };
 // 跳转至代码详情
-const handleCheckCollectCode = (codeId: string) => {
-  const location = window.location;
-  const url = `${location.protocol}//${location.host}/#/code/${codeId}`;
-  window.open(url);
+const handleSkipToCode = (codeId: string) => {
+  window.open(`/#/code/${codeId}`);
 };
 
 // 分页加载

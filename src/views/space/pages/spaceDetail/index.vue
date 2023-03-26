@@ -125,7 +125,6 @@ async function getSpaceCodeList() {
     );
     pageState.codeList = res.data.rows;
     pageState.total = res.data.count;
-    console.log(pageState.codeList);
   } catch (error) {
     ElMessage.error("获取列表数据失败");
   }
@@ -170,7 +169,6 @@ async function getSpaceDetailData() {
       const spaceId = userInfo.space.spaceId;
       const res = await getSpaceDetail(spaceId);
       spaceDetail.value = res.data;
-      console.log("get", spaceDetail.value);
     }
   } catch (error) {
     ElMessage.error("获取空间详情失败");

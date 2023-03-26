@@ -7,7 +7,7 @@
       <nav-content />
     </main>
     <footer class="nav-footer">
-      <!-- <nav-footer /> -->
+      <nav-footer />
     </footer>
     <fs-back-top />
   </div>
@@ -34,6 +34,7 @@ import FsBackTop from "@/components/FsBackTop/FsBackTop.vue";
   }
   .nav-content {
     width: 100%;
+    min-height: 100vh;
   }
 }
 </style>

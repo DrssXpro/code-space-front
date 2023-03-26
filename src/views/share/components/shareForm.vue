@@ -27,8 +27,8 @@
       </el-form-item>
       <el-form-item label="公开状态">
         <el-radio-group v-model="formState.status" :disabled="isSpace">
-          <el-radio label="1">公开</el-radio>
-          <el-radio label="2">私有</el-radio>
+          <el-radio :label="1">公开</el-radio>
+          <el-radio :label="2">私有</el-radio>
         </el-radio-group>
       </el-form-item>
 
@@ -94,7 +94,6 @@ onMounted(() => {
 
 // 分享内容
 const handleShareCode = async () => {
-  console.log(formState.taskId, formState);
   // 非空间代码
   if (!formState.taskId) {
     const res = await addCodeBySquare({

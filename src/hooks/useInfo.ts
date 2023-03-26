@@ -48,7 +48,6 @@ export default function useInfo(formRef?: Ref<FormInstance | undefined>) {
     collectState.loading = true;
     try {
       const res = await getCollectList({ limit: collectState.pageSize, offset: collectState.page - 1 });
-      console.log(res.data);
       collectState.collectList = res.data.rows;
       collectState.total = res.data.count;
     } catch (error) {

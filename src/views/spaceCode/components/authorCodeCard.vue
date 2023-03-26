@@ -3,7 +3,7 @@
     <template #header>作者分享</template>
     <a :href="`#/code/${i.id}`" target="_blank" v-for="i in props.authorList" :key="i.id">
       <div class="code-item">
-        <i class="fa fa-code"></i>
+        <i class="fa fa-code" style="margin-top: 3px"></i>
         <div class="code-info">
           <div class="code-name one-line">{{ i.title }}</div>
           <div>
@@ -33,7 +33,7 @@ const props = defineProps<{
   display: flex;
   cursor: pointer;
   padding: 10px 15px;
-
+  color: var(--el-text-color-primary);
   .code-info {
     margin-left: 5px;
 

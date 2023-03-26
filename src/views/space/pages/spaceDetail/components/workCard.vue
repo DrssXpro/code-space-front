@@ -28,6 +28,7 @@ const props = defineProps<{
   padding: 10px 20px;
   letter-spacing: 0.1em;
   line-height: 1.5em;
+  color: var(--el-text-color-primary);
   .title {
     font-size: 18px;
   }

@@ -1,6 +1,6 @@
 import type { IMenuItem } from "@/types/menuType";
 import type { IUserLoginInfo } from "@/types/userType";
-import { handleMenuMapRoutes, type IRouteItem } from "@/utils/tools";
+import { handleMenuMapRoutes, handleMenuToTree, type IRouteItem } from "@/utils/tools";
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import $router from "@/router/index";
@@ -19,7 +19,6 @@ const useUserStore = defineStore("user", () => {
   const mapRoutes = ref<IRouteItem[]>([]);
   // 操作权限标识
   const powerPerms = ref<string[]>([]);
-
 
   // 缓存个人信息 + 权限列表
   const saveUserInfo = () => {
@@ -48,11 +47,16 @@ const useUserStore = defineStore("user", () => {
   // 重新获取个人信息并保存(刷新存储)
   const getUserInfoData = async (cb?: Function) => {
     const id = userInfo.value?.id;
+    // 获取新的个人信息
     const res = await getUserInfo(id!);
     userInfo.value = res.data.userInfo;
+    // 获取新的菜单列表
+    const res2 = await getRoleMenu(userInfo.value.role.roleId);
+    menus.value = res2.code === 1000 ? (handleMenuToTree(res2.data) as IMenuItem[]) : [];
     // 刷新token
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("userInfo", JSON.stringify(userInfo.value));
+    localStorage.setItem("menus", JSON.stringify(menus.value));
     res.code === 1000 && cb && cb();
   };
 

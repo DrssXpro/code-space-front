@@ -24,7 +24,7 @@
         <img :src="`/src/assets/icon/${props.codeDetail.lan}.svg`" class="lan-img" alt="语言" />
         <div>{{ props.codeDetail.lan }}</div>
         <div><i class="fa fa-eye" style="margin-right: 3px"></i> {{ props.codeDetail.views }} 浏览</div>
-        <div>306.00 bytes</div>
+        <div>{{ props.codeDetail.line }} lines</div>
       </div>
     </div>
     <div class="fs-collection-code_footer">
