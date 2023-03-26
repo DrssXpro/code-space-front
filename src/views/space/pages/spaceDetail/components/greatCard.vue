@@ -1,8 +1,8 @@
 <template>
   <el-card shadow="never" v-if="props.greatList.length">
     <template #header>优秀代码</template>
-    <template>
-      <div class="code-item" v-for="i in props.greatList" :key="i.id">
+    <a :href="`/#/spaceCode/${i.id}`" target="_blank" v-for="i in props.greatList" :key="i.id">
+      <div class="code-item">
         <i class="fa fa-code" style="margin-top: 3px"></i>
         <div class="code-info">
           <div class="code-name">{{ i.title }}</div>
@@ -14,8 +14,8 @@
             <span>{{ i.line }} lines</span>
           </div>
         </div>
-      </div></template
-    >
+      </div>
+    </a>
   </el-card>
 </template>
 

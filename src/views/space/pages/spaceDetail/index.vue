@@ -16,7 +16,7 @@
           :pageSize="pageState.pageSize"
           :page="pageState.page"
           :total="pageState.total"
-          :codeList="pageState.codeList"
+          :code-list="pageState.codeList"
           @pageChange="handlePageChange"
         />
       </div>
@@ -27,7 +27,7 @@
           <work-card :taskDetail="taskDetail" />
         </div>
         <div class="gap-item">
-          <great-card :greatList="pageState.greatList" />
+          <great-card :great-list="pageState.greatList" />
         </div>
       </div>
     </div>
