@@ -112,9 +112,9 @@ const showModal = async (show: boolean, row?: any) => {
   isEdit.value = row ? true : false;
   if (isEdit.value) {
     const res = await getRoleMenu(row.id);
-    console.log(res.data);
     currentPower.value = res.data.map((item) => item.id);
     row.menuList = [];
+    console.log(currentPower.value);
     roleModalRef.value?.controllModal(show, row);
   } else {
     currentPower.value = [];

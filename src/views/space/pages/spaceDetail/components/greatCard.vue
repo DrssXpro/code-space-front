@@ -1,7 +1,7 @@
 <template>
-  <el-card shadow="never">
+  <el-card shadow="never" v-if="props.greatList.length">
     <template #header>优秀代码</template>
-    <template v-if="props.greatList.length">
+    <template>
       <div class="code-item" v-for="i in props.greatList" :key="i.id">
         <i class="fa fa-code"></i>
         <div class="code-info">
@@ -16,12 +16,10 @@
         </div>
       </div></template
     >
-    <fs-empty-box v-else />
   </el-card>
 </template>
 
 <script setup lang="ts">
-import FsEmptyBox from "@/components/FsEmptyBox/FsEmptyBox.vue";
 import type { ISpecialCodeItem } from "@/types/codeType";
 import { getTimeDis } from "@/utils/formatTime";
 

@@ -49,7 +49,6 @@ function getDisDay(time1: number, time2: number) {
 // 时间距离转换
 function getTimeDis(date: string) {
   const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
-  console.log(seconds);
   let intervalType, intervalValue;
   if (seconds < 60) {
     intervalType = "秒";

@@ -15,6 +15,16 @@ function addSpace(id: string, payload: ISpacePayload, loading = false) {
   );
 }
 
+// 判断用户是否能进入该空间
+function judgeSpaceIn(spaceId: number, loading = false) {
+  return myRequest.get<IResponseData>(
+    {
+      url: `/space/isIn/${spaceId}`,
+    },
+    loading
+  );
+}
+
 // 更新空间信息
 function updateSpace(spaceId: number, payload: ISpacePayload, loading = false) {
   return myRequest.post<IResponseData>(
@@ -138,5 +148,6 @@ export {
   getSpaceDetail,
   deleteSpace,
   joinSpaceByInviteCode,
-  spaceUploadAvatar
+  spaceUploadAvatar,
+  judgeSpaceIn,
 };

@@ -50,7 +50,7 @@ const showDialog = ref(false);
 // 获取到上传头像内容
 const currentFile = ref<File>();
 
-const { userInfo, cancelLogin } = toRefs(useUserStore());
+const { userInfo, getUserInfoData } = toRefs(useUserStore());
 const { userState, updateRules, updateMyInfo } = useInfo(formRef);
 
 const handleUpdateUserInfo = () => {
@@ -58,7 +58,7 @@ const handleUpdateUserInfo = () => {
     const userId = userInfo.value.id;
     updateMyInfo(userId, currentFile.value, () => {
       showDialog.value = false;
-      cancelLogin.value();
+      getUserInfoData.value();
     });
   } else {
     ElMessage.warning("未获取到用户信息");

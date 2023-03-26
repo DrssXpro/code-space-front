@@ -72,20 +72,35 @@ const {
 // 编辑状态：当前id
 const currentId = ref<number>();
 
-// nextTick设置树形结构数据回显
-watch(
-  () => props.currentPower,
-  (newValue) => {
-    nextTick(() => {
-      treeRef.value!.setCheckedKeys(newValue, false);
-    });
-  }
-);
 
 onMounted(() => {
   // 获取所有菜单权限列表
   getMenuListData();
 });
+
+// nextTick设置树形结构数据回显
+watch(
+  () => props.currentPower,
+  (newValue) => {
+    nextTick(() => {
+      treeRef.value!.setCheckedKeys(filterFatherNodes(newValue), false);
+    });
+  }
+);
+
+// 踩坑：树形结构数据回显返回的如果是父节点和部分子节点，需要将父节点剔除，否则视图上父节点为全选子节点的状态
+const filterFatherNodes = (nodeIds: number[]) => {
+  const nodes: number[] = [];
+  nodeIds.forEach((item) => {
+    const node = treeRef.value?.getNode(item);
+    // 判单是否为叶子节点
+    if (node?.isLeaf) {
+      nodes.push(item);
+    }
+  });
+
+  return nodes;
+};
 
 // 提交表单
 const handleSubmit = () => {

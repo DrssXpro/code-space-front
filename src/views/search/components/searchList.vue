@@ -1,8 +1,8 @@
 <template>
   <div class="search-list-container" v-if="props.codeList.length">
-    <div class="search-item" v-for="i in props.codeList" :key="i.id">
+    <a :href="`/#/code/${i.id}`" target="_blank" class="search-item" v-for="i in props.codeList" :key="i.id">
       <fs-code-card :code-detail="i" />
-    </div>
+    </a>
     <div class="search-pagination">
       <el-pagination
         background
@@ -50,6 +50,7 @@ const handleChangePage = (page: number) => {
 <style scoped lang="less">
 .search-list-container {
   .search-item {
+    display: block;
     margin-top: 20px;
   }
   .search-pagination {

@@ -38,7 +38,9 @@
               <img :src="`/src/assets/icon/${squareCodeDetail?.lan}.svg`" alt="" />
             </div>
           </el-tag>
-          <el-tag type="info"><span style="color: var(--el-text-color-primary)">7.13KB</span></el-tag>
+          <el-tag type="info"
+            ><span style="color: var(--el-text-color-primary)">{{ squareCodeDetail?.line }} lines</span></el-tag
+          >
         </div>
         <div class="code-detail-operator__right">
           <el-tooltip content="将代码文件下载至本地" placement="bottom" effect="light">

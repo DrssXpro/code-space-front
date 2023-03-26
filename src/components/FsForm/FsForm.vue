@@ -4,7 +4,7 @@
       <el-form-item
         v-for="(item, index) in formConfigReactive"
         :label="item.label"
-        :labelWidth="`${item.labelWidth ? item.labelWidth + 'px' : 'auto'}`"
+        :labelWidth="`${item.labelWidth ? item.labelWidth + 'px' : ''}`"
         :prop="`${item.field}`"
         :key="index"
       >

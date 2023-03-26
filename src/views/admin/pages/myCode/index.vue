@@ -31,7 +31,7 @@
           <div class="one-line" :title="row.content">{{ row.content }}</div>
         </template>
         <template #status="{ row }">
-          <el-tag :type="row.status ? 'success' : 'info'">{{ row.status ? "公开" : "私有" }}</el-tag>
+          <el-tag :type="row.status == 1 ? 'success' : 'info'">{{ row.status == 1 ? "公开" : "私有" }}</el-tag>
         </template>
         <template #isPwd="{ row }">
           <el-tag :type="row.isPwd ? 'danger' : ''">{{ row.isPwd ? "是" : "否" }}</el-tag>

@@ -60,6 +60,7 @@ function addRoleBySpace(payload: IRoleFormPayload, loading = false) {
 
 // 空间主：更新角色
 function updateRoleInSpace(id: number, payload: IRoleFormPayload, loading = false) {
+  alert(123);
   return myRequest.post<IResponseData>(
     {
       url: `/space_role/update/${id}`,
