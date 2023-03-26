@@ -31,7 +31,7 @@
         <div class="code-detail-operator__left">
           <el-tag type="info" class="lan">
             <div style="display: flex; align-items: center">
-              <img :src="`/src/assets/icon/${spaceCodeDetail?.lan}.svg`" alt="" />
+              <img :src="`${BASE_IMAGE}/code/${spaceCodeDetail?.lan}.svg`" alt="" />
             </div>
           </el-tag>
           <el-tag type="success"
@@ -80,6 +80,7 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import useFrontCode from "@/hooks/useFrontCode";
 import useCodeTool from "@/hooks/useCodeTool";
+import { BASE_IMAGE } from "@/config/config";
 
 const emit = defineEmits<{
   (e: "detailReady", authorId: string): void;

@@ -21,7 +21,7 @@
         {{ props.codeDetail.preview }}
       </div>
       <div class="code-count">
-        <img :src="`/src/assets/icon/${props.codeDetail.lan}.svg`" class="lan-img" alt="语言" />
+        <img :src="`${BASE_IMAGE}/code/${props.codeDetail.lan}.svg`" class="lan-img" alt="语言" />
         <div>{{ props.codeDetail.lan }}</div>
         <div><i class="fa fa-eye" style="margin-right: 3px"></i> {{ props.codeDetail.views }} 浏览</div>
         <div>{{ props.codeDetail.line }} lines</div>
@@ -56,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import { BASE_IMAGE } from "@/config/config";
 import type { ICodeItem } from "@/types/codeType";
 import { formatTime } from "@/utils/formatTime";
 

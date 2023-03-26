@@ -12,7 +12,7 @@
           <div class="content-title line-one">{{ props.codeDetail.title }}</div>
           <div class="content-preview line-one">{{ props.codeDetail.preview }}...</div>
           <div class="content-info">
-            <img :src="`/src/assets/icon/${props.codeDetail.lan}.svg`" class="lan-img" alt="" />
+            <img :src="`${BASE_IMAGE}/code/${props.codeDetail.lan}.svg`" class="lan-img" alt="" />
             <div>{{ props.codeDetail.lan }}</div>
             <div><i class="fa fa-eye"></i> {{ props.codeDetail.views }} 浏览</div>
             <div>{{ props.codeDetail.line }} lines</div>
@@ -50,6 +50,7 @@
 </template>
 
 <script setup lang="ts">
+import { BASE_IMAGE } from "@/config/config";
 import type { ICodeItem } from "@/types/codeType";
 import { formatTime } from "@/utils/formatTime";
 

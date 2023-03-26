@@ -15,7 +15,7 @@
             <fs-code-mirror ref="codeRef" :code="props.codeDetail.content" :disabled="true" />
           </div>
           <div class="content-info">
-            <img :src="`/src/assets/icon/${props.codeDetail.lan}.svg`" class="lan-img" alt="语言" />
+            <img :src="`${BASE_IMAGE}/code/${props.codeDetail.lan}.svg`" class="lan-img" alt="语言" />
             <div>{{ props.codeDetail.lan }}</div>
             <div><i class="fa fa-eye"></i> {{ props.codeDetail.views }} 浏览</div>
             <div><i class="fa fa-thumbs-o-up"></i> {{ props.codeDetail.liked }}</div>
@@ -43,6 +43,7 @@ import { ref, watch } from "vue";
 import { formatTime } from "@/utils/formatTime";
 import FsCodeMirror from "../FsCodeMirror/FsCodeMirror.vue";
 import type { ISpaceCodeItem } from "@/types/codeType";
+import { BASE_IMAGE } from "@/config/config";
 
 const codeRef = ref<InstanceType<typeof FsCodeMirror>>();
 
