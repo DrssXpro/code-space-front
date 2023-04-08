@@ -10,7 +10,7 @@
         </el-radio-group>
       </div>
       <div class="comment-input">
-        <img :src="userInfo?.avatar" alt="用户头像" />
+        <img v-if="userInfo" :src="userInfo?.avatar" alt="用户头像" />
         <div class="input-box">
           <fs-text-editor ref="editorRef" @text-html="handeGetComment" />
           <el-button type="info" style="margin-top: 40px; border-radius: 0" @click="handleSubmit">发表评论</el-button>

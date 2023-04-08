@@ -25,7 +25,6 @@
 import { shallowRef, ref, watch, onMounted } from "vue";
 import { Codemirror } from "vue-codemirror";
 import { language, theme } from "./config";
-import { useDark } from "@vueuse/core";
 const view = shallowRef();
 const codeContent = ref("");
 const props = defineProps<{
@@ -38,7 +37,6 @@ const emit = defineEmits<{
   (e: "update:code", value: string): void;
 }>();
 
-const isDark = useDark();
 
 const darkTheme = theme.oneDark;
 const extensions = shallowRef<any[]>([darkTheme]);
@@ -47,13 +45,6 @@ onMounted(() => {
   configCodeMirror("cpp");
 });
 
-watch(
-  () => isDark.value,
-  (newValue) => {
-    extensions.value = extensions.value.filter((item) => item !== darkTheme);
-    newValue && extensions.value.push(darkTheme);
-  }
-);
 
 watch(
   () => props.code,
@@ -68,7 +59,7 @@ watch(
 const configCodeMirror = (lan: string) => {
   extensions.value = [];
   extensions.value.push(language[lan]);
-  isDark && extensions.value.push(darkTheme);
+  extensions.value.push(darkTheme);
 };
 
 const handleReady = (payload: any) => {

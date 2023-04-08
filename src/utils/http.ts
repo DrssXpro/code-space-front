@@ -3,53 +3,20 @@ import useUserStore from "@/stores/userStore";
 import axios, {
   type AxiosInstance,
   type AxiosRequestConfig,
-  type AxiosResponse,
-  type InternalAxiosRequestConfig,
 } from "axios";
 import { ElLoading, ElMessage } from "element-plus";
-
-// 请求存储到map中
-function setRequestMap(config: InternalAxiosRequestConfig, map: Map<string, AbortController>) {
-  const controller = new AbortController();
-  let { url, method, params, data } = config;
-  const key = [url, method, JSON.stringify(params), JSON.stringify(data)].join("&");
-  config.signal = controller.signal;
-  map.set(key, controller);
-}
-
-// 清除map中的一个请求
-function deleteRequestMap(config: AxiosResponse, map: Map<string, AbortController>) {
-  let { url, method, params, data } = config.config;
-  const key = [url, method, JSON.stringify(params), JSON.stringify(data)].join("&");
-  map.delete(key);
-}
-
-// 取消重复请求
-function cancelRequest(config: InternalAxiosRequestConfig, map: Map<string, AbortController>) {
-  let { url, method, params, data } = config;
-  const key = [url, method, JSON.stringify(params), JSON.stringify(data)].join("&");
-  const item = map.get(key);
-  item && item.abort(); // 阻止上次请求
-  item && map.delete(key); // 删除缓存的请求记录
-}
 
 class FsRequest {
   // axios实例
   instance: AxiosInstance;
-  // 取消请求Map容器
-  abortControllerMap: Map<string, AbortController>;
   // 控制独立请求loading
   loading: any;
 
   // 创建axios实例，封装全局拦截器
   constructor(options: { baseURL: string; timeout: number }) {
     this.instance = axios.create(options);
-    this.abortControllerMap = new Map();
 
     this.instance.interceptors.request.use((config) => {
-      cancelRequest(config, this.abortControllerMap);
-      setRequestMap(config, this.abortControllerMap);
-
       // 配置请求头token
       const token = localStorage.getItem("token");
       if (token) {
@@ -60,7 +27,6 @@ class FsRequest {
     });
 
     this.instance.interceptors.response.use((config) => {
-      deleteRequestMap(config, this.abortControllerMap);
       if (config.data.code === 1100) {
         ElMessage.warning(config.data.message);
         const { cancelLogin } = useUserStore();

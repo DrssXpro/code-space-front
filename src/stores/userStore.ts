@@ -2,7 +2,7 @@ import type { IMenuItem } from "@/types/menuType";
 import type { IUserLoginInfo } from "@/types/userType";
 import { handleMenuMapRoutes, handleMenuToTree, type IRouteItem } from "@/utils/tools";
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import $router from "@/router/index";
 import { getRoleMenu } from "@/service/api/roleRequest";
 import router from "@/router/index";
@@ -68,7 +68,6 @@ const useUserStore = defineStore("user", () => {
     localStorage.removeItem("menus");
     router.push("/login");
     clearCodePwd(); // 退出后清空存储的加密代码
-    ElMessage.success("退出成功");
     userInfo.value = undefined;
   };
 

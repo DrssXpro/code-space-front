@@ -17,9 +17,6 @@
       </ul>
     </div>
     <div class="nav-menu_right">
-      <fs-switch v-model="themeFlag" @change-status="handleChangeTheme" active-color="#fff" un-active-color="#000">
-        <i :class="[themeFlag ? 'fa fa-sun-o' : 'fa fa-moon-o']"></i>
-      </fs-switch>
       <el-button type="danger"><a href="#/share" target="_blank" style="color: #fff">分享</a></el-button>
       <div class="nav-menu_right__operator">
         <div class="login-operator" v-if="!userInfo" @click="$router.push('/login')">
@@ -36,7 +33,7 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item @click="skipToSpace">我的空间</el-dropdown-item>
-                <el-dropdown-item @click="cancelLogin">退出登录</el-dropdown-item>
+                <el-dropdown-item @click="exitLogin">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -47,9 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, toRefs } from "vue";
-import FsSwitch from "@/components/FsSwitch/FsSwitch.vue";
-import { useDark, useToggle } from "@vueuse/core";
+import { computed, toRefs } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/stores/userStore";
 import { __debounce } from "@/utils/tools";
@@ -57,18 +52,9 @@ import { ElMessage } from "element-plus";
 const $route = useRoute();
 const $router = useRouter();
 
-const isDark = useDark();
-const themeFlag = ref(!isDark.value);
-const toggleDark = useToggle(isDark);
-
 const { userInfo, mapRoutes, cancelLogin, addDynamicRoutes } = toRefs(useUserStore());
 
 const activeIndex = computed(() => menus.findIndex((item) => $route.fullPath.split("/")[1] === item.path.slice(1)));
-
-// 改变主题
-const handleChangeTheme = __debounce(() => {
-  toggleDark();
-}, 500);
 
 const skipToSpace = () => {
   if (userInfo.value && userInfo.value.space) {
@@ -77,6 +63,12 @@ const skipToSpace = () => {
   } else {
     ElMessage.warning("您还没有加入空间");
   }
+};
+
+// 退出登录
+const exitLogin = () => {
+  cancelLogin.value();
+  ElMessage.success("退出成功");
 };
 
 // 路由跳转
