@@ -24,15 +24,15 @@
       </div>
 
       <div class="space-count">
-        <div>
+        <div class="count-item">
           <div class="desc">成员数</div>
           <div class="count">{{ props.spaceDetail?.userCount }}</div>
         </div>
-        <div>
+        <div class="count-item">
           <div class="desc">代码量</div>
           <div class="count">{{ props.spaceDetail?.codeCount }}</div>
         </div>
-        <div>
+        <div class="count-item">
           <div class="desc">任务数</div>
           <div class="count">{{ props.spaceDetail?.taskCount }}</div>
         </div>
@@ -102,11 +102,13 @@ const props = defineProps<{
       line-height: 1.5em;
     }
   }
+
   .space-count {
     display: flex;
     margin-bottom: 10px;
     border-top: 1px solid var(--el-card-border-color);
     padding-top: 10px;
+
     div {
       position: relative;
       flex: 1;
@@ -117,29 +119,30 @@ const props = defineProps<{
       .desc {
         margin-bottom: 5px;
       }
+
       .count {
         font-weight: 700;
       }
     }
+  }
 
-    .line {
-      position: absolute;
-      content: "";
-      width: 1px;
-      height: 110%;
-      top: 0;
-      right: 0;
-      background-color: var(--el-card-border-color);
+  .line {
+    position: absolute;
+    content: "";
+    width: 1px;
+    height: 110%;
+    top: 0;
+    right: 0;
+    background-color: var(--el-card-border-color);
+  }
+  .count-item:nth-child(1) {
+    &::after {
+      .line();
     }
-    :nth-child(1) {
-      &::after {
-        .line();
-      }
-    }
-    :nth-child(2) {
-      &::after {
-        .line();
-      }
+  }
+  .count-item:nth-child(2) {
+    &::after {
+      .line();
     }
   }
 }
